@@ -7,13 +7,27 @@
     <meta name="description" content="Zufällig generierte MaLo-IDs mit gültiger Prüfziffer">
     <meta name="keywords" content="MaLo, MaLo-ID, Marktlokation, Test, Test-MaLo, Marktlokationsid">
     <meta http-equiv="cache-control" content="no-cache"/>
+    <!-- prevent safari from formatting numbers with good intentions: https://stackoverflow.com/a/30426346/10009545 -->
+    <meta name="format-detection" content="telephone=no"/>
     <link rel="stylesheet" href="/api/style">
     <link rel="icon" type="image/x-icon" href="/api/favicon">
 </head>
 <body class="whiteBackground">
+<!--
+  ________________________________________
+< Hey, kennst du schon unsere Jobangebote? >
+  ----------------------------------------
+         \   ^__^
+          \  (oo)\_______
+             (__)\       )\/\
+                 ||----w |
+                 ||     ||
+https://www.hochfrequenz.de/karriere/stellenangebote/full-stack-entwickler/
+-->
 <div id="content">
-    <h1 class="{{ .division }}" title="Eine zufällige MaLo-ID mit gültiger Prüfziffer (Sparte {{ .division }})">{{
-        .maLoIdWithoutChecksum }}<span class="checksum" title="Prüfziffer {{ .checksum }}">{{ .checksum }}</span></h1>
+    <h1 class="{{ .division }}" title="Eine zufällige MaLo-ID mit gültiger Prüfziffer (Sparte {{ .division }})"><span>{{
+        .maLoIdWithoutChecksum }}</span><span class="checksum" title="Prüfziffer {{ .checksum }}">{{ .checksum }}</span>
+    </h1>
 </div>
 <div id="footer">powered by <a href="https://hochfrequenz.de/">
     hochfrequenz

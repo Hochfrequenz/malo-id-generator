@@ -39,7 +39,7 @@ func performRequest(r http.Handler, method, path string, body io.Reader) *httpte
 }
 
 func (s *Suite) Test_MaLo_Endpoint_Returns_Something_Like_A_MaLo() {
-	maloPattern := regexp.MustCompile(`\d{10}<span [^>]+>\d</span>`)
+	maloPattern := regexp.MustCompile(`<span>\d{10}</span><span [^>]+>\d</span>`)
 	router := main.NewRouter()
 	response := performGetRequest(router, "/api/generate-malo-id")
 	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
