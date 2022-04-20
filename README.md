@@ -11,7 +11,7 @@ Its purpose is to
 
 - generate Marktlokations-IDs
 - with a valid checksum
-- on the fly.
+- on the fly
 
 The business logic is written in Go using [Gin Gonic](https://gin-gonic.com/) and can be found in [cmd/api.go](cmd/api.go).
 
