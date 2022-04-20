@@ -77,7 +77,7 @@ func faviconHandler(c *gin.Context) {
 }
 
 // allowedMaLoCharacters contains those characters that are used to create new malo ids
-var allowedMaLoCharacters = []rune("123456789")
+var allowedMaLoCharacters = []rune("0123456789")
 
 // generateRandomString returns a random combination of the allowed characters with given length
 func generateRandomString(allowedCharacters []rune, length uint) string {
