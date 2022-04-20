@@ -43,7 +43,7 @@ func (s *Suite) Test_MaLo_Endpoint_Returns_Something_Like_A_MaLo() {
 	router := main.NewRouter()
 	response := performGetRequest(router, "/api/generate-malo-id")
 	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
-	responseBody := string(response.Body.Bytes())
+	responseBody := response.Body.String()
 	then.AssertThat(s.T(), maloPattern.MatchString(responseBody), is.True())
 }
 
