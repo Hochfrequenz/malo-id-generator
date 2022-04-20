@@ -33,7 +33,6 @@ func NewRouter() *gin.Engine {
 	router.GET("/api/generate-malo-id", generateRandomMaLoId)
 	router.GET("/api/style", stylesheetHandler)
 	router.GET("/api/favicon", faviconHandler)
-	router.GET("/api/logo", logoHandler)
 	return router
 }
 
@@ -53,10 +52,6 @@ var stylesheet embed.FS
 //go:embed static/favicon.png
 var favicon embed.FS
 
-// logo is the hochfrequenz company logo
-//go:embed static/logo.png
-var logo embed.FS
-
 // templatesFS is the embedded file system where the template files for gin are located
 //go:embed static/templates
 var templatesFS embed.FS
@@ -74,16 +69,6 @@ func stylesheetHandler(c *gin.Context) {
 // returns the favicon as image/png
 func faviconHandler(c *gin.Context) {
 	stylesheetBody, err := favicon.ReadFile("static/favicon.png")
-	if err != nil {
-		response := map[string]string{}
-		c.JSON(http.StatusNotFound, response)
-	}
-	c.Data(http.StatusOK, "image/png", stylesheetBody)
-}
-
-// returns the logo as image/png
-func logoHandler(c *gin.Context) {
-	stylesheetBody, err := logo.ReadFile("static/logo.png")
 	if err != nil {
 		response := map[string]string{}
 		c.JSON(http.StatusNotFound, response)
