@@ -18,10 +18,6 @@ div#content {
     font-size: x-small;
 }
 
-#footer > a > img {
-    vertical-align: bottom;
-}
-
 #footer > a {
     font-weight: normal;
     font-style: normal;
