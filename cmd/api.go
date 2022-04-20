@@ -105,8 +105,8 @@ func generateRandomMaLoId(c *gin.Context) {
 		}
 	}
 	var issuer rollencodetyp.Rollencodetyp
-	var division sparte.Sparte
-	// // https://bdew-codes.de/Content/Files/MaLo/2017-04-28-BDEW-Anwendungshilfe-MaLo-ID_Version1.0_FINAL.PDF
+	var division sparte.Sparte // this will be used to use either the ⚡ or 🔥 emoji
+	// see https://bdew-codes.de/Content/Files/MaLo/2017-04-28-BDEW-Anwendungshilfe-MaLo-ID_Version1.0_FINAL.PDF
 	if rune(maloIdWithoutChecksum[0]) < '4' {
 		issuer = rollencodetyp.DVGW
 		division = sparte.GAS
