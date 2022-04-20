@@ -110,7 +110,7 @@ func generateRandomString(allowedCharacters []rune, length uint) string {
 func generateRandomMaLoId(c *gin.Context) {
 	var maloIdWithoutChecksum string
 	var maloCheckSum string
-	for true {
+	for {
 		maloIdWithoutChecksum = generateRandomString(allowedMaLoCharacters, 10)
 		if maloIdWithoutChecksum[0] != '0' { // loop until he first character is not 0
 			maloCheckSum = fmt.Sprintf("%d", bo.GetMaLoIdCheckSum(maloIdWithoutChecksum))
