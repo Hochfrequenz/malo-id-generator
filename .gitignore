@@ -13,3 +13,13 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+.idea/malo-id-generator.iml
+
+.idea/modules.xml
+
+.idea/vcs.xml
+
+.vscode/extensions.json
+
+api

@@ -7,15 +7,44 @@ body {
     background-color: #f3f1f6;
 }
 
+h1 {
+    font-size: 800%;
+    color: #6eb52c;
+    letter-spacing: -4px; /* to prevent line breaks between the ::after emoji and the malo id*/
+}
+
+.checksum {
+    color: #e94c74;
+}
+
+.STROM::after {
+    content: "⚡";
+    font-size: 20%;
+    vertical-align: -100%;
+}
+
+.GAS::after {
+    content: "🔥";
+    font-size: 20%;
+    vertical-align: -100%;
+}
+
 div#content {
     text-align: center;
     color: #7aab8a;
+    max-width: 80% !important;
+    min-width: 80% !important;
+    margin-left: 10%;
+    margin-right: 10%;
 }
 
 
 #footer {
     text-align: center;
-    font-size: x-small;
+    font-size: large;
+    width: 80%;
+    margin-left: 10%;
+    margin-right:: 10%;
 }
 
 #footer > a {
