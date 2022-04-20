@@ -1,0 +1,29 @@
+/* foo */
+body {
+    font-family: "Yanone Kaffeesatz", "Roboto Condensed", sans-serif;
+}
+
+.whiteBackground {
+    background-color: #f3f1f6;
+}
+
+div#content {
+    text-align: center;
+    color: #7aab8a;
+}
+
+
+#footer {
+    text-align: center;
+    font-size: x-small;
+}
+
+#footer > a > img {
+    vertical-align: bottom;
+}
+
+#footer > a {
+    font-weight: normal;
+    font-style: normal;
+    color: black;
+}
