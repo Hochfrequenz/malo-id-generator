@@ -47,13 +47,13 @@ func (s *Suite) Test_MaLo_Endpoint_Returns_Something_Like_A_MaLo() {
 	then.AssertThat(s.T(), maloPattern.MatchString(responseBody), is.True())
 }
 
-func (s *Suite) Test_Stylesheet_Is_Returned(){
+func (s *Suite) Test_Stylesheet_Is_Returned() {
 	router := main.NewRouter()
 	response := performGetRequest(router, "/api/style")
 	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
 }
 
-func (s *Suite) Test_Favicon_Is_Returned(){
+func (s *Suite) Test_Favicon_Is_Returned() {
 	router := main.NewRouter()
 	response := performGetRequest(router, "/api/favicon")
 	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
