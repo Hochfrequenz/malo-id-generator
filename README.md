@@ -7,10 +7,11 @@
 This repository contains
 an [Azure Function with a Go Handler](https://docs.microsoft.com/en-us/azure/azure-functions/create-first-function-vs-code-other?tabs=go%2Cwindows).
 
-Its purpose is to 
-* generate Marktlokations-IDs
-* with a valid checksum
-* on the fly.
+Its purpose is to
+
+- generate Marktlokations-IDs
+- with a valid checksum
+- on the fly.
 
 The business logic is written in Go using [Gin Gonic](https://gin-gonic.com/) and can be found in [cmd/api.go](cmd/api.go).
 
@@ -26,18 +27,20 @@ separate Azure Functions and hence have their own respective `function.json`.
 The files are embedded into the go binary using `go:embed`.
 This means you need to rebuild in order to change e.g. the stylesheet.
 
-
-
 ## Running it Locally
+
 The setup is generally described quite well in [this article by Thorsten Hans](https://www.thorsten-hans.com/azure-functions-with-go/).
 
 First install the [Azure Function Core Tools](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=v4%2Cwindows%2Ccsharp%2Cportal%2Cbash#v2).
 
 Then, in the root directory of this repo, execute:
+
 ```bash
 go build ./cmd/api.go
 ```
+
 followed by
+
 ```bash
 func start
 ```
