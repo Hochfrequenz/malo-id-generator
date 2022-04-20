@@ -66,7 +66,6 @@ func stylesheetHandler(c *gin.Context) {
 	stylesheetBody, err := stylesheet.ReadFile("static/style.css")
 	if err != nil {
 		response := map[string]string{}
-		response["error"] = "not found"
 		c.JSON(http.StatusNotFound, response)
 	}
 	c.Data(http.StatusOK, "text/css", stylesheetBody)
@@ -77,7 +76,6 @@ func faviconHandler(c *gin.Context) {
 	stylesheetBody, err := favicon.ReadFile("static/favicon.png")
 	if err != nil {
 		response := map[string]string{}
-		response["error"] = "not found"
 		c.JSON(http.StatusNotFound, response)
 	}
 	c.Data(http.StatusOK, "image/png", stylesheetBody)
@@ -88,7 +86,6 @@ func logoHandler(c *gin.Context) {
 	stylesheetBody, err := logo.ReadFile("static/logo.png")
 	if err != nil {
 		response := map[string]string{}
-		response["error"] = "not found"
 		c.JSON(http.StatusNotFound, response)
 	}
 	c.Data(http.StatusOK, "image/png", stylesheetBody)
@@ -130,13 +127,15 @@ func generateRandomMaLoId(c *gin.Context) {
 // boilerplate code to use embedded files as HTML templates:
 // copied from here: https://github.com/gin-gonic/gin/issues/2795
 // I don't care about linter warnings below this line
-// nolint
+
+// nolint: goconst,gosimple
 func loadHTMLFromEmbedFS(engine *gin.Engine, embedFS embed.FS, pattern string) {
 	root := template.New("")
 	tmpl := template.Must(root, loadAndAddToRoot(engine.FuncMap, root, embedFS, pattern))
 	engine.SetHTMLTemplate(tmpl)
 }
 
+// nolint: goconst,gosimple
 func loadAndAddToRoot(funcMap template.FuncMap, rootTemplate *template.Template, embedFS embed.FS, pattern string) error {
 	pattern = strings.ReplaceAll(pattern, ".", "\\.")
 	pattern = strings.ReplaceAll(pattern, "*", ".*")
