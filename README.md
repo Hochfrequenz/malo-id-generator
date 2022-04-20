@@ -46,3 +46,36 @@ func start
 ```
 
 ## CI/CD
+
+This function app is managed in the [malo-id-generator resource group on Azure](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourcegroups/malo-id-generator/providers/Microsoft.Web/sites/malo-id-generator/appServices).
+
+The function app is
+
+- code based (instead of dockerized (todo @kevin))
+- linux based (instead of windows)
+
+It is deployed to [`malo-id-generator.azurewebsites.net/api/generate-malo-id`](https://malo-id-generator.azurewebsites.net/api/generate-malo-id).
+
+### How To Deploy
+
+There is _no_ automatic deployment yet (fixable with docker).
+
+To deploy:
+
+First **build** locally for linux
+
+```bash
+set GOOS=linux
+go build -o api cmd/api.go
+```
+
+The GOOS env var can be set in the build configuration in Goland.
+The build should create an `api` (no file ending) file on root level.
+
+Then **upload**
+
+```bash
+func azure functionapp publish malo-id-generator
+```
+
+You have to be logged in (`az login`) using the [Azure CLI Tools](https://docs.microsoft.com/de-de/cli/azure/install-azure-cli-windows?tabs=azure-cli).
