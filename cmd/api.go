@@ -129,7 +129,8 @@ func generateRandomMaLoId(c *gin.Context) {
 
 // boilerplate code to use embedded files as HTML templates:
 // copied from here: https://github.com/gin-gonic/gin/issues/2795
-
+// I don't care about linter warnings below this line
+// nolint
 func loadHTMLFromEmbedFS(engine *gin.Engine, embedFS embed.FS, pattern string) {
 	root := template.New("")
 	tmpl := template.Must(root, loadAndAddToRoot(engine.FuncMap, root, embedFS, pattern))
