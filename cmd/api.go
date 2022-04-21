@@ -6,7 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/hochfrequenz/go-bo4e/bo"
 	"github.com/hochfrequenz/go-bo4e/enum/rollencodetyp"
-	"github.com/hochfrequenz/go-bo4e/enum/sparte"
 	"html/template"
 	"io/fs"
 	"log"
@@ -105,21 +104,17 @@ func generateRandomMaLoId(c *gin.Context) {
 		}
 	}
 	var issuer rollencodetyp.Rollencodetyp
-	var division sparte.Sparte // this will be used to use either the ⚡ or 🔥 emoji
 	// see https://bdew-codes.de/Content/Files/MaLo/2017-04-28-BDEW-Anwendungshilfe-MaLo-ID_Version1.0_FINAL.PDF
 	if rune(maloIdWithoutChecksum[0]) < '4' {
 		issuer = rollencodetyp.DVGW
-		division = sparte.GAS
 	} else {
 		issuer = rollencodetyp.BDEW
-		division = sparte.STROM
 	}
 	maloId := maloIdWithoutChecksum + maloCheckSum
 	c.HTML(http.StatusOK, "static/templates/index.tmpl.html", gin.H{
 		"maLoIdWithoutChecksum": maloIdWithoutChecksum,
 		"checksum":              maloCheckSum,
 		"issuer":                issuer.String(),
-		"division":              division.String(),
 	})
 	log.Printf("Successfully generated the MaLo '%s'", maloId)
 }
