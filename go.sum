@@ -23,8 +23,8 @@ github.com/golang/protobuf v1.5.0/go.mod h1:FsONVRAS9T7sI+LIUmWTfcYkHO4aIWwzhcaS
 github.com/google/go-cmp v0.5.5 h1:Khx7svrCpmxxtHBq5j2mp/xVjsi8hQMfNLvJFAlrGgU=
 github.com/google/go-cmp v0.5.5/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
 github.com/google/gofuzz v1.0.0/go.mod h1:dBl0BpW6vV/+mYPU4Po3pmUjxk6FQPldtuIdl/M65Eg=
-github.com/hochfrequenz/go-bo4e v0.2.0 h1:vNHWhQoKO1MP4pJVK/rtfQhy60dtu2frjppRoM3gzVs=
-github.com/hochfrequenz/go-bo4e v0.2.0/go.mod h1:U8Y2rD2GNt7mD0AMXTe42zrcsHRczAO7Lq10e3SUvnc=
+github.com/hochfrequenz/go-bo4e v0.2.5 h1:JNZTUybwwKxBOQz3h2vl8ZybnUQHZlWW1EP8yOBpkqI=
+github.com/hochfrequenz/go-bo4e v0.2.5/go.mod h1:U8Y2rD2GNt7mD0AMXTe42zrcsHRczAO7Lq10e3SUvnc=
 github.com/json-iterator/go v1.1.12 h1:PV8peI4a0ysnczrg+LtxykD8LfKY9ML6u2jnxaEnrnM=
 github.com/json-iterator/go v1.1.12/go.mod h1:e30LSqwooZae/UwlEbR2852Gd8hjQvJoHmT4TnhNGBo=
 github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORNo=
