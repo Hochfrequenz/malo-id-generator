@@ -17,7 +17,7 @@ The business logic is written in Go using [Gin Gonic](https://gin-gonic.com/) an
 
 It's a super basic website with three "pseudo files":
 
-1. `/api/generate-malo-id` that returns an HTML site which refers to
+1. [`/api/generate-malo-id`](https://malo-id-generator.azurewebsites.net/api/generate-malo-id) that returns an HTML site which refers to (this is the main entry point for users)
 2. `/api/favicon` (returns a favicon) and refers to
 3. `/api/style` (returns a stylesheet)
 
