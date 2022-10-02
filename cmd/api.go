@@ -46,14 +46,17 @@ func getPort() string {
 }
 
 // embedded files:
+//
 //go:embed static/style.css
 var stylesheet embed.FS
 
 // favicon is the favicon (the little icon in the browser tab)
+//
 //go:embed static/favicon.png
 var favicon embed.FS
 
 // templatesFS is the embedded file system where the template files for gin are located
+//
 //go:embed static/templates
 var templatesFS embed.FS
 
