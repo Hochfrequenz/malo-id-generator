@@ -6,7 +6,7 @@ require (
 	github.com/corbym/gocrest v1.0.6
 	github.com/gin-gonic/gin v1.8.2
 	github.com/hochfrequenz/go-bo4e v0.4.1
-	github.com/stretchr/testify v1.8.1
+	github.com/stretchr/testify v1.8.2
 )
 
 require (
