@@ -86,10 +86,10 @@ var allowedMaLoCharacters = []rune("0123456789")
 // generateRandomString returns a random combination of the allowed characters with given length
 func generateRandomString(allowedCharacters []rune, length uint) string {
 	// source: https://stackoverflow.com/a/22892986/10009545
-	rand.Seed(time.Now().UnixNano())
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	b := make([]rune, length)
 	for i := range b {
-		b[i] = allowedCharacters[rand.Intn(len(allowedCharacters))]
+		b[i] = allowedCharacters[r.Intn(len(allowedCharacters))]
 	}
 	time.Sleep(1 * time.Nanosecond) // gives the seed time to be refreshed
 	return string(b)
