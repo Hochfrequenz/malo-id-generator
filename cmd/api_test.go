@@ -41,7 +41,7 @@ func performRequest(r http.Handler, method, path string, body io.Reader) *httpte
 func (s *Suite) Test_MaLo_Endpoint_Returns_Something_Like_A_MaLo() {
 	maloPattern := regexp.MustCompile(`\d{10}<span [^>]+>\d</span>`)
 	router := main.NewRouter()
-	response := performGetRequest(router, "/api/generate-malo-id")
+	response := performGetRequest(router, "/")
 	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
 	responseBody := response.Body.String()
 	then.AssertThat(s.T(), maloPattern.MatchString(responseBody), is.True())
@@ -49,12 +49,12 @@ func (s *Suite) Test_MaLo_Endpoint_Returns_Something_Like_A_MaLo() {
 
 func (s *Suite) Test_Stylesheet_Is_Returned() {
 	router := main.NewRouter()
-	response := performGetRequest(router, "/api/style")
+	response := performGetRequest(router, "/style")
 	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
 }
 
 func (s *Suite) Test_Favicon_Is_Returned() {
 	router := main.NewRouter()
-	response := performGetRequest(router, "/api/favicon")
+	response := performGetRequest(router, "/favicon")
 	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
 }
