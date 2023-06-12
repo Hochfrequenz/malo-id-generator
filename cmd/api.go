@@ -31,9 +31,12 @@ func NewRouter() *gin.Engine {
 	pattern := "static/templates/*"
 	loadHTMLFromEmbedFS(router, templatesFS, pattern)
 	// router.LoadHTMLGlob("cmd/static/templates/*.html") // see https://gin-gonic.com/docs/examples/html-rendering/
-	router.GET("/api/generate-malo-id", generateRandomMaLoId)
-	router.GET("/api/style", stylesheetHandler)
-	router.GET("/api/favicon", faviconHandler)
+	// the following pathes have to match the name of the respective azure function or its route (if set, e.g. in case of function generate-malo-id whose route in function.json is "/")
+	// see this SO answer: https://stackoverflow.com/a/76419027/10009545
+	router.GET("/", generateRandomMaLoId)
+	router.GET("/style", stylesheetHandler)
+	router.GET("/favicon", faviconHandler)
+
 	return router
 }
 
