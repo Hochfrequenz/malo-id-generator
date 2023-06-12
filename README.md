@@ -36,7 +36,7 @@ First install the [Azure Function Core Tools](https://docs.microsoft.com/en-us/a
 Then, in the root directory of this repo, execute:
 
 ```bash
-go build ./cmd/api.go
+go build -o api ./cmd/api.go
 ```
 
 followed by
