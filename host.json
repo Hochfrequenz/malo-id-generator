@@ -19,5 +19,10 @@
       "workingDirectory": "",
       "arguments": []
     }
+  },
+  "extensions": {
+    "http": {
+      "routePrefix": ""
+    }
   }
 }
