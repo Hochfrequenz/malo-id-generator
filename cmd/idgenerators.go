@@ -63,7 +63,7 @@ func (m MaLoIdGenerator) GenerateId(c *gin.Context) {
 }
 
 // allowedNeLoCharacters contains those characters that are used to create new nelo ids
-var allowedNeLoCharacters = []rune("0123456789")
+var allowedNeLoCharacters = []rune("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 // NeLoIdGenerator is an IdGenerator that generates NeLo-IDs (Netzlokation-IDs)
 type NeLoIdGenerator struct{}
