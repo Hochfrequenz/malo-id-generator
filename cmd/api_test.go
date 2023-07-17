@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"regexp"
 	"testing"
 )
@@ -39,6 +40,8 @@ func performRequest(r http.Handler, method, path string, body io.Reader) *httpte
 }
 
 func (s *Suite) Test_MaLo_Endpoint_Returns_Something_Like_A_MaLo() {
+	err := os.Setenv("ID_TYPE_TO_GENERATE", "malo")
+	then.AssertThat(s.T(), err, is.Nil())
 	maloPattern := regexp.MustCompile(`\d{10}<span [^>]+>\d</span>`)
 	router := main.NewRouter()
 	response := performGetRequest(router, "/")
