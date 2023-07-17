@@ -54,7 +54,11 @@ The function app is
 - code based (instead of dockerized (todo @kevin))
 - linux based (instead of windows)
 
-It is deployed to [`malo-id-generator.azurewebsites.net/api/generate-malo-id`](https://malo-id-generator.azurewebsites.net/api/generate-malo-id).
+It is deployed to [`malo-id-generator.azurewebsites.net/`](https://malo-id-generator.azurewebsites.net/).
+
+There is an environment variable named `ID_TYPE_TO_GENERATE` which you can modify in the [function app settings](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourcegroups/malo-id-generator/providers/Microsoft.Web/sites/malo-id-generator/configuration).
+Its value can only be `"MALO"` at the moment.
+For your local tests you can modify the value in the `local.settings.json` file.
 
 ### How To Deploy
 

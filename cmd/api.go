@@ -35,9 +35,18 @@ func NewRouter() *gin.Engine {
 	return router
 }
 
+// getIdGenerator checks the environment variables and decides which IdGenerator to use.
+// this is useful if you want to use the same code base and deploy it to different environments (with different env variables) for different ID types
 func getIdGenerator() IdGenerator {
-	// todo: check env variable on which IdGenerator to load
-	return MaLoIdGenerator{}
+	// set this value in local.settings.json or in the azure portal function settings
+	if idTypeToGenerate, ok := os.LookupEnv("ID_TYPE_TO_GENERATE"); ok {
+		idTypeToGenerate = strings.ToUpper(idTypeToGenerate)
+		if idTypeToGenerate == "MALO" {
+			return MaLoIdGenerator{}
+		}
+		panic("Unsupported value of environment variable 'ID_TYPE_TO_GENERATE': '" + idTypeToGenerate + "'. Supported values are 'MALO'.")
+	}
+	panic("The environment variable 'ID_TYPE_TO_GENERATE' is not set.")
 }
 
 func generateRandomId(c *gin.Context) {
