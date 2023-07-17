@@ -26,8 +26,7 @@
      </script>
 </head>
 <body class="whiteBackground">
-<!-- We pass the HTML comment / recruiting ad as a parameter because the HTML comment was stripped from the template -->
-{{ .recruitingMessage }}
+{{ .recruitingMessage }}<!-- We pass the HTML comment / recruiting ad as a parameter because the HTML comment was stripped from the template -->
 <div id="content">
     <h1 class="{{ .issuer }}" title="Eine zufällige NeLo-ID mit gültiger Prüfziffer"><div>{{
         .neLoIdWithoutChecksum }}<span class="checksum" title="Prüfziffer {{ .checksum }}">{{ .checksum }}</span></div>
