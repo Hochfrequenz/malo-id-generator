@@ -2,7 +2,6 @@ package main
 
 import (
 	"embed"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"html/template"
 	"io/fs"
