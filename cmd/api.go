@@ -56,7 +56,6 @@ func getIdGenerator() (IdGenerator, error) {
 func generateRandomId(c *gin.Context) {
 	generator, err := getIdGenerator()
 	if err != nil {
-		c.Error(err)
 		c.JSON(501, gin.H{"error": err.Error()})
 		return
 	}
