@@ -20,8 +20,7 @@ type IdGenerator interface {
 
 // recruitingMessage is a multi line HTML comment that is inserted into the rendered HTML page. It is defined here because for reasons unknown to me, it was always stripped from the parsed HTML template.
 // See: https://stackoverflow.com/q/76707663/10009545
-const recruitingMessage string = `
-<!--
+const recruitingMessage string = `<!--
   ________________________________________
 < Hey, kennst du schon unsere Jobangebote? >
   ----------------------------------------
@@ -31,8 +30,7 @@ const recruitingMessage string = `
                  ||----w |
                  ||     ||
 https://www.hochfrequenz.de/karriere/stellenangebote/full-stack-entwickler/
--->
-`
+-->`
 
 // allowedMaLoCharacters contains those characters that are used to create new malo ids
 var allowedMaLoCharacters = []rune("0123456789")
