@@ -2,19 +2,14 @@ package main
 
 import (
 	"embed"
-	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/hochfrequenz/go-bo4e/bo"
-	"github.com/hochfrequenz/go-bo4e/enum/rollencodetyp"
 	"html/template"
 	"io/fs"
 	"log"
-	"math/rand"
 	"net/http"
 	"os"
 	"regexp"
 	"strings"
-	"time"
 )
 
 func main() {
@@ -33,11 +28,21 @@ func NewRouter() *gin.Engine {
 	// router.LoadHTMLGlob("cmd/static/templates/*.html") // see https://gin-gonic.com/docs/examples/html-rendering/
 	// the following pathes have to match the name of the respective azure function or its route (if set, e.g. in case of function generate-malo-id whose route in function.json is "/")
 	// see this SO answer: https://stackoverflow.com/a/76419027/10009545
-	router.GET("/", generateRandomMaLoId)
+	router.GET("/", generateRandomId)
 	router.GET("/style", stylesheetHandler)
 	router.GET("/favicon", faviconHandler)
 
 	return router
+}
+
+func getIdGenerator() IdGenerator {
+	// todo: check env variable on which IdGenerator to load
+	return MaLoIdGenerator{}
+}
+
+func generateRandomId(c *gin.Context) {
+	maloIdGenerator := getIdGenerator()
+	maloIdGenerator.GenerateId(c)
 }
 
 func getPort() string {
@@ -81,48 +86,6 @@ func faviconHandler(c *gin.Context) {
 		c.JSON(http.StatusNotFound, response)
 	}
 	c.Data(http.StatusOK, "image/png", stylesheetBody)
-}
-
-// allowedMaLoCharacters contains those characters that are used to create new malo ids
-var allowedMaLoCharacters = []rune("0123456789")
-
-// generateRandomString returns a random combination of the allowed characters with given length
-func generateRandomString(allowedCharacters []rune, length uint) string {
-	// source: https://stackoverflow.com/a/22892986/10009545
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
-	b := make([]rune, length)
-	for i := range b {
-		b[i] = allowedCharacters[r.Intn(len(allowedCharacters))]
-	}
-	time.Sleep(1 * time.Nanosecond) // gives the seed time to be refreshed
-	return string(b)
-}
-
-// generateRandomMaLoId returns a new random, 11 digit malo-id that has a valid check sum and embeds
-func generateRandomMaLoId(c *gin.Context) {
-	var maloIdWithoutChecksum string
-	var maloCheckSum string
-	for {
-		maloIdWithoutChecksum = generateRandomString(allowedMaLoCharacters, 10)
-		if maloIdWithoutChecksum[0] != '0' { // loop until he first character is not 0
-			maloCheckSum = fmt.Sprintf("%d", bo.GetMaLoIdCheckSum(maloIdWithoutChecksum))
-			break
-		}
-	}
-	var issuer rollencodetyp.Rollencodetyp
-	// see https://bdew-codes.de/Content/Files/MaLo/2017-04-28-BDEW-Anwendungshilfe-MaLo-ID_Version1.0_FINAL.PDF
-	if rune(maloIdWithoutChecksum[0]) < '4' {
-		issuer = rollencodetyp.DVGW
-	} else {
-		issuer = rollencodetyp.BDEW
-	}
-	maloId := maloIdWithoutChecksum + maloCheckSum
-	c.HTML(http.StatusOK, "static/templates/index.tmpl.html", gin.H{
-		"maLoIdWithoutChecksum": maloIdWithoutChecksum,
-		"checksum":              maloCheckSum,
-		"issuer":                issuer.String(),
-	})
-	log.Printf("Successfully generated the MaLo '%s'", maloId)
 }
 
 // boilerplate code to use embedded files as HTML templates:
