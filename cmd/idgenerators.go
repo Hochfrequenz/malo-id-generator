@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/hochfrequenz/go-bo4e/bo"
 	"github.com/hochfrequenz/go-bo4e/enum/rollencodetyp"
+	"html/template"
 	"log"
 	"math/rand"
 	"net/http"
@@ -16,6 +17,22 @@ type IdGenerator interface {
 	// GenerateId generates and renders the result into the given gin context
 	GenerateId(c *gin.Context)
 }
+
+// recruitingMessage is a multi line HTML comment that is inserted into the rendered HTML page. It is defined here because for reasons unknown to me, it was always stripped from the parsed HTML template.
+// See: https://stackoverflow.com/q/76707663/10009545
+const recruitingMessage string = `
+<!--
+  ________________________________________
+< Hey, kennst du schon unsere Jobangebote? >
+  ----------------------------------------
+         \   ^__^
+          \  (oo)\_______
+             (__)\       )\/\
+                 ||----w |
+                 ||     ||
+https://www.hochfrequenz.de/karriere/stellenangebote/full-stack-entwickler/
+-->
+`
 
 // allowedMaLoCharacters contains those characters that are used to create new malo ids
 var allowedMaLoCharacters = []rune("0123456789")
@@ -58,6 +75,7 @@ func (m MaLoIdGenerator) GenerateId(c *gin.Context) {
 		"maLoIdWithoutChecksum": maloIdWithoutChecksum,
 		"checksum":              maloCheckSum,
 		"issuer":                issuer.String(),
+		"recruitingMessage":     template.HTML(recruitingMessage),
 	})
 	log.Printf("Successfully generated the MaLo '%s'", maloId)
 }
@@ -76,6 +94,7 @@ func (m NeLoIdGenerator) GenerateId(c *gin.Context) {
 	c.HTML(http.StatusOK, "static/templates/nelo.tmpl.html", gin.H{
 		"neLoIdWithoutChecksum": neloIdWithoutChecksum,
 		"checksum":              neloChecksum,
+		"recruitingMessage":     template.HTML(recruitingMessage),
 	})
 	log.Printf("Successfully generated the NeLo '%s'", neloId)
 }

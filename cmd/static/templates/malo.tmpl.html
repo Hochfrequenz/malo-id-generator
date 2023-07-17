@@ -26,17 +26,8 @@
      </script>
 </head>
 <body class="whiteBackground">
-<!--
-  ________________________________________
-< Hey, kennst du schon unsere Jobangebote? >
-  ----------------------------------------
-         \   ^__^
-          \  (oo)\_______
-             (__)\       )\/\
-                 ||----w |
-                 ||     ||
-https://www.hochfrequenz.de/karriere/stellenangebote/full-stack-entwickler/
--->
+<!-- We pass the HTML comment / recruiting ad as a parameter because the HTML comment was stripped from the template -->
+{{ .recruitingMessage }}
 <div id="content">
     <h1 class="{{ .issuer }}" title="Eine zufällige MaLo-ID mit gültiger Prüfziffer (Vergabestelle {{ .issuer }})"><div>{{
         .maLoIdWithoutChecksum }}<span class="checksum" title="Prüfziffer {{ .checksum }}">{{ .checksum }}</span></div>
