@@ -61,3 +61,21 @@ func (m MaLoIdGenerator) GenerateId(c *gin.Context) {
 	})
 	log.Printf("Successfully generated the MaLo '%s'", maloId)
 }
+
+// allowedNeLoCharacters contains those characters that are used to create new nelo ids
+var allowedNeLoCharacters = []rune("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+// NeLoIdGenerator is an IdGenerator that generates NeLo-IDs (Netzlokation-IDs)
+type NeLoIdGenerator struct{}
+
+// GenerateId of the NeLoIdGenerator returns a new random, 11 digit nelo-id that has a valid check sum
+func (m NeLoIdGenerator) GenerateId(c *gin.Context) {
+	var neloIdWithoutChecksum = "E" + generateRandomString(allowedNeLoCharacters, 9)
+	var neloChecksum = fmt.Sprintf("%d", bo.GetNeLoIdCheckSum(neloIdWithoutChecksum))
+	neloId := neloIdWithoutChecksum + neloChecksum
+	c.HTML(http.StatusOK, "static/templates/nelo.tmpl.html", gin.H{
+		"neLoIdWithoutChecksum": neloIdWithoutChecksum,
+		"checksum":              neloChecksum,
+	})
+	log.Printf("Successfully generated the NeLo '%s'", neloId)
+}

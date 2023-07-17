@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>NetzlokationsId-Generator</title>
+    <meta name="author" content="Hochfrequenz Unternehmensberatung GmbH">
+    <meta name="description" content="Zufällig generierte NeLo-IDs mit gültiger Prüfziffer">
+    <meta name="keywords" content="NeLo, NeLo-ID, Netzlokation, Test, Test-NeLo, Netzlokationsid">
+    <meta http-equiv="cache-control" content="no-cache"/>
+    <!-- prevent safari from formatting numbers with good intentions: https://stackoverflow.com/a/30426346/10009545 -->
+    <meta name="format-detection" content="telephone=no"/>
+    <link rel="stylesheet" href="/style">
+    <link rel="icon" type="image/x-icon" href="/favicon">
+    <script>
+        function copyToClipboard() {
+            var textToCopy = document.querySelector('#content h1').textContent.trim();
+
+            navigator.clipboard.writeText(textToCopy)
+                .then(function () {
+                    // alert('Text copied to clipboard: ' + textToCopy); // thanks, chatgpt, we don't need the alert ;)
+                })
+                .catch(function (err) {
+                    console.error('Error copying text to clipboard: ', err);
+                });
+        }
+     </script>
+</head>
+<body class="whiteBackground">
+<!--
+  ________________________________________
+< Hey, kennst du schon unsere Jobangebote? >
+  ----------------------------------------
+         \   ^__^
+          \  (oo)\_______
+             (__)\       )\/\
+                 ||----w |
+                 ||     ||
+https://www.hochfrequenz.de/karriere/stellenangebote/full-stack-entwickler/
+-->
+<div id="content">
+    <h1 class="{{ .issuer }}" title="Eine zufällige NeLo-ID mit gültiger Prüfziffer"><div>{{
+        .neLoIdWithoutChecksum }}<span class="checksum" title="Prüfziffer {{ .checksum }}">{{ .checksum }}</span></div>
+    </h1>
+    <button onclick="copyToClipboard()">&#128203; Copy</button>
+</div>
+<br style="clear:both" />
+<div id="footer">powered by <a href="https://hochfrequenz.de/">
+    hochfrequenz
+</a></div>
+</body>
+</html>

@@ -2,6 +2,7 @@ package main
 
 import (
 	"embed"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"html/template"
 	"io/fs"
@@ -37,21 +38,28 @@ func NewRouter() *gin.Engine {
 
 // getIdGenerator checks the environment variables and decides which IdGenerator to use.
 // this is useful if you want to use the same code base and deploy it to different environments (with different env variables) for different ID types
-func getIdGenerator() IdGenerator {
+func getIdGenerator() (IdGenerator, error) {
 	// set this value in local.settings.json or in the azure portal function settings
 	if idTypeToGenerate, ok := os.LookupEnv("ID_TYPE_TO_GENERATE"); ok {
 		idTypeToGenerate = strings.ToUpper(idTypeToGenerate)
 		if idTypeToGenerate == "MALO" {
-			return MaLoIdGenerator{}
+			return MaLoIdGenerator{}, nil
 		}
-		panic("Unsupported value of environment variable 'ID_TYPE_TO_GENERATE': '" + idTypeToGenerate + "'. Supported values are 'MALO'.")
+		if idTypeToGenerate == "NELO" {
+			return NeLoIdGenerator{}, nil
+		}
+		return nil, fmt.Errorf("unsupported value of environment variable 'ID_TYPE_TO_GENERATE': '%s'. Supported values are 'MALO' and 'NELO'.", idTypeToGenerate)
 	}
-	panic("The environment variable 'ID_TYPE_TO_GENERATE' is not set.")
+	return nil, fmt.Errorf("no value set for environment variable 'ID_TYPE_TO_GENERATE'. Supported values are 'MALO' and 'NELO'.")
 }
 
 func generateRandomId(c *gin.Context) {
-	maloIdGenerator := getIdGenerator()
-	maloIdGenerator.GenerateId(c)
+	generator, err := getIdGenerator()
+	if err != nil {
+		c.JSON(501, gin.H{"error": err.Error()})
+		return
+	}
+	generator.GenerateId(c)
 }
 
 func getPort() string {

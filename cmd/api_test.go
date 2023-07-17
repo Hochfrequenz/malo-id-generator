@@ -10,6 +10,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"regexp"
+	"strings"
 	"testing"
 )
 
@@ -39,6 +40,16 @@ func performRequest(r http.Handler, method, path string, body io.Reader) *httpte
 	return w
 }
 
+func (s *Suite) Test_Endpoint_Fails_Without_An_Environment_Variable() {
+	err := os.Setenv("ID_TYPE_TO_GENERATE", "foobar") // set an unsupported value
+	then.AssertThat(s.T(), err, is.Nil())
+	router := main.NewRouter()
+	response := performGetRequest(router, "/")
+	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusNotImplemented))
+	responseBody := response.Body.String()
+	then.AssertThat(s.T(), strings.Contains(responseBody, "ID_TYPE_TO_GENERATE"), is.True())
+}
+
 func (s *Suite) Test_MaLo_Endpoint_Returns_Something_Like_A_MaLo() {
 	err := os.Setenv("ID_TYPE_TO_GENERATE", "malo")
 	then.AssertThat(s.T(), err, is.Nil())
@@ -48,6 +59,17 @@ func (s *Suite) Test_MaLo_Endpoint_Returns_Something_Like_A_MaLo() {
 	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
 	responseBody := response.Body.String()
 	then.AssertThat(s.T(), maloPattern.MatchString(responseBody), is.True())
+}
+
+func (s *Suite) Test_NeLo_Endpoint_Returns_Something_Like_A_NeLo() {
+	err := os.Setenv("ID_TYPE_TO_GENERATE", "nelo")
+	then.AssertThat(s.T(), err, is.Nil())
+	neloPattern := regexp.MustCompile(`E[A-Z\d]{9}<span [^>]+>\d</span>`)
+	router := main.NewRouter()
+	response := performGetRequest(router, "/")
+	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
+	responseBody := response.Body.String()
+	then.AssertThat(s.T(), neloPattern.MatchString(responseBody), is.True())
 }
 
 func (s *Suite) Test_Stylesheet_Is_Returned() {
