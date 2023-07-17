@@ -44,6 +44,9 @@ func getIdGenerator() IdGenerator {
 		if idTypeToGenerate == "MALO" {
 			return MaLoIdGenerator{}
 		}
+		if idTypeToGenerate == "NELO" {
+			return NeLoIdGenerator{}
+		}
 		panic("Unsupported value of environment variable 'ID_TYPE_TO_GENERATE': '" + idTypeToGenerate + "'. Supported values are 'MALO'.")
 	}
 	panic("The environment variable 'ID_TYPE_TO_GENERATE' is not set.")
