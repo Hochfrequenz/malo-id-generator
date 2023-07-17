@@ -36,7 +36,7 @@ First install the [Azure Function Core Tools](https://docs.microsoft.com/en-us/a
 Then, in the root directory of this repo, execute:
 
 ```bash
-go build -o api ./cmd/api.go
+go build -o api ./cmd/
 ```
 
 followed by
@@ -66,7 +66,7 @@ First **build** locally for linux
 
 ```bash
 set GOOS=linux
-go build -o api cmd/api.go
+go build -o api cmd/
 ```
 
 The GOOS env var can be set in the build configuration in Goland.
