@@ -14,7 +14,6 @@
     <script>
         function copyToClipboard() {
             var textToCopy = document.querySelector('#content h1').textContent.trim();
-
             navigator.clipboard.writeText(textToCopy)
                 .then(function () {
                     // alert('Text copied to clipboard: ' + textToCopy); // thanks, chatgpt, we don't need the alert ;)
@@ -37,5 +36,6 @@
 <div id="footer">powered by <a href="https://hochfrequenz.de/">
     hochfrequenz
 </a></div>
+<div id="imprint"><a href="https://www.hochfrequenz.de/impressum/">Impressum</a></div>
 </body>
 </html>

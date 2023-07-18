@@ -39,3 +39,14 @@ div#content {
     font-style: normal;
     color: black;
 }
+
+div#imprint {
+    position: fixed;
+    bottom: 1em;
+    right: 1em;
+    font-size: small;
+}
+div#imprint a{
+    color: #A9A9A9;
+    text-decoration: none;
+}
