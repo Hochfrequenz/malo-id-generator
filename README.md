@@ -5,7 +5,7 @@
 ![Linter status badge](https://github.com/hochfrequenz/go-template-repository/workflows/golangci-lint/badge.svg)
 
 This repository contains
-an [Azure Function with a Go Handler](https://docs.microsoft.com/en-us/azure/azure-functions/create-first-function-vs-code-other?tabs=go%2Cwindows).
+an [Azure Function with a Go Handler](https://docs.microsoft.com/en-us/azure/azure-functions/create-first-function-vs-code-other?tabs=go%2Cwindows) which is deployed to [netz.lokations.id](https://netz.lokations.id) and [markt.lokations.id](https://markt.lokations.id).
 
 Its purpose is to
 
@@ -55,8 +55,8 @@ This is because to use the function app directly behind top level domain registe
 
 | Purpose           | `ID_TYPE_TO_GENERATE` env var value  | Deployed to (URL)                                                                      | Settings                                                                                                                                                                                                                  |
 |-------------------|--------------------------------------|----------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Generate MaLo-IDs | `"MALO"`                             | [`malo-id-generator.azurewebsites.net/`](https://malo-id-generator.azurewebsites.net/) | [malo-id-generator](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourceGroups/malo-id-generator/providers/Microsoft.Web/sites/malo-id-generator/appServices) |                                                                                                                                                                                                  |.
-| Generate NeLo-IDs | `"NELO"`                             | [`nelo-id-generator.azurewebsites.net/`](https://nelo-id-generator.azurewebsites.net/) | [nelo-id-generator](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourcegroups/malo-id-generator/providers/Microsoft.Web/sites/nelo-id-generator/appServices) |
+| Generate MaLo-IDs | `"MALO"`                             | [`malo-id-generator.azurewebsites.net/`](https://malo-id-generator.azurewebsites.net/) and [markt.lokations.id](https://markt.lokations.id) | [malo-id-generator](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourceGroups/malo-id-generator/providers/Microsoft.Web/sites/malo-id-generator/appServices) |                                                                                                                                                                                                  |.
+| Generate NeLo-IDs | `"NELO"`                             | [`nelo-id-generator.azurewebsites.net/`](https://nelo-id-generator.azurewebsites.net/) and [netz.lokations.id](https://netz.lokations.id) | [nelo-id-generator](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourcegroups/malo-id-generator/providers/Microsoft.Web/sites/nelo-id-generator/appServices) |
 
 The function apps are all
 
