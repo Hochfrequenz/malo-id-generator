@@ -16,6 +16,23 @@ h1 {
     color: #e94c74;
 }
 
+.landesziffern {
+    color: black;
+    background-color: rgb(187 146 142);
+}
+.netzbetreibernummer {
+    color: black;
+    background-color: rgb(94 122 151);
+}
+.postleitzahl {
+    color: black;
+    background-color: rgb(183 157 117);
+}
+.laufendeNummer {
+    color: black;
+    background-color: rgb(145 169 167);
+}
+
 div#content {
     text-align: center;
     color: #7aab8a;
