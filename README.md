@@ -55,14 +55,15 @@ func start
 ## CI/CD
 
 This function app is managed in two separate Azure Function Apps.
-Both Function apps are assigned to the [malo-id-generator resource group on Azure](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourcegroups/malo-id-generator/providers/Microsoft.Web/sites/malo-id-generator/appServices).
+Both Function apps are assigned to the [malo-id-generator resource group on Azure](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourceGroups/malo-id-generator/overview).
 There is one function app instance per supported ID type.
 This is because to use the function app directly behind top level domain registered in Azure, its respective entry point must be a top level domain itself without any further, relative path (e.g. `foobarsomerandomstring.azurewebsites.net` and _not_ `foobarsomerandomstring.azurewebsites.net/malo`).
 
-| Purpose           | `ID_TYPE_TO_GENERATE` env var value  | Deployed to (URL)                                                                      | Settings                                                                                                                                                                                                                  |
-|-------------------|--------------------------------------|----------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Generate MaLo-IDs | `"MALO"`                             | [`malo-id-generator.azurewebsites.net/`](https://malo-id-generator.azurewebsites.net/) and [markt.lokations.id](https://markt.lokations.id) | [malo-id-generator](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourceGroups/malo-id-generator/providers/Microsoft.Web/sites/malo-id-generator/appServices) |                                                                                                                                                                                                  |.
-| Generate NeLo-IDs | `"NELO"`                             | [`nelo-id-generator.azurewebsites.net/`](https://nelo-id-generator.azurewebsites.net/) and [netz.lokations.id](https://netz.lokations.id) | [nelo-id-generator](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourcegroups/malo-id-generator/providers/Microsoft.Web/sites/nelo-id-generator/appServices) |
+| Purpose           | `ID_TYPE_TO_GENERATE` env var value | Deployed to (URL)                                                                                                                           | Settings                                                                                                                                                                                                                  |
+|-------------------|-------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Generate MaLo-IDs | `"MALO"`                            | [`malo-id-generator.azurewebsites.net/`](https://malo-id-generator.azurewebsites.net/) and [markt.lokations.id](https://markt.lokations.id) | [malo-id-generator](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourceGroups/malo-id-generator/providers/Microsoft.Web/sites/malo-id-generator/appServices) |                                                                                                                                                                                                  |.
+| Generate NeLo-IDs | `"NELO"`                            | [`nelo-id-generator.azurewebsites.net/`](https://nelo-id-generator.azurewebsites.net/) and [netz.lokations.id](https://netz.lokations.id)   | [nelo-id-generator](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourcegroups/malo-id-generator/providers/Microsoft.Web/sites/nelo-id-generator/appServices) |
+| Generate MeLo-IDs | `"MELO"`                            | [`melo-id-generator.azurewebsites.net/`](https://melo-id-generator.azurewebsites.net/) and [mess.lokations.id](https://mess.lokations.id)   | [melo-id-generator](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourceGroups/malo-id-generator/providers/Microsoft.Web/sites/melo-id-generator/appServices) |
 
 The function apps are all
 
@@ -70,7 +71,7 @@ The function apps are all
 - linux based (instead of windows)
 
 There is an environment variable named `ID_TYPE_TO_GENERATE` which you can modify in the [function app settings](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourcegroups/malo-id-generator/providers/Microsoft.Web/sites/malo-id-generator/configuration).
-Its value can only be `"MALO"` or `"NELO"` at the moment.
+Its value can only be `"MALO"` or `"NELO"` or `"MELO"` at the moment.
 If its value is not set or set to an invalid value, the function app will return a HTTP 501 error.
 For your local tests you can modify the value in the `local.settings.json` file.
 
