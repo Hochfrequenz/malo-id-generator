@@ -57,7 +57,12 @@ func (m MaLoIdGenerator) GenerateId(c *gin.Context) {
 	for {
 		maloIdWithoutChecksum = generateRandomString(allowedMaLoCharacters, 10)
 		if maloIdWithoutChecksum[0] != '0' { // loop until he first character is not 0
-			maloCheckSum = fmt.Sprintf("%d", bo.GetMaLoIdCheckSum(maloIdWithoutChecksum))
+			maloCheckSumInt, err := bo.CalculateMaLoIdCheckSum(maloIdWithoutChecksum)
+			if err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+				return
+			}
+			maloCheckSum = fmt.Sprintf("%d", maloCheckSumInt)
 			break
 		}
 	}
