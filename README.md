@@ -4,7 +4,11 @@
 ![Coverage status badge](https://github.com/hochfrequenz/go-template-repository/workflows/coverage/badge.svg)
 ![Linter status badge](https://github.com/hochfrequenz/go-template-repository/workflows/golangci-lint/badge.svg)
 
-This repository contains
+🇩🇪 Dieses Repository enthält den Source Code hinter den Websites:
+* [markt.lokations.id](https://markt.lokations.id), einem Generator für Marktlokations-IDs ("MaLo-ID") zu Testzwecken
+* [netz.lokations.id](https://netz.lokations.id), einem Generator für Netzlokations-IDs ("NeLo-ID") zu Testzwecken
+
+🇬🇧 This repository contains
 an [Azure Function with a Go Handler](https://docs.microsoft.com/en-us/azure/azure-functions/create-first-function-vs-code-other?tabs=go%2Cwindows) which is deployed to [netz.lokations.id](https://netz.lokations.id) and [markt.lokations.id](https://markt.lokations.id).
 
 Its purpose is to
