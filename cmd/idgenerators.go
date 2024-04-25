@@ -106,6 +106,7 @@ func (m NeLoIdGenerator) GenerateId(c *gin.Context) {
 type MeLoIdGenerator struct{}
 
 var numbers = []rune("0123456789")
+var allowedMeLoCharacters = []rune("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 // GenerateId of the MeLoIdGenerator returns a new random, 33 character melo-id; MeLo-IDs have no checksum
 func (m MeLoIdGenerator) GenerateId(c *gin.Context) {
@@ -119,7 +120,7 @@ func (m MeLoIdGenerator) GenerateId(c *gin.Context) {
 	const landesziffern = "DE"
 	var netzbetreibernummer = generateRandomString(numbers, 6) // im Allgemeinen keine gültige ID
 	var postleitzahl = generateRandomString(numbers, 5)        // im Allgemeinen nicht gültige PLZ
-	var laufendeNummer = generateRandomString(numbers, 20)
+	var laufendeNummer = generateRandomString(allowedMeLoCharacters, 20)
 	// 2+6+5+20 = 33
 	var meloId = landesziffern + netzbetreibernummer + postleitzahl + laufendeNummer
 	c.HTML(http.StatusOK, "static/templates/melo.tmpl.html", gin.H{
@@ -127,7 +128,7 @@ func (m MeLoIdGenerator) GenerateId(c *gin.Context) {
 		"landesziffern":       landesziffern,
 		"netzbetreibernummer": netzbetreibernummer,
 		"postleitzahl":        postleitzahl,
-		laufendeNummer:        laufendeNummer,
+		"laufendeNummer":      laufendeNummer,
 		"recruitingMessage":   template.HTML(recruitingMessage),
 	})
 	log.Printf("Successfully generated the MeLo '%s'", meloId)

@@ -7,6 +7,7 @@
 🇩🇪 Dieses Repository enthält den Source Code hinter den Websites:
 * [markt.lokations.id](https://markt.lokations.id), einem Generator für Marktlokations-IDs ("MaLo-ID") zu Testzwecken
 * [netz.lokations.id](https://netz.lokations.id), einem Generator für Netzlokations-IDs ("NeLo-ID") zu Testzwecken
+* [mess.lokations.id](https://mess.lokations.id), einem Generator für Messlokations-IDs ("MeLo-ID") zu Testzwecken
 
 🇬🇧 This repository contains
 an [Azure Function with a Go Handler](https://docs.microsoft.com/en-us/azure/azure-functions/create-first-function-vs-code-other?tabs=go%2Cwindows) which is deployed to [netz.lokations.id](https://netz.lokations.id) and [markt.lokations.id](https://markt.lokations.id).
@@ -16,6 +17,7 @@ Its purpose is to
 - generate:
   1. Marktlokations-IDs (MaLo-IDs)
   2. Netzlokations-IDs (NeLo-IDs)
+  3. Messlokations-IDs (NeLo-IDs)
 - with a valid checksum
 - on the fly
 
