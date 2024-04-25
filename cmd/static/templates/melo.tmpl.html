@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>MesslokationsId-Generator (zufällige MeLo-IDs)</title>
+    <meta name="author" content="Hochfrequenz Unternehmensberatung GmbH">
+    <meta name="description" content="Zufällig generierte MeLo-ID">
+    <meta name="keywords" content="MeLo, MeLo-ID, Messlokation, Test, Test-MeLo, Messlokationsid">
+    <meta http-equiv="cache-control" content="no-cache"/>
+    <!-- prevent safari from formatting numbers with good intentions: https://stackoverflow.com/a/30426346/10009545 -->
+    <meta name="format-detection" content="telephone=no"/>
+    <link rel="stylesheet" href="/style">
+    <link rel="icon" type="image/x-icon" href="/favicon">
+    <script>
+        function copyToClipboard() {
+            var textToCopy = document.querySelector('#content h1').textContent.trim();
+            navigator.clipboard.writeText(textToCopy)
+                .then(function () {
+                    // alert('Text copied to clipboard: ' + textToCopy); // thanks, chatgpt, we don't need the alert ;)
+                })
+                .catch(function (err) {
+                    console.error('Error copying text to clipboard: ', err);
+                });
+        }
+     </script>
+</head>
+<body class="whiteBackground">
+{{ .recruitingMessage }}<!-- We pass the HTML comment / recruiting ad as a parameter because the HTML comment was stripped from the template -->
+<div id="content">
+    <h1 class="{{ .issuer }}" title="Eine zufällige MeLo-ID"><div>
+        <span class="landesziffern" title="Landescode (ISO 3166-1)">{{ .landesziffern }}</span>
+        <span class="netzbetreibernummer" title="Netzbetreibernummer (im Allgemeinen nicht gültig)">{{ .netzbetreibernummer }}</span>
+        <span class="postleitzahl" title="Postleitzahl (im Allgemeinen nicht gültig)">{{ .postleitzahl }}</span>
+        <span class="laufendeNummer" title="Laufende Nummer (könnte auch Buchstaben enthalten)">{{ .laufendeNummer }}</span>
+    </div>
+    </h1>
+    <button onclick="copyToClipboard()">&#128203; Copy</button>
+</div>
+<br style="clear:both" />
+<div id="footer">powered by <a href="https://hochfrequenz.de/">hochfrequenz</a> | <a href="https://www.hochfrequenz.de/impressum/">Impressum</a> | <a href="https://github.com/Hochfrequenz/malo-id-generator">GitHub</a></div>
+</body>
+</html>

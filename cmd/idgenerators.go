@@ -101,3 +101,34 @@ func (m NeLoIdGenerator) GenerateId(c *gin.Context) {
 	})
 	log.Printf("Successfully generated the NeLo '%s'", neloId)
 }
+
+// MeLoIdGenerator is an IdGenerator that generates MeLo-IDs (Messlokation-IDs)
+type MeLoIdGenerator struct{}
+
+var numbers = []rune("0123456789")
+
+// GenerateId of the MeLoIdGenerator returns a new random, 33 character melo-id; MeLo-IDs have no checksum
+func (m MeLoIdGenerator) GenerateId(c *gin.Context) {
+	// See VDE-AR-N 4400 https://www.vde-verlag.de/normen/0400343/vde-ar-n-4400-anwendungsregel-2019-07.html
+	/*              DE|001069|66646|10000000000000012345
+	                 |     |      |        |
+	  Landesziffern -|     |      |        |- Laufende Nummer
+	                       |      |
+	Netzbetreibernummer ---|      |-- PLZ
+	*/
+	const landesziffern = "DE"
+	var netzbetreibernummer = generateRandomString(numbers, 6) // im Allgemeinen keine gültige ID
+	var postleitzahl = generateRandomString(numbers, 5)        // im Allgemeinen nicht gültige PLZ
+	var laufendeNummer = generateRandomString(numbers, 20)
+	// 2+6+5+20 = 33
+	var meloId = landesziffern + netzbetreibernummer + postleitzahl + laufendeNummer
+	c.HTML(http.StatusOK, "static/templates/melo.tmpl.html", gin.H{
+		"meloId":              meloId,
+		"landesziffern":       landesziffern,
+		"netzbetreibernummer": netzbetreibernummer,
+		"postleitzahl":        postleitzahl,
+		laufendeNummer:        laufendeNummer,
+		"recruitingMessage":   template.HTML(recruitingMessage),
+	})
+	log.Printf("Successfully generated the MeLo '%s'", meloId)
+}

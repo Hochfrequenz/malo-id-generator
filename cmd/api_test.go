@@ -72,6 +72,18 @@ func (s *Suite) Test_NeLo_Endpoint_Returns_Something_Like_A_NeLo() {
 	then.AssertThat(s.T(), neloPattern.MatchString(responseBody), is.True())
 }
 
+func (s *Suite) Test_MeLo_Endpoint_Returns_Something_Like_A_MeLo() {
+	err := os.Setenv("ID_TYPE_TO_GENERATE", "melo")
+	then.AssertThat(s.T(), err, is.Nil())
+	router := main.NewRouter()
+	response := performGetRequest(router, "/")
+	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
+	responseBody := response.Body.String()
+	containsDe := strings.Contains(responseBody, `<span class="landesziffern" title="Landescode (ISO 3166-1)">DE</span>`)
+	// the test could be better, but it's just a quick check
+	then.AssertThat(s.T(), containsDe, is.True())
+}
+
 func (s *Suite) Test_Stylesheet_Is_Returned() {
 	router := main.NewRouter()
 	response := performGetRequest(router, "/style")
