@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/corbym/gocrest v1.1.1
 	github.com/gin-gonic/gin v1.10.0
-	github.com/hochfrequenz/go-bo4e v0.11.0
+	github.com/hochfrequenz/go-bo4e v0.12.0
 	github.com/stretchr/testify v1.9.0
 )
 
