@@ -84,6 +84,28 @@ func (s *Suite) Test_MeLo_Endpoint_Returns_Something_Like_A_MeLo() {
 	then.AssertThat(s.T(), containsDe, is.True())
 }
 
+func (s *Suite) Test_TRID_Endpoint_Returns_Something_Like_A_TRID() {
+	err := os.Setenv("ID_TYPE_TO_GENERATE", "trid")
+	then.AssertThat(s.T(), err, is.Nil())
+	tridPattern := regexp.MustCompile(`D[A-Z\d]{9}<span [^>]+>\d</span>`)
+	router := main.NewRouter()
+	response := performGetRequest(router, "/")
+	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
+	responseBody := response.Body.String()
+	then.AssertThat(s.T(), tridPattern.MatchString(responseBody), is.True())
+}
+
+func (s *Suite) Test_SRID_Endpoint_Returns_Something_Like_A_SRID() {
+	err := os.Setenv("ID_TYPE_TO_GENERATE", "srid")
+	then.AssertThat(s.T(), err, is.Nil())
+	sridPattern := regexp.MustCompile(`C[A-Z\d]{9}<span [^>]+>\d</span>`)
+	router := main.NewRouter()
+	response := performGetRequest(router, "/")
+	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
+	responseBody := response.Body.String()
+	then.AssertThat(s.T(), sridPattern.MatchString(responseBody), is.True())
+}
+
 func (s *Suite) Test_Stylesheet_Is_Returned() {
 	router := main.NewRouter()
 	response := performGetRequest(router, "/style")

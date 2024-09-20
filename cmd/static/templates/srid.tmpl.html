@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>Steuerbare Ressource Id-Generator (zufällige SR-IDs)</title>
+    <meta name="author" content="Hochfrequenz Unternehmensberatung GmbH">
+    <meta name="description" content="Zufällig generierte SR-IDs mit gültiger Prüfziffer">
+    <meta name="keywords" content="SR, SR-ID, Steuerbare Ressource, Test, Test-SR-ID, Steuerbare Ressourcen-ID (SR-ID)">
+    <meta http-equiv="cache-control" content="no-cache"/>
+    <!-- prevent safari from formatting numbers with good intentions: https://stackoverflow.com/a/30426346/10009545 -->
+    <meta name="format-detection" content="telephone=no"/>
+    <link rel="stylesheet" href="/style">
+    <link rel="icon" type="image/x-icon" href="/favicon">
+    <script>
+        function copyToClipboard() {
+            var textToCopy = document.querySelector('#content h1').textContent.trim();
+            navigator.clipboard.writeText(textToCopy)
+                .then(function () {
+                    // alert('Text copied to clipboard: ' + textToCopy); // thanks, chatgpt, we don't need the alert ;)
+                })
+                .catch(function (err) {
+                    console.error('Error copying text to clipboard: ', err);
+                });
+        }
+     </script>
+</head>
+<body class="whiteBackground">
+{{ .recruitingMessage }}<!-- We pass the HTML comment / recruiting ad as a parameter because the HTML comment was stripped from the template -->
+<div id="content">
+    <h1 class="{{ .issuer }}" title="Eine zufällige Steuerbare Ressourcen-ID mit gültiger Prüfziffer"><div>{{
+        .srIdWithoutChecksum }}<span class="checksum" title="Prüfziffer {{ .checksum }}">{{ .checksum }}</span></div>
+    </h1>
+    <button onclick="copyToClipboard()">&#128203; Copy</button>
+</div>
+<br style="clear:both" />
+<div id="footer">powered by <a href="https://hochfrequenz.de/">hochfrequenz</a> | <a href="https://www.hochfrequenz.de/impressum/">Impressum</a> | <a href="https://github.com/Hochfrequenz/malo-id-generator">GitHub</a></div>
+</body>
+</html>

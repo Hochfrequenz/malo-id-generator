@@ -138,3 +138,50 @@ func (m MeLoIdGenerator) GenerateId(c *gin.Context) {
 	})
 	log.Printf("Successfully generated the MeLo '%s'", meloId)
 }
+
+// Ressourcen-IDs
+
+// allowedRessourcenIdCharacters contains those characters that are used to create new "Technische Ressourcen-IDs" and "Steuerbare Ressourcen-IDs"
+var allowedRessourcenIdCharacters = []rune("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+// TRIdGenerator is an IdGenerator that generates TR-IDs (Technische Ressourcen-IDs)
+type TRIdGenerator struct{}
+
+// GenerateId of the TRIdGenerator returns a new random, 11 digit tr-id that has a valid check sum
+func (m TRIdGenerator) GenerateId(c *gin.Context) {
+	var trIdWithoutChecksum = "D" + generateRandomString(allowedRessourcenIdCharacters, 9)
+	_checksum, err := bo.GetTRIdCheckSum(trIdWithoutChecksum)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	var trIdChecksum = fmt.Sprintf("%d", _checksum)
+	trId := trIdWithoutChecksum + trIdChecksum
+	c.HTML(http.StatusOK, "static/templates/trid.tmpl.html", gin.H{
+		"trIdWithoutChecksum": trIdWithoutChecksum,
+		"checksum":            trIdChecksum,
+		"recruitingMessage":   template.HTML(recruitingMessage),
+	})
+	log.Printf("Successfully generated the TRID '%s'", trId)
+}
+
+// SRIdGenerator is an IdGenerator that generates SR-IDs (Steuerbare Ressourcen-IDs)
+type SRIdGenerator struct{}
+
+// GenerateId of the SRIdGenerator returns a new random, 11 digit sr-id that has a valid check sum
+func (m SRIdGenerator) GenerateId(c *gin.Context) {
+	var srIdWithoutChecksum = "C" + generateRandomString(allowedRessourcenIdCharacters, 9)
+	_checksum, err := bo.GetSRIdCheckSum(srIdWithoutChecksum)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	var srIdChecksum = fmt.Sprintf("%d", _checksum)
+	srId := srIdWithoutChecksum + srIdChecksum
+	c.HTML(http.StatusOK, "static/templates/srid.tmpl.html", gin.H{
+		"srIdWithoutChecksum": srIdWithoutChecksum,
+		"checksum":            srIdChecksum,
+		"recruitingMessage":   template.HTML(recruitingMessage),
+	})
+	log.Printf("Successfully generated the SRID '%s'", srId)
+}

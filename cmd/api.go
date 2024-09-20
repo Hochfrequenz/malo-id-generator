@@ -51,9 +51,15 @@ func getIdGenerator() (IdGenerator, error) {
 		if idTypeToGenerate == "MELO" {
 			return MeLoIdGenerator{}, nil
 		}
-		return nil, fmt.Errorf("unsupported value of environment variable 'ID_TYPE_TO_GENERATE': '%s'. Supported values are 'MALO' and 'NELO'.", idTypeToGenerate)
+		if idTypeToGenerate == "TRID" {
+			return TRIdGenerator{}, nil
+		}
+		if idTypeToGenerate == "SRID" {
+			return SRIdGenerator{}, nil
+		}
+		return nil, fmt.Errorf("unsupported value of environment variable 'ID_TYPE_TO_GENERATE': '%s'. Supported values are 'MALO', 'NELO', 'MELO', .", idTypeToGenerate)
 	}
-	return nil, fmt.Errorf("no value set for environment variable 'ID_TYPE_TO_GENERATE'. Supported values are 'MALO', 'NELO' and 'MELO'.")
+	return nil, fmt.Errorf("no value set for environment variable 'ID_TYPE_TO_GENERATE'. Supported values are 'MALO', 'NELO', 'MELO', 'TRID' and 'SRID'.")
 }
 
 func generateRandomId(c *gin.Context) {
