@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>MarktlokationsId-Generator (zufällige MaLo-IDs)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Hochfrequenz Unternehmensberatung GmbH">
     <meta name="description" content="Zufällig generierte MaLo-IDs mit gültiger Prüfziffer">
     <meta name="keywords" content="MaLo, MaLo-ID, Marktlokation, Test, Test-MaLo, Marktlokationsid">
@@ -11,32 +12,53 @@
     <meta name="format-detection" content="telephone=no"/>
     <link rel="stylesheet" href="/style">
     <link rel="icon" type="image/x-icon" href="/favicon">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
     <script>
         function copyToClipboard() {
             var textToCopy = document.querySelector('#content h1').textContent.trim();
             navigator.clipboard.writeText(textToCopy)
                 .then(function () {
-                    // alert('Text copied to clipboard: ' + textToCopy); // thanks, chatgpt, we don't need the alert ;)
+                    document.getElementById('copyButton').classList.add('copied');
+                    setTimeout(function() {
+                        document.getElementById('copyButton').classList.remove('copied');
+                    }, 2000);
                 })
                 .catch(function (err) {
                     console.error('Error copying text to clipboard: ', err);
                 });
         }
-     </script>
+    </script>
 </head>
-<body class="whiteBackground">
-{{ .recruitingMessage }}<!-- We pass the HTML comment / recruiting ad as a parameter because the HTML comment was stripped from the template -->
-<div id="content">
-    <h1 class="{{ .issuer }}" title="Eine zufällige MaLo-ID mit gültiger Prüfziffer (Vergabestelle {{ .issuer }})"><div>{{
-        .maLoIdWithoutChecksum }}<span class="checksum" title="Prüfziffer {{ .checksum }}">{{ .checksum }}</span></div>
-    </h1>
-    <button onclick="copyToClipboard()">&#128203; Copy</button>
-</div>
-<br style="clear:both" />
-<div id="footer">powered by <a href="https://hochfrequenz.de/">hochfrequenz</a> | <a href="https://www.hochfrequenz.de/impressum/">Impressum</a> | <a href="https://github.com/Hochfrequenz/malo-id-generator">GitHub</a>
-</div>
-<div id="others">
-    <a href="https://markt.lokations.id/">MaLo</a> | <a href="https://mess.lokations.id/">MeLo</a> | <a href="https://netz.lokations.id/">NeLo</a> | <a href="https://steuerbare.ressource.id/">SR</a> | <a href="https://technische.ressource.id/">TR</a>
-</div>
+<body>
+    {{ .recruitingMessage }}<!-- We pass the HTML comment / recruiting ad as a parameter because the HTML comment was stripped from the template -->
+    <header>
+        <h2>MarktlokationsId-Generator</h2>
+    </header>
+    
+    <main>
+        <div id="content">
+            <h1 class="{{ .issuer }}" title="Eine zufällige MaLo-ID mit gültiger Prüfziffer (Vergabestelle {{ .issuer }})">
+                <span class="malo-id">{{ .maLoIdWithoutChecksum }}</span><span class="checksum" title="Prüfziffer {{ .checksum }}">{{ .checksum }}</span>
+            </h1>
+            <button id="copyButton" onclick="copyToClipboard()">
+                <i class="fas fa-copy"></i> Copy
+            </button>
+        </div>
+    </main>
+
+    <footer>
+        <nav id="others">
+            <a href="https://markt.lokations.id/">MaLo</a>
+            <a href="https://mess.lokations.id/">MeLo</a>
+            <a href="https://netz.lokations.id/">NeLo</a>
+            <a href="https://steuerbare.ressource.id/">SR</a>
+            <a href="https://technische.ressource.id/">TR</a>
+        </nav>
+        <div id="footer-content">
+            <p>powered by <a href="https://hochfrequenz.de/">hochfrequenz</a></p>
+            <p><a href="https://www.hochfrequenz.de/impressum/">Impressum</a> | <a href="https://github.com/Hochfrequenz/malo-id-generator">GitHub</a></p>
+        </div>
+    </footer>
 </body>
 </html>
