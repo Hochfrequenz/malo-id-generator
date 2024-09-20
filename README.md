@@ -91,7 +91,7 @@ First **build** locally for linux (note that the build is the same for all ID ty
 
 ```bash
 set GOOS=linux
-go build -o api cmd/
+go build -o api ./cmd
 ```
 
 The GOOS env var can be set in the build configuration in Goland.
