@@ -150,7 +150,12 @@ type TRIdGenerator struct{}
 // GenerateId of the TRIdGenerator returns a new random, 11 digit tr-id that has a valid check sum
 func (m TRIdGenerator) GenerateId(c *gin.Context) {
 	var trIdWithoutChecksum = "D" + generateRandomString(allowedRessourcenIdCharacters, 9)
-	var trIdChecksum = fmt.Sprintf("%d", bo.GetTRIdCheckSum(trIdWithoutChecksum))
+	_checksum, err := bo.GetTRIdCheckSum(trIdWithoutChecksum)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	var trIdChecksum = fmt.Sprintf("%d", _checksum)
 	trId := trIdWithoutChecksum + trIdChecksum
 	c.HTML(http.StatusOK, "static/templates/trid.tmpl.html", gin.H{
 		"trIdWithoutChecksum": trIdWithoutChecksum,
@@ -166,7 +171,12 @@ type SRIdGenerator struct{}
 // GenerateId of the SRIdGenerator returns a new random, 11 digit sr-id that has a valid check sum
 func (m SRIdGenerator) GenerateId(c *gin.Context) {
 	var srIdWithoutChecksum = "C" + generateRandomString(allowedRessourcenIdCharacters, 9)
-	var srIdChecksum = fmt.Sprintf("%d", bo.GetSRIdCheckSum(srIdWithoutChecksum))
+	_checksum, err := bo.GetSRIdCheckSum(srIdWithoutChecksum)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	var srIdChecksum = fmt.Sprintf("%d", _checksum)
 	srId := srIdWithoutChecksum + srIdChecksum
 	c.HTML(http.StatusOK, "static/templates/srid.tmpl.html", gin.H{
 		"srIdWithoutChecksum": srIdWithoutChecksum,
