@@ -106,6 +106,6 @@ or
 ```bash
 func azure functionapp publish nelo-id-generator
 ```
-respectively.
+respectively (and similar for `melo-id-generator`, `sr-id-generator` and `tr-id-generator`).
 
 You have to be logged in (`az login`) using the [Azure CLI Tools](https://docs.microsoft.com/de-de/cli/azure/install-azure-cli-windows?tabs=azure-cli).
