@@ -53,7 +53,7 @@ func (s *Suite) Test_Endpoint_Fails_Without_An_Environment_Variable() {
 func (s *Suite) Test_MaLo_Endpoint_Returns_Something_Like_A_MaLo() {
 	err := os.Setenv("ID_TYPE_TO_GENERATE", "malo")
 	then.AssertThat(s.T(), err, is.Nil())
-	maloPattern := regexp.MustCompile(`\d{10}<span [^>]+>\d</span>`)
+	maloPattern := regexp.MustCompile(`<span class="malo-id">\d{10}</span><span class="checksum" [^>]+>\d</span>`)
 	router := main.NewRouter()
 	response := performGetRequest(router, "/")
 	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
@@ -64,7 +64,7 @@ func (s *Suite) Test_MaLo_Endpoint_Returns_Something_Like_A_MaLo() {
 func (s *Suite) Test_NeLo_Endpoint_Returns_Something_Like_A_NeLo() {
 	err := os.Setenv("ID_TYPE_TO_GENERATE", "nelo")
 	then.AssertThat(s.T(), err, is.Nil())
-	neloPattern := regexp.MustCompile(`E[A-Z\d]{9}<span [^>]+>\d</span>`)
+	neloPattern := regexp.MustCompile(`<span class="nelo-id">E[A-Z\d]{9}</span><span class="checksum" [^>]+>\d</span>`)
 	router := main.NewRouter()
 	response := performGetRequest(router, "/")
 	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
@@ -87,7 +87,7 @@ func (s *Suite) Test_MeLo_Endpoint_Returns_Something_Like_A_MeLo() {
 func (s *Suite) Test_TRID_Endpoint_Returns_Something_Like_A_TRID() {
 	err := os.Setenv("ID_TYPE_TO_GENERATE", "trid")
 	then.AssertThat(s.T(), err, is.Nil())
-	tridPattern := regexp.MustCompile(`D[A-Z\d]{9}<span [^>]+>\d</span>`)
+	tridPattern := regexp.MustCompile(`<span class="tr-id">D[A-Z\d]{9}</span><span class="checksum" [^>]+>\d</span>`)
 	router := main.NewRouter()
 	response := performGetRequest(router, "/")
 	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
@@ -98,7 +98,7 @@ func (s *Suite) Test_TRID_Endpoint_Returns_Something_Like_A_TRID() {
 func (s *Suite) Test_SRID_Endpoint_Returns_Something_Like_A_SRID() {
 	err := os.Setenv("ID_TYPE_TO_GENERATE", "srid")
 	then.AssertThat(s.T(), err, is.Nil())
-	sridPattern := regexp.MustCompile(`C[A-Z\d]{9}<span [^>]+>\d</span>`)
+	sridPattern := regexp.MustCompile(`<span class="sr-id">C[A-Z\d]{9}</span><span class="checksum" [^>]+>\d</span>`)
 	router := main.NewRouter()
 	response := performGetRequest(router, "/")
 	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
