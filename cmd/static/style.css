@@ -88,6 +88,41 @@ button.copied:after {
     content: " Copied!";
 }
 
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#copyButton, #regenerateButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+#copyButton {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#regenerateButton {
+    background-color: #008CBA;
+    color: white;
+}
+
+#copyButton:hover, #regenerateButton:hover {
+    opacity: 0.8;
+}
+
+#copyButton:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
 footer {
     background-color: var(--footer-bg-color);
     color: #ffffff;

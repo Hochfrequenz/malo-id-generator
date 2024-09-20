@@ -32,6 +32,9 @@
                     console.error('Fehler beim Kopieren in die Zwischenablage: ', err);
                 });
         }
+        function regenerateId() {
+            location.reload();
+        }
     </script>
 </head>
 <body>
@@ -45,9 +48,14 @@
             <h1 class="{{ .issuer }}" title="Eine zufällige MeLo-ID">
                 <span class="landesziffern" title="Landescode (ISO 3166-1)">{{ .landesziffern }}</span><span class="netzbetreibernummer" title="Netzbetreibernummer (im Allgemeinen nicht gültig)">{{ .netzbetreibernummer }}</span><span class="postleitzahl" title="Postleitzahl (im Allgemeinen nicht gültig)">{{ .postleitzahl }}</span><span class="laufendeNummer" title="Laufende Nummer (A-Z und 0-9)">{{ .laufendeNummer }}</span>
             </h1>
-            <button id="copyButton" onclick="copyToClipboard()">
-                <i class="fas fa-copy"></i> Kopieren
-            </button>
+            <div class="button-container">
+                <button id="copyButton" onclick="copyToClipboard()">
+                    <i class="fas fa-copy"></i> Kopieren
+                </button>
+                <button id="regenerateButton" onclick="regenerateId()">
+                    <i class="fas fa-redo"></i> Neu generieren
+                </button>
+            </div>
         </div>
     </main>
 
