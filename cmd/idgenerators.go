@@ -141,7 +141,7 @@ func (m MeLoIdGenerator) GenerateId(c *gin.Context) {
 
 // Ressourcen-IDs
 
-// allowedRessourcenId contains those characters that are used to create new "Technische Ressourcen-IDs" and "Steuerbare Ressourcen-IDs"
+// allowedRessourcenIdCharacters contains those characters that are used to create new "Technische Ressourcen-IDs" and "Steuerbare Ressourcen-IDs"
 var allowedRessourcenIdCharacters = []rune("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 // TRIdGenerator is an IdGenerator that generates TR-IDs (Technische Ressourcen-IDs)
