@@ -32,6 +32,9 @@
                     console.error('Fehler beim Kopieren in die Zwischenablage: ', err);
                 });
         }
+        function regenerateId() {
+            location.reload();
+        }
     </script>
 </head>
 <body>
@@ -45,9 +48,14 @@
             <h1 class="{{ .issuer }}" title="Eine zufällige MaLo-ID mit gültiger Prüfziffer (Vergabestelle {{ .issuer }})">
                 <span class="malo-id">{{ .maLoIdWithoutChecksum }}</span><span class="checksum" title="Prüfziffer {{ .checksum }}">{{ .checksum }}</span>
             </h1>
-            <button id="copyButton" onclick="copyToClipboard()">
-                <i class="fas fa-copy"></i> Kopieren
-            </button>
+            <div class="button-container">
+                <button id="copyButton" onclick="copyToClipboard()">
+                    <i class="fas fa-copy"></i> Kopieren
+                </button>
+                <button id="regenerateButton" onclick="regenerateId()">
+                    <i class="fas fa-redo"></i> Neu generieren
+                </button>
+            </div>
         </div>
     </main>
 
