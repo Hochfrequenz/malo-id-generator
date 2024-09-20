@@ -92,7 +92,12 @@ type NeLoIdGenerator struct{}
 // GenerateId of the NeLoIdGenerator returns a new random, 11 digit nelo-id that has a valid check sum
 func (m NeLoIdGenerator) GenerateId(c *gin.Context) {
 	var neloIdWithoutChecksum = "E" + generateRandomString(allowedNeLoCharacters, 9)
-	var neloChecksum = fmt.Sprintf("%d", bo.GetNeLoIdCheckSum(neloIdWithoutChecksum))
+	_checksum, err := bo.GetNeLoIdCheckSum(neloIdWithoutChecksum)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	var neloChecksum = fmt.Sprintf("%d", _checksum)
 	neloId := neloIdWithoutChecksum + neloChecksum
 	c.HTML(http.StatusOK, "static/templates/nelo.tmpl.html", gin.H{
 		"neLoIdWithoutChecksum": neloIdWithoutChecksum,
