@@ -8,6 +8,8 @@
 * [markt.lokations.id](https://markt.lokations.id), einem Generator für Marktlokations-IDs ("MaLo-ID") zu Testzwecken
 * [netz.lokations.id](https://netz.lokations.id), einem Generator für Netzlokations-IDs ("NeLo-ID") zu Testzwecken
 * [mess.lokations.id](https://mess.lokations.id), einem Generator für Messlokations-IDs ("MeLo-ID") zu Testzwecken
+* [tr.id](tr.id), einem Generator für Technische Ressourcen-IDs ("TR-ID") zu Testzwecken
+* [sr.id](sr.id), einem Generator für Steuerbare Ressourcen-IDs ("SR-ID") zu Testzwecken
 
 🇬🇧 This repository contains
 an [Azure Function with a Go Handler](https://docs.microsoft.com/en-us/azure/azure-functions/create-first-function-vs-code-other?tabs=go%2Cwindows) which is deployed to [netz.lokations.id](https://netz.lokations.id) and [markt.lokations.id](https://markt.lokations.id).
@@ -17,7 +19,9 @@ Its purpose is to
 - generate:
   1. Marktlokations-IDs (MaLo-IDs)
   2. Netzlokations-IDs (NeLo-IDs)
-  3. Messlokations-IDs (NeLo-IDs)
+  3. Messlokations-IDs (MeLo-IDs)
+  4. Technische Ressourcen-IDs (TR-IDs)
+  5. Steuerbare Ressourcen-IDs (SR-IDs)
 - with a valid checksum
 - on the fly
 
@@ -64,6 +68,8 @@ This is because to use the function app directly behind top level domain registe
 | Generate MaLo-IDs | `"MALO"`                            | [`malo-id-generator.azurewebsites.net/`](https://malo-id-generator.azurewebsites.net/) and [markt.lokations.id](https://markt.lokations.id) | [malo-id-generator](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourceGroups/malo-id-generator/providers/Microsoft.Web/sites/malo-id-generator/appServices) |                                                                                                                                                                                                  |.
 | Generate NeLo-IDs | `"NELO"`                            | [`nelo-id-generator.azurewebsites.net/`](https://nelo-id-generator.azurewebsites.net/) and [netz.lokations.id](https://netz.lokations.id)   | [nelo-id-generator](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourcegroups/malo-id-generator/providers/Microsoft.Web/sites/nelo-id-generator/appServices) |
 | Generate MeLo-IDs | `"MELO"`                            | [`melo-id-generator.azurewebsites.net/`](https://melo-id-generator.azurewebsites.net/) and [mess.lokations.id](https://mess.lokations.id)   | [melo-id-generator](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourceGroups/malo-id-generator/providers/Microsoft.Web/sites/melo-id-generator/appServices) |
+| Generate TR-IDs   | `"TRID"`                            | [`tr-id-generator.azurewebsites.net/`](https://tr-id-generator.azurewebsites.net/) and [tr.id](https://tr.id)                               | [tr-id-generator](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourceGroups/malo-id-generator/providers/Microsoft.Web/sites/tr-id-generator/appServices)     |
+| Generate SR-IDs   | `"SRID"`                            | [`sr-id-generator.azurewebsites.net/`](https://sr-id-generator.azurewebsites.net/) and [sr.id](https://sr.id)                     | [sr-id-generator](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourceGroups/malo-id-generator/providers/Microsoft.Web/sites/sr-id-generator/appServices)     |
 
 The function apps are all
 
@@ -71,7 +77,7 @@ The function apps are all
 - linux based (instead of windows)
 
 There is an environment variable named `ID_TYPE_TO_GENERATE` which you can modify in the [function app settings](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourcegroups/malo-id-generator/providers/Microsoft.Web/sites/malo-id-generator/configuration).
-Its value can only be `"MALO"` or `"NELO"` or `"MELO"` at the moment.
+Its value can be `"MALO"` or `"NELO"` or `"MELO"` or `"TRID"` or `"SRID"`at the moment.
 If its value is not set or set to an invalid value, the function app will return a HTTP 501 error.
 For your local tests you can modify the value in the `local.settings.json` file.
 

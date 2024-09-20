@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>ID-Generator (MaLo, SR, MeLo, NeLo)</title>
+    <meta name="author" content="Hochfrequenz Unternehmensberatung GmbH">
+    <meta name="description" content="Zufällig generierte IDs mit gültiger Prüfziffer">
+    <meta name="keywords" content="MaLo, MaLo-ID, SR, SR-ID, MeLo, MeLo-ID, NeLo, NeLo-ID">
+    <meta http-equiv="cache-control" content="no-cache"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <link rel="stylesheet" href="/style">
+    <link rel="icon" type="image/x-icon" href="/favicon">
+    <script>
+        function copyToClipboard(id) {
+            var textToCopy = document.querySelector(id).textContent.trim();
+            navigator.clipboard.writeText(textToCopy)
+                .then(function () {
+                    // no alert needed
+                })
+                .catch(function (err) {
+                    console.error('Error copying text to clipboard: ', err);
+                });
+        }
+    </script>
+</head>
+<body class="whiteBackground">
+{{ .recruitingMessage }}
+
+<!-- MaLo-ID Section -->
+<div id="malo-id-section">
+    <h2>MarktlokationsId (MaLo-ID)</h2>
+    <h1 class="{{ .issuer }}" title="Eine zufällige MaLo-ID"><div id="malo-id">{{ .maLoIdWithoutChecksum }}<span class="checksum" title="Prüfziffer">{{ .checksum }}</span></div></h1>
+    <button onclick="copyToClipboard('#malo-id')">&#128203; Copy MaLo-ID</button>
+</div>
+
+
+<!-- MeLo-ID Section -->
+<div id="melo-id-section">
+    <h2>MesslokationsId (MeLo-ID)</h2>
+    <h1 class="{{ .issuer }}" title="Eine zufällige MeLo-ID"><div id="melo-id"><span class="landesziffern">{{ .landesziffern }}</span><span class="netzbetreibernummer">{{ .netzbetreibernummer }}</span><span class="postleitzahl">{{ .postleitzahl }}</span><span class="laufendeNummer">{{ .laufendeNummer }}</span></div></h1>
+    <button onclick="copyToClipboard('#melo-id')">&#128203; Copy MeLo-ID</button>
+</div>
+
+<!-- NeLo-ID Section -->
+<div id="nelo-id-section">
+    <h2>NetzlokationsId (NeLo-ID)</h2>
+    <h1 class="{{ .issuer }}" title="Eine zufällige NeLo-ID"><div id="nelo-id">{{ .neLoIdWithoutChecksum }}<span class="checksum">{{ .checksum }}</span></div></h1>
+    <button onclick="copyToClipboard('#nelo-id')">&#128203; Copy NeLo-ID</button>
+</div>
+
+<!-- TR-ID Section -->
+<div id="tr-id-section">
+    <h2>Technische Ressource (TR-ID)</h2>
+    <h1 class="{{ .issuer }}" title="Eine zufällige TR-ID"><div id="tr-id">{{ .trIdWithoutChecksum }}<span class="checksum" title="Prüfziffer">{{ .checksum }}</span></div></h1>
+    <button onclick="copyToClipboard('#sr-id')">&#128203; Copy SR-ID</button>
+</div>
+
+<!-- SR-ID Section -->
+<div id="sr-id-section">
+    <h2>Steuerbare Ressource (SR-ID)</h2>
+    <h1 class="{{ .issuer }}" title="Eine zufällige SR-ID"><div id="sr-id">{{ .srIdWithoutChecksum }}<span class="checksum" title="Prüfziffer">{{ .checksum }}</span></div></h1>
+    <button onclick="copyToClipboard('#sr-id')">&#128203; Copy SR-ID</button>
+</div>
+
+
+<br style="clear:both" />
+<div id="footer">
+    powered by <a href="https://hochfrequenz.de/">hochfrequenz</a> |
+    <a href="https://www.hochfrequenz.de/impressum/">Impressum</a> |
+    <a href="https://github.com/Hochfrequenz/malo-id-generator">GitHub</a>
+</div>
+</body>
+</html>
