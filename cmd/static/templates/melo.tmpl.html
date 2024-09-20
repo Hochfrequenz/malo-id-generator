@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>MesslokationsId-Generator (zufällige MeLo-IDs)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Hochfrequenz Unternehmensberatung GmbH">
     <meta name="description" content="Zufällig generierte MeLo-ID">
     <meta name="keywords" content="MeLo, MeLo-ID, Messlokation, Test, Test-MeLo, Messlokationsid">
@@ -11,31 +12,64 @@
     <meta name="format-detection" content="telephone=no"/>
     <link rel="stylesheet" href="/style">
     <link rel="icon" type="image/x-icon" href="/favicon">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
     <script>
         function copyToClipboard() {
             var textToCopy = document.querySelector('#content h1').textContent.trim();
             navigator.clipboard.writeText(textToCopy)
                 .then(function () {
-                    // alert('Text copied to clipboard: ' + textToCopy); // thanks, chatgpt, we don't need the alert ;)
+                    var copyButton = document.getElementById('copyButton');
+                    var originalText = copyButton.innerHTML;
+                    copyButton.innerHTML = 'In Zwischenablage kopiert!';
+                    copyButton.disabled = true;
+                    setTimeout(function() {
+                        copyButton.innerHTML = originalText;
+                        copyButton.disabled = false;
+                    }, 2000);
                 })
                 .catch(function (err) {
-                    console.error('Error copying text to clipboard: ', err);
+                    console.error('Fehler beim Kopieren in die Zwischenablage: ', err);
                 });
         }
-     </script>
+        function regenerateId() {
+            location.reload();
+        }
+    </script>
 </head>
-<body class="whiteBackground">
-{{ .recruitingMessage }}<!-- We pass the HTML comment / recruiting ad as a parameter because the HTML comment was stripped from the template -->
-<div id="content">
-    <!-- don't break the long line as this affects the copy-to-clipboard functionality -->
-    <h1 class="{{ .issuer }}" title="Eine zufällige MeLo-ID"><div><span class="landesziffern" title="Landescode (ISO 3166-1)">{{ .landesziffern }}</span><span class="netzbetreibernummer" title="Netzbetreibernummer (im Allgemeinen nicht gültig)">{{ .netzbetreibernummer }}</span><span class="postleitzahl" title="Postleitzahl (im Allgemeinen nicht gültig)">{{ .postleitzahl }}</span><span class="laufendeNummer" title="Laufende Nummer (A-Z und 0-9)">{{ .laufendeNummer }}</span></div>
-    </h1>
-    <button onclick="copyToClipboard()">&#128203; Copy</button>
-</div>
-<br style="clear:both" />
-<div id="footer">powered by <a href="https://hochfrequenz.de/">hochfrequenz</a> | <a href="https://www.hochfrequenz.de/impressum/">Impressum</a> | <a href="https://github.com/Hochfrequenz/malo-id-generator">GitHub</a></div>
-<div id="others">
-    <a href="https://markt.lokations.id/">MaLo</a> | <a href="https://mess.lokations.id/">MeLo</a> | <a href="https://netz.lokations.id/">NeLo</a> | <a href="https://steuerbare.ressource.id/">SR</a> | <a href="https://technische.ressource.id/">TR</a>
-</div>
+<body>
+    {{ .recruitingMessage }}<!-- We pass the HTML comment / recruiting ad as a parameter because the HTML comment was stripped from the template -->
+    <header>
+        <h2>MesslokationsId-Generator</h2>
+    </header>
+    
+    <main>
+        <div id="content">
+            <h1 class="{{ .issuer }}" title="Eine zufällige MeLo-ID">
+                <span class="landesziffern" title="Landescode (ISO 3166-1)">{{ .landesziffern }}</span><span class="netzbetreibernummer" title="Netzbetreibernummer (im Allgemeinen nicht gültig)">{{ .netzbetreibernummer }}</span><span class="postleitzahl" title="Postleitzahl (im Allgemeinen nicht gültig)">{{ .postleitzahl }}</span><span class="laufendeNummer" title="Laufende Nummer (A-Z und 0-9)">{{ .laufendeNummer }}</span>
+            </h1>
+            <div class="button-container">
+                <button id="copyButton" onclick="copyToClipboard()">
+                    <i class="fas fa-copy"></i> Kopieren
+                </button>
+                <button id="regenerateButton" onclick="regenerateId()">
+                    <i class="fas fa-redo"></i> Neu generieren
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <nav id="others">
+            <a href="https://markt.lokations.id/">MaLo</a>
+            <a href="https://mess.lokations.id/">MeLo</a>
+            <a href="https://netz.lokations.id/">NeLo</a>
+            <a href="https://steuerbare.ressource.id/">SR</a>
+            <a href="https://technische.ressource.id/">TR</a>
+        </nav>
+        <div id="footer-content">
+            <p>powered by <a href="https://hochfrequenz.de/">Hochfrequenz</a></p>
+            <p><a href="https://www.hochfrequenz.de/impressum/">Impressum</a> | <a href="https://github.com/Hochfrequenz/malo-id-generator">GitHub</a></p>
+        </div>
+    </footer>
 </body>
 </html>
