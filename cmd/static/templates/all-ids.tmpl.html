@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>ID-Generator (MaLo, SR, TR, MeLo, NeLo)</title>
+    <meta name="author" content="Hochfrequenz Unternehmensberatung GmbH">
+    <meta name="description" content="Zufällig generierte IDs mit gültiger Prüfziffer">
+    <meta name="keywords" content="MaLo, MaLo-ID, SR, SR-ID, TR, TR-ID, MeLo, MeLo-ID, NeLo, NeLo-ID">
+    <meta http-equiv="cache-control" content="no-cache"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <link rel="stylesheet" href="/style">
+    <link rel="icon" type="image/x-icon" href="/favicon">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+        // Utility function to calculate Luhn checksum
+        function calculateLuhnChecksum(id) {
+            let sum = 0;
+            let shouldDouble = false;
+            for (let i = id.length - 1; i >= 0; i--) {
+                let digit = parseInt(id[i], 10);
+                if (shouldDouble) {
+                    digit *= 2;
+                    if (digit > 9) digit -= 9;
+                }
+                sum += digit;
+                shouldDouble = !shouldDouble;
+            }
+            return (10 - (sum % 10)) % 10;
+        }
+
+        function generateMaLoId() {
+            let maLoId = "1234567890"; // Replace with your generation logic
+            let checksum = calculateLuhnChecksum(maLoId);
+            document.getElementById("malo-id").innerHTML = maLoId + "<span class='checksum'>" + checksum + "</span>";
+        }
+
+        function generateSrId() {
+            let srId = "9876543210"; // Replace with your generation logic
+            let checksum = calculateLuhnChecksum(srId);
+            document.getElementById("sr-id").innerHTML = srId + "<span class='checksum'>" + checksum + "</span>";
+        }
+
+        function generateMeLoId() {
+            let meLoId = "1234ABCD"; // Replace with your generation logic
+            let checksum = calculateLuhnChecksum(meLoId);
+            document.getElementById("melo-id").innerHTML = meLoId + "<span class='checksum'>" + checksum + "</span>";
+        }
+
+        function generateNeLoId() {
+            let neLoId = "1234567890"; // Replace with your generation logic
+            let checksum = calculateLuhnChecksum(neLoId);
+            document.getElementById("nelo-id").innerHTML = neLoId + "<span class='checksum'>" + checksum + "</span>";
+        }
+
+        function generateCustomId() {
+            let customId = "A1B2C3D4"; // Replace with your generation logic
+            let checksum = calculateLuhnChecksum(customId);
+            document.getElementById("custom-id").innerHTML = customId + "<span class='checksum'>" + checksum + "</span>";
+        }
+
+        // Function to trigger confetti
+        function startConfetti() {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+
+        // Call all the ID generation functions and confetti on page load
+        window.onload = function() {
+            generateMaLoId();
+            generateSrId();
+            generateMeLoId();
+            generateNeLoId();
+            generateCustomId();
+
+            // Trigger confetti
+            startConfetti();
+        };
+    </script>
+</head>
+<body class="whiteBackground">
+{{ .recruitingMessage }}
+
+<!-- MaLo-ID Section -->
+<div id="malo-id-section">
+    <h2>MarktlokationsId (MaLo-ID)</h2>
+    <h1 class="{{ .issuer }}" title="Eine zufällige MaLo-ID"><div id="malo-id"></div></h1>
+    <button onclick="copyToClipboard('#malo-id')">&#128203; Copy MaLo-ID</button>
+</div>
+
+<!-- SR-ID Section -->
+<div id="sr-id-section">
+    <h2>Steuerbare Ressource (SR-ID)</h2>
+    <h1 class="{{ .issuer }}" title="Eine zufällige SR-ID"><div id="sr-id"></div></h1>
+    <button onclick="copyToClipboard('#sr-id')">&#128203; Copy SR-ID</button>
+</div>
+
+<!-- MeLo-ID Section -->
+<div id="melo-id-section">
+    <h2>MesslokationsId (MeLo-ID)</h2>
+    <h1 class="{{ .issuer }}" title="Eine zufällige MeLo-ID"><div id="melo-id"></div></h1>
+    <button onclick="copyToClipboard('#melo-id')">&#128203; Copy MeLo-ID</button>
+</div>
+
+<!-- NeLo-ID Section -->
+<div id="nelo-id-section">
+    <h2>NetzlokationsId (NeLo-ID)</h2>
+    <h1 class="{{ .issuer }}" title="Eine zufällige NeLo-ID"><div id="nelo-id"></div></h1>
+    <button onclick="copyToClipboard('#nelo-id')">&#128203; Copy NeLo-ID</button>
+</div>
+
+<!-- Custom ID Section -->
+<div id="custom-id-section">
+    <h2>CustomID</h2>
+    <h1 class="{{ .issuer }}" title="Eine zufällige CustomID"><div id="custom-id"></div></h1>
+    <button onclick="copyToClipboard('#custom-id')">&#128203; Copy Custom-ID</button>
+</div>
+
+<br style="clear:both" />
+<div id="footer">
+    powered by <a href="https://hochfrequenz.de/">hochfrequenz</a> |
+    <a href="https://www.hochfrequenz.de/impressum/">Impressum</a> |
+    <a href="https://github.com/Hochfrequenz/malo-id-generator">GitHub</a>
+</div>
+</body>
+</html>
