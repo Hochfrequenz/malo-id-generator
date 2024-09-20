@@ -56,3 +56,12 @@ div#content {
     font-style: normal;
     color: black;
 }
+
+#others{
+    position:fixed;
+    bottom:0;
+}
+#others > a{
+    font-size: small;
+    color: gray;
+}
