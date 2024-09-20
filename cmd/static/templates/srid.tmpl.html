@@ -19,13 +19,17 @@
             var textToCopy = document.querySelector('#content h1').textContent.trim();
             navigator.clipboard.writeText(textToCopy)
                 .then(function () {
-                    document.getElementById('copyButton').classList.add('copied');
+                    var copyButton = document.getElementById('copyButton');
+                    var originalText = copyButton.innerHTML;
+                    copyButton.innerHTML = 'In Zwischenablage kopiert!';
+                    copyButton.disabled = true;
                     setTimeout(function() {
-                        document.getElementById('copyButton').classList.remove('copied');
+                        copyButton.innerHTML = originalText;
+                        copyButton.disabled = false;
                     }, 2000);
                 })
                 .catch(function (err) {
-                    console.error('Error copying text to clipboard: ', err);
+                    console.error('Fehler beim Kopieren in die Zwischenablage: ', err);
                 });
         }
     </script>
@@ -42,7 +46,7 @@
                 <span class="sr-id">{{ .srIdWithoutChecksum }}</span><span class="checksum" title="Prüfziffer {{ .checksum }}">{{ .checksum }}</span>
             </h1>
             <button id="copyButton" onclick="copyToClipboard()">
-                <i class="fas fa-copy"></i> Copy
+                <i class="fas fa-copy"></i> Kopieren
             </button>
         </div>
     </main>
