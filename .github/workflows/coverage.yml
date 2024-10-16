@@ -16,7 +16,7 @@ jobs:
       - name: Calc coverage
         run: go test ./... -v -covermode=count -coverprofile=coverage.out -p 1
       - name: Convert coverage to lcov
-        uses: jandelgado/gcov2lcov-action@v1.1.0
+        uses: jandelgado/gcov2lcov-action@v1.1.1
       - name: Enforce Min Coverage
         uses: VeryGoodOpenSource/very_good_coverage@v3.0.0
         with:
