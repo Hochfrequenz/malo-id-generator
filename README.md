@@ -8,7 +8,7 @@
 * [markt.lokations.id](https://markt.lokations.id), einem Generator für Marktlokations-IDs ("MaLo-ID") zu Testzwecken
 * [netz.lokations.id](https://netz.lokations.id), einem Generator für Netzlokations-IDs ("NeLo-ID") zu Testzwecken
 * [mess.lokations.id](https://mess.lokations.id), einem Generator für Messlokations-IDs ("MeLo-ID") zu Testzwecken
-* [technische.ressource.id](https://techniscche.ressource.id), einem Generator für Technische Ressourcen-IDs ("TR-ID") zu Testzwecken
+* [technische.ressource.id](https://technische.ressource.id), einem Generator für Technische Ressourcen-IDs ("TR-ID") zu Testzwecken
 * [steuerbare.ressource.id](https://steuerbare.ressource.id), einem Generator für Steuerbare Ressourcen-IDs ("SR-ID") zu Testzwecken
 
 🇬🇧 This repository contains
