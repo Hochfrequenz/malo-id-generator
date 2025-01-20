@@ -8,6 +8,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+          ref: ${{ github.event.workflow_run.head_branch }}
+          token: ${{ secrets.CSS_SUBMODULE_ACCESS_TOKEN }} # token with repo scope; expires 2026-01-20
+          # https://github.com/Hochfrequenz/malo-id-generator/settings/secrets/actions/CSS_SUBMODULE_ACCESS_TOKEN
+          # https://github.com/settings/tokens/2072150841
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
