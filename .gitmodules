@@ -1,0 +1,3 @@
+[submodule "companystylesheet"]
+	path = companystylesheet
+	url = https://github.com/Hochfrequenz/companystylesheet
