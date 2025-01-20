@@ -31,6 +31,9 @@ func NewRouter() *gin.Engine {
 	// see this SO answer: https://stackoverflow.com/a/76419027/10009545
 	router.GET("/", generateRandomId)
 	router.GET("/style", stylesheetHandler)
+	router.GET("/hfstyle", hochfrequenzStylesheetHandler)
+	router.GET("/yanone-kaffeesatz-bold", yanoneKaffeesatzBoldHandler)
+	router.GET("/roboto-condensed-regular", robotoCondensedRegularHandler)
 	router.GET("/favicon", faviconHandler)
 
 	return router
@@ -84,6 +87,15 @@ func getPort() string {
 //go:embed static/style.css
 var stylesheet embed.FS
 
+//go:embed static/companystylesheet/css/hochfrequenz.css
+var hochfrequenzStylesheet embed.FS
+
+//go:embed static/companystylesheet/fonts/Roboto_Condensed/RobotoCondensed-Regular.ttf
+var robotoRegularFont embed.FS
+
+//go:embed static/companystylesheet/fonts/YanoneKaffeesatzTTF/YanoneKaffeesatz-Bold.ttf
+var yanoneBoldFont embed.FS
+
 // favicon is the favicon (the little icon in the browser tab)
 //
 //go:embed static/favicon.png
@@ -102,6 +114,35 @@ func stylesheetHandler(c *gin.Context) {
 		c.JSON(http.StatusNotFound, response)
 	}
 	c.Data(http.StatusOK, "text/css", stylesheetBody)
+}
+
+// returns the hochfrequenz stylesheet as text/css
+func hochfrequenzStylesheetHandler(c *gin.Context) {
+	stylesheetBody, err := hochfrequenzStylesheet.ReadFile("static/companystylesheet/css/hochfrequenz.css")
+	if err != nil {
+		response := map[string]string{}
+		c.JSON(http.StatusNotFound, response)
+	}
+	c.Data(http.StatusOK, "text/css", stylesheetBody)
+}
+
+// returns the yanone kaffeesatz (bold) ttf
+func yanoneKaffeesatzBoldHandler(c *gin.Context) {
+	ttfBody, err := yanoneBoldFont.ReadFile("static/companystylesheet/fonts/YanoneKaffeesatzTTF/YanoneKaffeesatz-Bold.ttf")
+	if err != nil {
+		response := map[string]string{}
+		c.JSON(http.StatusNotFound, response)
+	}
+	c.Data(http.StatusOK, "font/ttf", ttfBody)
+}
+
+func robotoCondensedRegularHandler(c *gin.Context) {
+	ttfBody, err := robotoRegularFont.ReadFile("static/companystylesheet/fonts/Roboto_Condensed/RobotoCondensed-Regular.ttf")
+	if err != nil {
+		response := map[string]string{}
+		c.JSON(http.StatusNotFound, response)
+	}
+	c.Data(http.StatusOK, "font/ttf", ttfBody)
 }
 
 // returns the favicon as image/png

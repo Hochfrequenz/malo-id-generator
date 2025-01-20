@@ -5,7 +5,14 @@
     --text-color: #333333;
     --footer-bg-color: #2c3e50;
 }
-
+@font-face {
+    font-family: "Yanone Kaffeesatz";
+    src: url(/yanone-kaffeesatz-bold);
+}
+@font-face {
+    font-family: "Roboto Condensed";
+    src: url(/roboto-condensed-regular);
+}
 * {
     margin: 0;
     padding: 0;
@@ -13,7 +20,7 @@
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto Condensed', sans-serif;
     background-color: var(--background-color);
     color: var(--text-color);
     display: flex;
@@ -30,8 +37,10 @@ header {
 }
 
 header h2 {
-    font-size: 1.5rem;
-    font-weight: 300;
+    /*font-size: 1.5rem;*/
+    font-size: xxx-large;
+    /*font-weight: 300;*/
+    font-family: 'Yanone Kaffeesatz', sans-serif;
 }
 
 main {
@@ -54,10 +63,12 @@ h1 {
     font-size: 3rem;
     color: var(--primary-color);
     margin-bottom: 1rem;
+    font-family: 'Roboto Condensed', sans-serif;
 }
 
 .malo-id {
     letter-spacing: 2px;
+    font-family: 'Yanone Kaffeesatz', sans-serif;
 }
 
 .checksum {
