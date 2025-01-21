@@ -6,11 +6,11 @@
     --footer-bg-color: #2c3e50;
 }
 @font-face {
-    font-family: "Yanone Kaffeesatz";
+    font-family: "Roboto, Yanone Kaffeesatz";
     src: url(/yanone-kaffeesatz-bold);
 }
 @font-face {
-    font-family: "Roboto Condensed";
+    font-family: "Roboto, Roboto Condensed";
     src: url(/roboto-condensed-regular);
 }
 * {
@@ -20,7 +20,7 @@
 }
 
 body {
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Roboto, Roboto Condensed', sans-serif;
     background-color: var(--background-color);
     color: var(--text-color);
     display: flex;
@@ -136,7 +136,7 @@ button.copied:after {
 
 footer {
     background-color: var(--footer-bg-color);
-    color: #ffffff;
+    color: #333333;
     padding: 1rem;
     text-align: center;
 }
@@ -146,7 +146,7 @@ footer {
 }
 
 #footer-content a {
-    color: #dddddd;
+    color: #444444;
     text-decoration: none;
 }
 
@@ -161,13 +161,16 @@ footer {
 }
 
 #others a {
-    color: #ffffff;
+    color: #444444;
     text-decoration: none;
     margin: 0.5rem;
     padding: 0.25rem 0.5rem;
     border-radius: 3px;
     background-color: rgba(255, 255, 255, 0.1);
     transition: background-color 0.3s;
+}
+a.hflink{
+    font-weight: bold;
 }
 
 #others a:hover {
@@ -178,7 +181,6 @@ footer {
     h1 {
         font-size: 2rem;
     }
-    
     #content {
         padding: 1rem;
     }
