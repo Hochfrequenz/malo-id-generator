@@ -177,6 +177,10 @@ a.hflink{
     background-color: rgba(255, 255, 255, 0.2);
 }
 
+a.hflink{
+    font-weight: bold;
+}
+
 @media (max-width: 600px) {
     h1 {
         font-size: 2rem;
