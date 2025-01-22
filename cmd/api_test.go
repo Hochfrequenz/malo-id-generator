@@ -111,7 +111,21 @@ func (s *Suite) Test_Stylesheet_Is_Returned() {
 	response := performGetRequest(router, "/style")
 	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
 }
-
+func (s *Suite) Test_Stylesheet_Is_Returned() {
+	router := main.NewRouter()
+	response := performGetRequest(router, "/hfstyle")
+	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
+}
+func (s *Suite) Test_Stylesheet_Is_Returned() {
+	router := main.NewRouter()
+	response := performGetRequest(router, "/logo")
+	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
+}
+func (s *Suite) Test_Stylesheet_Is_Returned() {
+	router := main.NewRouter()
+	response := performGetRequest(router, "/symbol")
+	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
+}
 func (s *Suite) Test_Favicon_Is_Returned() {
 	router := main.NewRouter()
 	response := performGetRequest(router, "/favicon")
