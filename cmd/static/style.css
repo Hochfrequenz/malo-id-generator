@@ -147,13 +147,13 @@ footer {
     background-image: url(/logo);
     background-repeat: no-repeat;
     background-position: left+20px center;
-    background-size: 15%;
+    background-size: 10%;
     padding: 1rem;
     text-align: center;
 }
 
 #footer-content {
-    margin-top: 1rem;
+    /*margin-top: 1rem;*/
 }
 
 #footer-content a {
@@ -192,6 +192,37 @@ a.hflink {
 #others .selected {
     background-color: rgba(30, 30, 30, 0.9);
     color: white;
+}
+
+#solutions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width:100%;
+    background-color: white;
+    padding: 0.5em;
+}
+
+#solutions a{
+    color: white;
+    text-decoration: none;
+    margin: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 1rem; /* twice the padding to have a perfectly round shape left and right */
+    /* each button has their own background-color */
+    transition: background-color 0.3s;
+}
+#solutions a.ahbesser{
+    background-color: var(--grell-rot);
+}
+#solutions a.fristenkalender{
+    background-color: var(--grell-tuerkis);
+}
+#solutions a.ahahnb{
+    background-color: var(--grell-gelb);
+}
+#solutions a.entscheidungsbaum{
+    background-color: var(--grell-blau);
 }
 
 a.hflink {
