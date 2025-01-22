@@ -34,6 +34,7 @@ func NewRouter() *gin.Engine {
 	router.GET("/hfstyle", hochfrequenzStylesheetHandler)
 	router.GET("/yanone-kaffeesatz-bold", yanoneKaffeesatzBoldHandler)
 	router.GET("/roboto-condensed-regular", robotoCondensedRegularHandler)
+	router.GET("/logo", logoHandler)
 	router.GET("/favicon", faviconHandler)
 
 	return router
@@ -96,6 +97,9 @@ var robotoRegularFont embed.FS
 //go:embed static/companystylesheet/fonts/YanoneKaffeesatzTTF/YanoneKaffeesatz-Bold.ttf
 var yanoneBoldFont embed.FS
 
+//go:embed static/companystylesheet/logo.svg
+var hfLogo embed.FS
+
 // favicon is the favicon (the little icon in the browser tab)
 //
 //go:embed static/favicon.png
@@ -143,6 +147,16 @@ func robotoCondensedRegularHandler(c *gin.Context) {
 		c.JSON(http.StatusNotFound, response)
 	}
 	c.Data(http.StatusOK, "font/ttf", ttfBody)
+}
+
+// returns the hochfrequenz logo as image/svg+xml
+func logoHandler(c *gin.Context) {
+	ttfBody, err := hfLogo.ReadFile("static/companystylesheet/logo.svg")
+	if err != nil {
+		response := map[string]string{}
+		c.JSON(http.StatusNotFound, response)
+	}
+	c.Data(http.StatusOK, "image/svg+xml", ttfBody)
 }
 
 // returns the favicon as image/png
