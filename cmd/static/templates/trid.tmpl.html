@@ -47,8 +47,7 @@
     <div id="content-and-navbar">
         <div id="content">
             <h1 class="{{ .issuer }}" title="Eine zufällige Technische Ressourcen-ID mit gültiger Prüfziffer">
-                <span class="tr-id">{{ .trIdWithoutChecksum }}</span><span class="checksum"
-                                                                           title="Prüfziffer {{ .checksum }}">{{ .checksum }}</span>
+                <span class="tr-id">{{ .trIdWithoutChecksum }}</span><span class="checksum" title="Prüfziffer {{ .checksum }}">{{ .checksum }}</span>
             </h1>
             <div class="button-container">
                 <button id="copyButton" onclick="copyToClipboard()">

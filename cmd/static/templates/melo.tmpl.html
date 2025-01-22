@@ -47,11 +47,7 @@
     <div id="content-and-navbar">
         <div id="content">
             <h1 class="{{ .issuer }}" title="Eine zufällige MeLo-ID">
-                <span class="landesziffern" title="Landescode (ISO 3166-1)">{{ .landesziffern }}</span><span
-                    class="netzbetreibernummer" title="Netzbetreibernummer (im Allgemeinen nicht gültig)">{{ .netzbetreibernummer }}</span><span
-                    class="postleitzahl"
-                    title="Postleitzahl (im Allgemeinen nicht gültig)">{{ .postleitzahl }}</span><span
-                    class="laufendeNummer" title="Laufende Nummer (A-Z und 0-9)">{{ .laufendeNummer }}</span>
+                <span class="landesziffern" title="Landescode (ISO 3166-1)">{{ .landesziffern }}</span><span class="netzbetreibernummer" title="Netzbetreibernummer (im Allgemeinen nicht gültig)">{{ .netzbetreibernummer }}</span><span class="postleitzahl" title="Postleitzahl (im Allgemeinen nicht gültig)">{{ .postleitzahl }}</span><span class="laufendeNummer" title="Laufende Nummer (A-Z und 0-9)">{{ .laufendeNummer }}</span>
             </h1>
             <div class="button-container">
                 <button id="copyButton" onclick="copyToClipboard()">

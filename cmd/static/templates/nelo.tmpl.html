@@ -47,8 +47,7 @@
     <div id="content-and-navbar">
         <div id="content">
             <h1 class="{{ .issuer }}" title="Eine zufällige NeLo-ID mit gültiger Prüfziffer">
-                <span class="nelo-id">{{ .neLoIdWithoutChecksum }}</span><span class="checksum"
-                                                                               title="Prüfziffer {{ .checksum }}">{{ .checksum }}</span>
+                <span class="nelo-id">{{ .neLoIdWithoutChecksum }}</span><span class="checksum" title="Prüfziffer {{ .checksum }}">{{ .checksum }}</span>
             </h1>
             <div class="button-container">
                 <button id="copyButton" onclick="copyToClipboard()">

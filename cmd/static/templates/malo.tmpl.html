@@ -48,8 +48,7 @@
         <div id="content">
             <h1 class="{{ .issuer }}"
                 title="Eine zufällige MaLo-ID mit gültiger Prüfziffer (Vergabestelle {{ .issuer }})">
-                <span class="malo-id">{{ .maLoIdWithoutChecksum }}</span><span class="checksum"
-                                                                               title="Prüfziffer {{ .checksum }}">{{ .checksum }}</span>
+                <span class="malo-id">{{ .maLoIdWithoutChecksum }}</span><span class="checksum" title="Prüfziffer {{ .checksum }}">{{ .checksum }}</span>
             </h1>
             <div class="button-container">
                 <button id="copyButton" onclick="copyToClipboard()">
