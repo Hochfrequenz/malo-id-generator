@@ -118,7 +118,7 @@ button.copied:after {
     font-size: 16px;
     cursor: pointer;
     border: none;
-    border-radius: 5px;
+    border-radius: 20px;
     transition: background-color 0.3s;
 }
 
@@ -128,7 +128,7 @@ button.copied:after {
 }
 
 #regenerateButton {
-    background-color: #000000;
+    background-color: var(--weiches-schwarz);
     color: white;
 }
 
@@ -157,7 +157,7 @@ footer {
 }
 
 #footer-content a {
-    color: #222222;
+    color: var(--weiches-schwarz);
     text-decoration: none;
 }
 
@@ -176,7 +176,7 @@ footer {
     text-decoration: none;
     margin: 0.5rem;
     padding: 0.25rem 0.5rem;
-    border-radius: 3px;
+    border-radius: 1rem; /* twice the padding to have a perfectly round shape left and right */
     background-color: rgba(30, 30, 30, 0.2);
     transition: background-color 0.3s;
 }
