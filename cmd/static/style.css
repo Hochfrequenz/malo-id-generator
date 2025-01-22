@@ -39,7 +39,7 @@ header {
     background-repeat: no-repeat;
     text-align: left;
     padding: 1rem;
-    padding-left:4rem;
+    padding-left: 4rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -198,12 +198,12 @@ a.hflink {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    width:100%;
+    width: 100%;
     background-color: white;
     padding: 0.5em;
 }
 
-#solutions a{
+#solutions a {
     color: white;
     text-decoration: none;
     margin: 0.5rem;
@@ -212,16 +212,20 @@ a.hflink {
     /* each button has their own background-color */
     transition: background-color 0.3s;
 }
-#solutions a.ahbesser{
+
+#solutions a.ahbesser {
     background-color: var(--grell-rot);
 }
-#solutions a.fristenkalender{
+
+#solutions a.fristenkalender {
     background-color: var(--grell-tuerkis);
 }
-#solutions a.ahahnb{
+
+#solutions a.ahahnb {
     background-color: var(--grell-gelb);
 }
-#solutions a.entscheidungsbaum{
+
+#solutions a.entscheidungsbaum {
     background-color: var(--grell-blau);
 }
 
