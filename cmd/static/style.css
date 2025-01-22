@@ -5,14 +5,17 @@
     --text-color: #333333;
     --footer-bg-color: #2c3e50;
 }
+
 @font-face {
     font-family: "Roboto, Yanone Kaffeesatz";
     src: url(/yanone-kaffeesatz-bold);
 }
+
 @font-face {
     font-family: "Roboto, Roboto Condensed";
     src: url(/roboto-condensed-regular);
 }
+
 * {
     margin: 0;
     padding: 0;
@@ -139,7 +142,7 @@ footer {
     background-image: url(/logo);
     background-repeat: no-repeat;
     background-position: left center;
-    background-size:15%;
+    background-size: 15%;
     color: #ffffff;
     padding: 1rem;
     text-align: center;
@@ -173,7 +176,8 @@ footer {
     background-color: rgba(255, 255, 255, 0.1);
     transition: background-color 0.3s;
 }
-a.hflink{
+
+a.hflink {
     font-weight: bold;
 }
 
@@ -181,7 +185,7 @@ a.hflink{
     background-color: rgba(255, 255, 255, 0.2);
 }
 
-a.hflink{
+a.hflink {
     font-weight: bold;
 }
 
@@ -189,6 +193,7 @@ a.hflink{
     h1 {
         font-size: 2rem;
     }
+
     #content {
         padding: 1rem;
     }
