@@ -35,6 +35,7 @@ func NewRouter() *gin.Engine {
 	router.GET("/yanone-kaffeesatz-bold", yanoneKaffeesatzBoldHandler)
 	router.GET("/roboto-condensed-regular", robotoCondensedRegularHandler)
 	router.GET("/logo", logoHandler)
+	router.GET("/symbol", symbolHandler)
 	router.GET("/favicon", faviconHandler)
 
 	return router
@@ -97,8 +98,11 @@ var robotoRegularFont embed.FS
 //go:embed static/companystylesheet/fonts/YanoneKaffeesatzTTF/YanoneKaffeesatz-Bold.ttf
 var yanoneBoldFont embed.FS
 
-//go:embed static/companystylesheet/logo.svg
+//go:embed static/companystylesheet/logo_weiss.png
 var hfLogo embed.FS
+
+//go:embed static/companystylesheet/symbol_weiss.png
+var hfSymbol embed.FS
 
 // favicon is the favicon (the little icon in the browser tab)
 //
@@ -132,12 +136,12 @@ func hochfrequenzStylesheetHandler(c *gin.Context) {
 
 // returns the yanone kaffeesatz (bold) ttf
 func yanoneKaffeesatzBoldHandler(c *gin.Context) {
-	ttfBody, err := yanoneBoldFont.ReadFile("static/companystylesheet/fonts/YanoneKaffeesatzTTF/YanoneKaffeesatz-Bold.ttf")
+	body, err := yanoneBoldFont.ReadFile("static/companystylesheet/fonts/YanoneKaffeesatzTTF/YanoneKaffeesatz-Bold.ttf")
 	if err != nil {
 		response := map[string]string{}
 		c.JSON(http.StatusNotFound, response)
 	}
-	c.Data(http.StatusOK, "font/ttf", ttfBody)
+	c.Data(http.StatusOK, "font/ttf", body)
 }
 
 func robotoCondensedRegularHandler(c *gin.Context) {
@@ -149,14 +153,24 @@ func robotoCondensedRegularHandler(c *gin.Context) {
 	c.Data(http.StatusOK, "font/ttf", ttfBody)
 }
 
-// returns the hochfrequenz logo as image/svg+xml
+// returns the hochfrequenz logo as PNG
 func logoHandler(c *gin.Context) {
-	ttfBody, err := hfLogo.ReadFile("static/companystylesheet/logo.svg")
+	body, err := hfLogo.ReadFile("static/companystylesheet/logo_weiss.png")
 	if err != nil {
 		response := map[string]string{}
 		c.JSON(http.StatusNotFound, response)
 	}
-	c.Data(http.StatusOK, "image/svg+xml", ttfBody)
+	c.Data(http.StatusOK, "image/png", body)
+}
+
+// returns the hochfrequenz symbol as PNG
+func symbolHandler(c *gin.Context) {
+	body, err := hfSymbol.ReadFile("static/companystylesheet/symbol_weiss.png")
+	if err != nil {
+		response := map[string]string{}
+		c.JSON(http.StatusNotFound, response)
+	}
+	c.Data(http.StatusOK, "image/png", body)
 }
 
 // returns the favicon as image/png

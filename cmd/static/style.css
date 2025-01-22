@@ -1,9 +1,8 @@
+@import url("/hfstyle"); /* hochfrequenz.css */
 :root {
     --primary-color: #6eb52c;
     --secondary-color: #e94c74;
     --background-color: #f3f1f6;
-    --text-color: #333333;
-    --footer-bg-color: #2c3e50;
 }
 
 @font-face {
@@ -24,24 +23,29 @@
 
 body {
     font-family: 'Roboto, Roboto Condensed', sans-serif;
-    background-color: var(--background-color);
-    color: var(--text-color);
+    background-color: var(--pastel-gruen);
+    color: var(--weiches-schwarz);
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
 header {
-    background-color: var(--primary-color);
-    color: #ffffff;
-    text-align: center;
+    background-color: var(--grell-gruen);
+    color: var(--weiches-schwarz);
+    background-image: url(/symbol);
+    background-position: left+20px center;
+    background-size: 2rem;
+    background-repeat: no-repeat;
+    text-align: left;
     padding: 1rem;
+    padding-left: 4rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 header h2 {
     /*font-size: 1.5rem;*/
-    font-size: xxx-large;
+    font-size: xx-large;
     /*font-weight: 300;*/
     font-family: 'Yanone Kaffeesatz', sans-serif;
 }
@@ -64,7 +68,7 @@ main {
 
 h1 {
     font-size: 3rem;
-    color: var(--primary-color);
+    color: var(--weiches-schwarz);
     margin-bottom: 1rem;
     font-family: 'Roboto Condensed', sans-serif;
 }
@@ -75,7 +79,7 @@ h1 {
 }
 
 .checksum {
-    color: var(--secondary-color);
+    color: var(--grell-gruen);
     font-weight: bold;
 }
 
@@ -114,17 +118,17 @@ button.copied:after {
     font-size: 16px;
     cursor: pointer;
     border: none;
-    border-radius: 5px;
+    border-radius: 20px;
     transition: background-color 0.3s;
 }
 
 #copyButton {
-    background-color: #4CAF50;
+    background-color: var(--grell-gruen);
     color: white;
 }
 
 #regenerateButton {
-    background-color: #008CBA;
+    background-color: var(--weiches-schwarz);
     color: white;
 }
 
@@ -138,22 +142,22 @@ button.copied:after {
 }
 
 footer {
-    background-color: var(--footer-bg-color);
+    background-color: var(--grell-gruen);
+    color: var(--weiches-schwarz);
     background-image: url(/logo);
     background-repeat: no-repeat;
-    background-position: left center;
-    background-size: 15%;
-    color: #ffffff;
+    background-position: left+20px center;
+    background-size: 10%;
     padding: 1rem;
     text-align: center;
 }
 
 #footer-content {
-    margin-top: 1rem;
+    /*margin-top: 1rem;*/
 }
 
 #footer-content a {
-    color: #dddddd;
+    color: var(--weiches-schwarz);
     text-decoration: none;
 }
 
@@ -162,18 +166,19 @@ footer {
 }
 
 #others {
+    margin-top: 10px;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
 }
 
 #others a {
-    color: #ffffff;
+    color: var(--weiches-schwarz);
     text-decoration: none;
     margin: 0.5rem;
     padding: 0.25rem 0.5rem;
-    border-radius: 3px;
-    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 1rem; /* twice the padding to have a perfectly round shape left and right */
+    background-color: rgba(30, 30, 30, 0.2);
     transition: background-color 0.3s;
 }
 
@@ -182,7 +187,47 @@ a.hflink {
 }
 
 #others a:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(30, 30, 30, 0.4);
+}
+
+#others .selected {
+    background-color: rgba(30, 30, 30, 0.9);
+    color: white;
+}
+
+#solutions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    background-color: white;
+    padding: 0.5em;
+}
+
+#solutions a {
+    color: white;
+    text-decoration: none;
+    margin: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 1rem; /* twice the padding to have a perfectly round shape left and right */
+    /* each button has their own background-color */
+    transition: background-color 0.3s;
+}
+
+#solutions a.ahbesser {
+    background-color: var(--grell-rot);
+}
+
+#solutions a.fristenkalender {
+    background-color: var(--grell-tuerkis);
+}
+
+#solutions a.ahahnb {
+    background-color: var(--grell-gelb);
+}
+
+#solutions a.entscheidungsbaum {
+    background-color: var(--grell-blau);
 }
 
 a.hflink {
