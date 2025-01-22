@@ -1,10 +1,11 @@
+@import url("/hfstyle"); /* hochfrequenz.css */
 :root {
     --primary-color: #6eb52c;
     --secondary-color: #e94c74;
     --background-color: #f3f1f6;
     --text-color: #333333;
-    --footer-bg-color: #2c3e50;
 }
+
 @font-face {
     font-family: "Roboto, Yanone Kaffeesatz";
     src: url(/yanone-kaffeesatz-bold);
@@ -21,7 +22,7 @@
 
 body {
     font-family: 'Roboto, Roboto Condensed', sans-serif;
-    background-color: var(--background-color);
+    background-color: var(--pastel-gruen);
     color: var(--text-color);
     display: flex;
     flex-direction: column;
@@ -29,7 +30,7 @@ body {
 }
 
 header {
-    background-color: var(--primary-color);
+    background-color: var(--grell-gruen);
     color: #ffffff;
     text-align: center;
     padding: 1rem;
@@ -121,7 +122,7 @@ button.copied:after {
 }
 
 #regenerateButton {
-    background-color: #008CBA;
+    background-color: #000000;
     color: white;
 }
 
@@ -135,8 +136,8 @@ button.copied:after {
 }
 
 footer {
-    background-color: var(--footer-bg-color);
-    color: #ffffff;
+    background-color: var(--grell-gruen);
+    color: #000000;
     padding: 1rem;
     text-align: center;
 }
@@ -146,7 +147,7 @@ footer {
 }
 
 #footer-content a {
-    color: #dddddd;
+    color: #222222;
     text-decoration: none;
 }
 
@@ -161,12 +162,12 @@ footer {
 }
 
 #others a {
-    color: #ffffff;
+    color: #333333;
     text-decoration: none;
     margin: 0.5rem;
     padding: 0.25rem 0.5rem;
     border-radius: 3px;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(30, 30, 30, 0.2);
     transition: background-color 0.3s;
 }
 a.hflink{
@@ -174,7 +175,7 @@ a.hflink{
 }
 
 #others a:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(30, 30, 30, 0.2);
 }
 
 a.hflink{
