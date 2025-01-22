@@ -21,7 +21,7 @@
                     var originalText = copyButton.innerHTML;
                     copyButton.innerHTML = 'In Zwischenablage kopiert!';
                     copyButton.disabled = true;
-                    setTimeout(function() {
+                    setTimeout(function () {
                         copyButton.innerHTML = originalText;
                         copyButton.disabled = false;
                     }, 2000);
@@ -30,21 +30,25 @@
                     console.error('Fehler beim Kopieren in die Zwischenablage: ', err);
                 });
         }
+
         function regenerateId() {
             location.reload();
         }
     </script>
 </head>
 <body>
-    {{ .recruitingMessage }}<!-- We pass the HTML comment / recruiting ad as a parameter because the HTML comment was stripped from the template -->
-    <header>
-        <h2>Technische Ressource Id-Generator</h2>
-    </header>
-    
-    <main>
+{{ .recruitingMessage }}
+<!-- We pass the HTML comment / recruiting ad as a parameter because the HTML comment was stripped from the template -->
+<header>
+    <h2>Technische Ressource Id-Generator</h2>
+</header>
+
+<main>
+    <div id="content-and-navbar">
         <div id="content">
             <h1 class="{{ .issuer }}" title="Eine zufällige Technische Ressourcen-ID mit gültiger Prüfziffer">
-                <span class="tr-id">{{ .trIdWithoutChecksum }}</span><span class="checksum" title="Prüfziffer {{ .checksum }}">{{ .checksum }}</span>
+                <span class="tr-id">{{ .trIdWithoutChecksum }}</span><span class="checksum"
+                                                                           title="Prüfziffer {{ .checksum }}">{{ .checksum }}</span>
             </h1>
             <div class="button-container">
                 <button id="copyButton" onclick="copyToClipboard()">
@@ -55,20 +59,29 @@
                 </button>
             </div>
         </div>
-    </main>
-
-    <footer>
         <nav id="others">
             <a href="https://markt.lokations.id/">MaLo</a>
             <a href="https://mess.lokations.id/">MeLo</a>
             <a href="https://netz.lokations.id/">NeLo</a>
             <a href="https://steuerbare.ressource.id/">SR</a>
-            <a href="https://technische.ressource.id/">TR</a>
+            <a class="selected" href="https://technische.ressource.id/">TR</a>
         </nav>
-        <div id="footer-content">
-            <p>made with ♡ by <a href="https://hochfrequenz.de/" class="hflink">Hochfrequenz</a></p>
-            <p><a href="https://www.hochfrequenz.de/datenschutz/">Datenschutz</a> | <a href="https://www.hochfrequenz.de/impressum/">Impressum</a> | <a href="https://www.hochfrequenz.de/kontakt/">Kontakt</a> | <a href="https://github.com/Hochfrequenz/malo-id-generator">GitHub</a></p>
-        </div>
-    </footer>
+    </div>
+</main>
+<div id="solutions">
+    <a class="ahbesser" href="https://ahbtabellen.hochfrequenz.de">AHB-Tabellen</a>
+    <a class="fristenkalender" href="https://fristenkalender.hochfrequenz.de">Fristenkalender</a>
+    <a class="ahahnb" href="https://bedingungsbaum.hochfrequenz.de">Bedingungsbaum</a>
+    <a class="entscheidungsbaum" href="https://ebd.hochfrequenz.de">Entscheidungsbaumdiagramm</a>
+</div>
+<footer>
+    <div id="footer-content">
+        <p>made with ♡ by <a href="https://hochfrequenz.de/" class="hflink">Hochfrequenz</a> |
+            <a href="https://www.hochfrequenz.de/datenschutz/">Datenschutz</a> | <a
+                    href="https://www.hochfrequenz.de/impressum/">Impressum</a> | <a
+                    href="https://www.hochfrequenz.de/kontakt/">Kontakt</a> | <a
+                    href="https://github.com/Hochfrequenz/malo-id-generator">GitHub</a></p>
+    </div>
+</footer>
 </body>
 </html>
