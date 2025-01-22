@@ -3,7 +3,6 @@
     --primary-color: #6eb52c;
     --secondary-color: #e94c74;
     --background-color: #f3f1f6;
-    --text-color: #333333;
 }
 
 @font-face {
@@ -25,7 +24,7 @@
 body {
     font-family: 'Roboto, Roboto Condensed', sans-serif;
     background-color: var(--pastel-gruen);
-    color: var(--text-color);
+    color: var(--weiches-schwarz);
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -33,15 +32,20 @@ body {
 
 header {
     background-color: var(--grell-gruen);
-    color: #ffffff;
-    text-align: center;
+    color: var(--weiches-schwarz);
+    background-image: url(/symbol);
+    background-position: left+20px center;
+    background-size: 2rem;
+    background-repeat: no-repeat;
+    text-align: left;
     padding: 1rem;
+    padding-left:4rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 header h2 {
     /*font-size: 1.5rem;*/
-    font-size: xxx-large;
+    font-size: xx-large;
     /*font-weight: 300;*/
     font-family: 'Yanone Kaffeesatz', sans-serif;
 }
@@ -64,7 +68,7 @@ main {
 
 h1 {
     font-size: 3rem;
-    color: var(--primary-color);
+    color: var(--weiches-schwarz);
     margin-bottom: 1rem;
     font-family: 'Roboto Condensed', sans-serif;
 }
@@ -75,7 +79,7 @@ h1 {
 }
 
 .checksum {
-    color: var(--secondary-color);
+    color: var(--grell-gruen);
     font-weight: bold;
 }
 
@@ -119,7 +123,7 @@ button.copied:after {
 }
 
 #copyButton {
-    background-color: #4CAF50;
+    background-color: var(--grell-gruen);
     color: white;
 }
 
@@ -139,11 +143,10 @@ button.copied:after {
 
 footer {
     background-color: var(--grell-gruen);
-    color: #000000;
-    background-color: var(--footer-bg-color);
+    color: var(--weiches-schwarz);
     background-image: url(/logo);
     background-repeat: no-repeat;
-    background-position: left center;
+    background-position: left+20px center;
     background-size: 15%;
     padding: 1rem;
     text-align: center;
@@ -169,7 +172,7 @@ footer {
 }
 
 #others a {
-    color: #333333;
+    color: var(--weiches-schwarz);
     text-decoration: none;
     margin: 0.5rem;
     padding: 0.25rem 0.5rem;
@@ -183,7 +186,12 @@ a.hflink {
 }
 
 #others a:hover {
-    background-color: rgba(30, 30, 30, 0.2);
+    background-color: rgba(30, 30, 30, 0.4);
+}
+
+#others .selected {
+    background-color: rgba(30, 30, 30, 0.9);
+    color: white;
 }
 
 a.hflink {

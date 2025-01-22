@@ -42,6 +42,7 @@
     </header>
     
     <main>
+        <div id="content-and-navbar">
         <div id="content">
             <h1 class="{{ .issuer }}" title="Eine zufällige MaLo-ID mit gültiger Prüfziffer (Vergabestelle {{ .issuer }})">
                 <span class="malo-id">{{ .maLoIdWithoutChecksum }}</span><span class="checksum" title="Prüfziffer {{ .checksum }}">{{ .checksum }}</span>
@@ -54,13 +55,14 @@
                     <i class="fas fa-redo"></i> Neu generieren
                 </button>
             </div>
-            <nav id="others">
-                <a href="https://markt.lokations.id/">MaLo</a>
-                <a href="https://mess.lokations.id/">MeLo</a>
-                <a href="https://netz.lokations.id/">NeLo</a>
-                <a href="https://steuerbare.ressource.id/">SR</a>
-                <a href="https://technische.ressource.id/">TR</a>
-            </nav>
+        </div>
+        <nav id="others">
+            <a class="selected" href="https://markt.lokations.id/">MaLo</a>
+            <a href="https://mess.lokations.id/">MeLo</a>
+            <a href="https://netz.lokations.id/">NeLo</a>
+            <a href="https://steuerbare.ressource.id/">SR</a>
+            <a href="https://technische.ressource.id/">TR</a>
+        </nav>
         </div>
     </main>
 
