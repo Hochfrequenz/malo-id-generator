@@ -32,8 +32,7 @@ func NewRouter() *gin.Engine {
 	router.GET("/", generateRandomId)
 	router.GET("/style", stylesheetHandler)
 	router.GET("/hfstyle", hochfrequenzStylesheetHandler)
-	router.GET("/yanone-kaffeesatz-bold", yanoneKaffeesatzBoldHandler)
-	router.GET("/roboto-condensed-regular", robotoCondensedRegularHandler)
+	router.GET("/roboto-regular", robotoRegularHandler)
 	router.GET("/logo", logoHandler)
 	router.GET("/symbol", symbolHandler)
 	router.GET("/favicon", faviconHandler)
@@ -92,11 +91,8 @@ var stylesheet embed.FS
 //go:embed static/companystylesheet/css/hochfrequenz.css
 var hochfrequenzStylesheet embed.FS
 
-//go:embed static/companystylesheet/fonts/Roboto_Condensed/RobotoCondensed-Regular.ttf
+//go:embed static/companystylesheet/fonts/Roboto/Roboto-Regular.ttf
 var robotoRegularFont embed.FS
-
-//go:embed static/companystylesheet/fonts/YanoneKaffeesatzTTF/YanoneKaffeesatz-Bold.ttf
-var yanoneBoldFont embed.FS
 
 //go:embed static/companystylesheet/logo_weiss.png
 var hfLogo embed.FS
@@ -134,18 +130,8 @@ func hochfrequenzStylesheetHandler(c *gin.Context) {
 	c.Data(http.StatusOK, "text/css", stylesheetBody)
 }
 
-// returns the yanone kaffeesatz (bold) ttf
-func yanoneKaffeesatzBoldHandler(c *gin.Context) {
-	body, err := yanoneBoldFont.ReadFile("static/companystylesheet/fonts/YanoneKaffeesatzTTF/YanoneKaffeesatz-Bold.ttf")
-	if err != nil {
-		response := map[string]string{}
-		c.JSON(http.StatusNotFound, response)
-	}
-	c.Data(http.StatusOK, "font/ttf", body)
-}
-
-func robotoCondensedRegularHandler(c *gin.Context) {
-	ttfBody, err := robotoRegularFont.ReadFile("static/companystylesheet/fonts/Roboto_Condensed/RobotoCondensed-Regular.ttf")
+func robotoRegularHandler(c *gin.Context) {
+	ttfBody, err := robotoRegularFont.ReadFile("static/companystylesheet/fonts/Roboto/Roboto-Regular.ttf")
 	if err != nil {
 		response := map[string]string{}
 		c.JSON(http.StatusNotFound, response)
