@@ -229,6 +229,10 @@ a.hflink {
     font-weight: bold;
 }
 
+.heart {
+    font-size: x-large;
+}
+
 @media (max-width: 600px) {
     h1 {
         font-size: 2rem;
