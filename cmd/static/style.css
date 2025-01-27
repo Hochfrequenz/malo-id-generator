@@ -18,7 +18,7 @@
 
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: var(--pastel-gruen);
+    background-color: var(--pastell-gruen);
     color: var(--weiches-schwarz);
     display: flex;
     flex-direction: column;
