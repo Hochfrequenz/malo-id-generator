@@ -204,7 +204,7 @@ a.hflink {
     color: white;
     text-decoration: none;
     margin: 0.5rem;
-    padding: 0.25rem 0.5rem;
+    padding: 0.5rem 1rem;
     border-radius: 1rem; /* twice the padding to have a perfectly round shape left and right */
     /* each button has their own background-color */
     transition: background-color 0.3s;
