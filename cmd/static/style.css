@@ -104,7 +104,8 @@ button.copied:after {
 .button-container {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 3.35rem; /* intended purpose: the copy button left edge and regenerate button right edge are aligned with the MaLo-button left edge and the TR-button right edge*/
+    /* See Screenshot in PR https://github.com/Hochfrequenz/malo-id-generator/pull/175 */
     margin-top: 20px;
 }
 
@@ -203,7 +204,7 @@ a.hflink {
     color: white;
     text-decoration: none;
     margin: 0.5rem;
-    padding: 0.25rem 0.5rem;
+    padding: 0.5rem 1rem;
     border-radius: 1rem; /* twice the padding to have a perfectly round shape left and right */
     /* each button has their own background-color */
     transition: background-color 0.3s;
