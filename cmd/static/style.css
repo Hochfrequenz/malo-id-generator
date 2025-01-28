@@ -104,7 +104,8 @@ button.copied:after {
 .button-container {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 3.35rem; /* intended purpose: the copy button left edge and regenerate button right edge are aligned with the MaLo-button left edge and the TR-button right edge*/
+    /* See Screenshot in PR https://github.com/Hochfrequenz/malo-id-generator/pull/175 */
     margin-top: 20px;
 }
 
