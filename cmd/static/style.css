@@ -138,7 +138,7 @@ button.copied:after {
 }
 
 footer {
-    background-color: var(--grell-gruen);
+    background-color: var(--pastell-gruen);
     color: var(--weiches-schwarz);
     background-image: url(/logo);
     background-repeat: no-repeat;
