@@ -83,7 +83,7 @@ main {
 #content {
     text-align: center;
     background-color: #ffffff;
-    border-radius: 10px;
+    border-radius: 1.5rem;
     padding: 2rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -201,7 +201,7 @@ footer {
     margin: 0.5rem;
     padding: 0.25rem 0.5rem;
     border-radius: 1rem; /* twice the padding to have a perfectly round shape left and right */
-    background-color: rgba(30, 30, 30, 0.2);
+    background-color: var(--off-white);
     transition: background-color 0.3s;
 }
 
@@ -214,8 +214,8 @@ a.hflink {
 }
 
 #others .selected {
-    background-color: rgba(30, 30, 30, 0.9);
-    color: white;
+    background-color: var(--weiches-schwarz);
+    color: var(--off-white);
 }
 
 #solutions {
