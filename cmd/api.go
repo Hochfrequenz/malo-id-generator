@@ -33,6 +33,8 @@ func NewRouter() *gin.Engine {
 	router.GET("/style", stylesheetHandler)
 	router.GET("/hfstyle", hochfrequenzStylesheetHandler)
 	router.GET("/roboto-regular", robotoRegularHandler)
+	router.GET("/roboto-medium", robotoMediumHandler)
+	router.GET("/roboto-bold", robotoBoldHandler)
 	router.GET("/logo", logoHandler)
 	router.GET("/symbol", symbolHandler)
 	router.GET("/favicon", faviconHandler)
