@@ -33,6 +33,8 @@ func NewRouter() *gin.Engine {
 	router.GET("/style", stylesheetHandler)
 	router.GET("/hfstyle", hochfrequenzStylesheetHandler)
 	router.GET("/roboto-regular", robotoRegularHandler)
+	router.GET("/roboto-medium", robotoMediumHandler)
+	router.GET("/roboto-bold", robotoBoldHandler)
 	router.GET("/logo", logoHandler)
 	router.GET("/symbol", symbolHandler)
 	router.GET("/favicon", faviconHandler)
@@ -94,6 +96,12 @@ var hochfrequenzStylesheet embed.FS
 //go:embed static/companystylesheet/fonts/Roboto/Roboto-Regular.ttf
 var robotoRegularFont embed.FS
 
+//go:embed static/companystylesheet/fonts/Roboto/Roboto-Medium.ttf
+var robotoMediumFont embed.FS
+
+//go:embed static/companystylesheet/fonts/Roboto/Roboto-Bold.ttf
+var robotoBoldFont embed.FS
+
 //go:embed static/companystylesheet/logo_weiss.png
 var hfLogo embed.FS
 
@@ -132,6 +140,24 @@ func hochfrequenzStylesheetHandler(c *gin.Context) {
 
 func robotoRegularHandler(c *gin.Context) {
 	ttfBody, err := robotoRegularFont.ReadFile("static/companystylesheet/fonts/Roboto/Roboto-Regular.ttf")
+	if err != nil {
+		response := map[string]string{}
+		c.JSON(http.StatusNotFound, response)
+	}
+	c.Data(http.StatusOK, "font/ttf", ttfBody)
+}
+
+func robotoMediumHandler(c *gin.Context) {
+	ttfBody, err := robotoMediumFont.ReadFile("static/companystylesheet/fonts/Roboto/Roboto-Medium.ttf")
+	if err != nil {
+		response := map[string]string{}
+		c.JSON(http.StatusNotFound, response)
+	}
+	c.Data(http.StatusOK, "font/ttf", ttfBody)
+}
+
+func robotoBoldHandler(c *gin.Context) {
+	ttfBody, err := robotoBoldFont.ReadFile("static/companystylesheet/fonts/Roboto/Roboto-Bold.ttf")
 	if err != nil {
 		response := map[string]string{}
 		c.JSON(http.StatusNotFound, response)
