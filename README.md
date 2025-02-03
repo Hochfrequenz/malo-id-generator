@@ -121,4 +121,5 @@ func azure functionapp publish melo-id-generator
 func azure functionapp publish nelo-id-generator
 func azure functionapp publish sr-id-generator
 func azure functionapp publish tr-id-generator
+
 ```
