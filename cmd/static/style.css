@@ -102,7 +102,7 @@ h1 {
 
 .checksum {
     color: var(--grell-gruen);
-    font-weight: bold;
+    font-weight: 700; /* has to match the weight of Roboto Bold font-face */
 }
 
 button {
@@ -206,7 +206,7 @@ footer {
 }
 
 a.hflink {
-    font-weight: bold;
+    font-weight: 700; /* has to match the weight of Roboto Bold font-face */
 }
 
 #others a:hover {
@@ -254,7 +254,7 @@ a.hflink {
 }
 
 a.hflink {
-    font-weight: bold;
+    font-weight: 700; /* has to match the weight of Roboto Bold font-face */
 }
 
 .heart {
