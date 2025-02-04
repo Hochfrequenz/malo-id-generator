@@ -259,9 +259,11 @@ a.hflink {
 }
 
 .heart {
-    font-size: x-large;
+    width: 1rem;
+    height: 1rem;
+    background-size: contain;
+    display: inline-flex;
 }
-
 @media (max-width: 600px) {
     h1 {
         font-size: 2rem;
