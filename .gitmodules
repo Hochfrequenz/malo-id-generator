@@ -1,3 +1,0 @@
-[submodule "companystylesheet"]
-	path = cmd/static/companystylesheet
-	url = https://github.com/Hochfrequenz/companystylesheet
