@@ -13,6 +13,7 @@
 
 🇬🇧 This repository contains
 an [Azure Function with a Go Handler](https://docs.microsoft.com/en-us/azure/azure-functions/create-first-function-vs-code-other?tabs=go%2Cwindows) which is deployed to [netz.lokations.id](https://netz.lokations.id) and [markt.lokations.id](https://markt.lokations.id).
+The tech stack is historically grown and not a good choice - but it works 😉
 
 Its purpose is to
 
