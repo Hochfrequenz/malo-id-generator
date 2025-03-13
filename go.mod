@@ -1,6 +1,9 @@
 module github.com/hochfrequenz/malo-id-generator
 
-go 1.23
+go 1.23.0
+
+toolchain go1.23.1
+
 require (
 	github.com/corbym/gocrest v1.1.2
 	github.com/gin-gonic/gin v1.10.0
