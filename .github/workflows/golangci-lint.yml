@@ -15,6 +15,9 @@ jobs:
         with:
           go-version: ${{ matrix.go-version }}
       - uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+          ref: ${{ github.event.workflow_run.head_branch }}
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v7
         with:
