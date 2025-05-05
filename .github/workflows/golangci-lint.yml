@@ -19,7 +19,7 @@ jobs:
           submodules: 'true'
           ref: ${{ github.event.workflow_run.head_branch }}
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v7
+        uses: golangci/golangci-lint-action@v8
         with:
           version: v2.0.2
           args: --enable dupl,goconst,goconst,gocyclo
