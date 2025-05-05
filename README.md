@@ -33,6 +33,7 @@ It's a super basic website with three "pseudo files":
 1. [`/` (root)](https://malo-id-generator.azurewebsites.net/) that returns a basic HTML site which refers to (this is the main entry point for users)
 2. `/api/favicon` (returns a favicon) and refers to
 3. `/api/style` (returns a stylesheet)
+4. `/json` returns a JSON payload with the generated ID
 
 The files are not really served as plain files as you would expect it from a usual web app setup, but they are all separate Azure Functions and hence have their own respective `function.json`.
 
