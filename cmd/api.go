@@ -29,7 +29,8 @@ func NewRouter() *gin.Engine {
 	// router.LoadHTMLGlob("cmd/static/templates/*.html") // see https://gin-gonic.com/docs/examples/html-rendering/
 	// the following pathes have to match the name of the respective azure function or its route (if set, e.g. in case of function generate-malo-id whose route in function.json is "/")
 	// see this SO answer: https://stackoverflow.com/a/76419027/10009545
-	router.GET("/", generateRandomId)
+	router.GET("/", generateRandomIdHtml)
+	router.GET("/json", generateRandomIdJson)
 	router.GET("/style", stylesheetHandler)
 	router.GET("/hfstyle", hochfrequenzStylesheetHandler)
 	router.GET("/roboto-regular", robotoRegularHandler)
@@ -68,13 +69,22 @@ func getIdGenerator() (IdGenerator, error) {
 	return nil, fmt.Errorf("no value set for environment variable 'ID_TYPE_TO_GENERATE'. Supported values are 'MALO', 'NELO', 'MELO', 'TRID' and 'SRID'")
 }
 
-func generateRandomId(c *gin.Context) {
+func generateRandomIdHtml(c *gin.Context) {
 	generator, err := getIdGenerator()
 	if err != nil {
 		c.JSON(501, gin.H{"error": err.Error()})
 		return
 	}
 	generator.GenerateId(c)
+}
+
+func generateRandomIdJson(c *gin.Context) {
+	generator, err := getIdGenerator()
+	if err != nil {
+		c.JSON(501, gin.H{"error": err.Error()})
+		return
+	}
+	generator.GenerateIdRaw(c)
 }
 
 func getPort() string {

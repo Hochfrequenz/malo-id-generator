@@ -1,6 +1,7 @@
 package main_test
 
 import (
+	"encoding/json"
 	"github.com/corbym/gocrest/is"
 	"github.com/corbym/gocrest/then"
 	"github.com/hochfrequenz/malo-id-generator/cmd"
@@ -16,6 +17,10 @@ import (
 
 type Suite struct {
 	suite.Suite
+}
+
+type JsonResponse struct {
+	Id string `json:"id"`
 }
 
 // SetupSuite sets up the tests
@@ -61,6 +66,18 @@ func (s *Suite) Test_MaLo_Endpoint_Returns_Something_Like_A_MaLo() {
 	then.AssertThat(s.T(), maloPattern.MatchString(responseBody), is.True())
 }
 
+func (s *Suite) Test_MaLo_Json_Endpoint() {
+	err := os.Setenv("ID_TYPE_TO_GENERATE", "malo")
+	then.AssertThat(s.T(), err, is.Nil())
+	router := main.NewRouter()
+	response := performGetRequest(router, "/json")
+	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
+	var jsonResponse JsonResponse
+	err = json.NewDecoder(response.Body).Decode(&jsonResponse)
+	then.AssertThat(s.T(), err, is.Nil())
+	then.AssertThat(s.T(), len(jsonResponse.Id), is.EqualTo(11))
+}
+
 func (s *Suite) Test_NeLo_Endpoint_Returns_Something_Like_A_NeLo() {
 	err := os.Setenv("ID_TYPE_TO_GENERATE", "nelo")
 	then.AssertThat(s.T(), err, is.Nil())
@@ -70,6 +87,19 @@ func (s *Suite) Test_NeLo_Endpoint_Returns_Something_Like_A_NeLo() {
 	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
 	responseBody := response.Body.String()
 	then.AssertThat(s.T(), neloPattern.MatchString(responseBody), is.True())
+}
+
+func (s *Suite) Test_NeLo_Json_Endpoint() {
+	err := os.Setenv("ID_TYPE_TO_GENERATE", "nelo")
+	then.AssertThat(s.T(), err, is.Nil())
+	router := main.NewRouter()
+	response := performGetRequest(router, "/json")
+	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
+	var jsonResponse JsonResponse
+	err = json.NewDecoder(response.Body).Decode(&jsonResponse)
+	then.AssertThat(s.T(), err, is.Nil())
+	then.AssertThat(s.T(), len(jsonResponse.Id), is.EqualTo(11))
+	then.AssertThat(s.T(), jsonResponse.Id[0:1], is.EqualTo("E"))
 }
 
 func (s *Suite) Test_MeLo_Endpoint_Returns_Something_Like_A_MeLo() {
@@ -84,6 +114,19 @@ func (s *Suite) Test_MeLo_Endpoint_Returns_Something_Like_A_MeLo() {
 	then.AssertThat(s.T(), containsDe, is.True())
 }
 
+func (s *Suite) Test_MeLo_Json_Endpoint() {
+	err := os.Setenv("ID_TYPE_TO_GENERATE", "melo")
+	then.AssertThat(s.T(), err, is.Nil())
+	router := main.NewRouter()
+	response := performGetRequest(router, "/json")
+	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
+	var jsonResponse JsonResponse
+	err = json.NewDecoder(response.Body).Decode(&jsonResponse)
+	then.AssertThat(s.T(), err, is.Nil())
+	then.AssertThat(s.T(), len(jsonResponse.Id), is.EqualTo(33))
+	then.AssertThat(s.T(), jsonResponse.Id[0:2], is.EqualTo("DE"))
+}
+
 func (s *Suite) Test_TRID_Endpoint_Returns_Something_Like_A_TRID() {
 	err := os.Setenv("ID_TYPE_TO_GENERATE", "trid")
 	then.AssertThat(s.T(), err, is.Nil())
@@ -93,6 +136,19 @@ func (s *Suite) Test_TRID_Endpoint_Returns_Something_Like_A_TRID() {
 	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
 	responseBody := response.Body.String()
 	then.AssertThat(s.T(), tridPattern.MatchString(responseBody), is.True())
+}
+
+func (s *Suite) Test_TR_Json_Endpoint() {
+	err := os.Setenv("ID_TYPE_TO_GENERATE", "trid")
+	then.AssertThat(s.T(), err, is.Nil())
+	router := main.NewRouter()
+	response := performGetRequest(router, "/json")
+	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
+	var jsonResponse JsonResponse
+	err = json.NewDecoder(response.Body).Decode(&jsonResponse)
+	then.AssertThat(s.T(), err, is.Nil())
+	then.AssertThat(s.T(), len(jsonResponse.Id), is.EqualTo(11))
+	then.AssertThat(s.T(), jsonResponse.Id[0:1], is.EqualTo("D"))
 }
 
 func (s *Suite) Test_SRID_Endpoint_Returns_Something_Like_A_SRID() {
@@ -106,6 +162,18 @@ func (s *Suite) Test_SRID_Endpoint_Returns_Something_Like_A_SRID() {
 	then.AssertThat(s.T(), sridPattern.MatchString(responseBody), is.True())
 }
 
+func (s *Suite) Test_SR_Json_Endpoint() {
+	err := os.Setenv("ID_TYPE_TO_GENERATE", "srid")
+	then.AssertThat(s.T(), err, is.Nil())
+	router := main.NewRouter()
+	response := performGetRequest(router, "/json")
+	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
+	var jsonResponse JsonResponse
+	err = json.NewDecoder(response.Body).Decode(&jsonResponse)
+	then.AssertThat(s.T(), err, is.Nil())
+	then.AssertThat(s.T(), len(jsonResponse.Id), is.EqualTo(11))
+	then.AssertThat(s.T(), jsonResponse.Id[0:1], is.EqualTo("C"))
+}
 func (s *Suite) Test_Stylesheet_Is_Returned() {
 	router := main.NewRouter()
 	response := performGetRequest(router, "/style")
