@@ -7,7 +7,7 @@ toolchain go1.24.1
 require (
 	github.com/corbym/gocrest v1.1.2
 	github.com/gin-gonic/gin v1.11.0
-	github.com/hochfrequenz/go-bo4e v0.61.0
+	github.com/hochfrequenz/go-bo4e v0.62.0
 	github.com/stretchr/testify v1.11.1
 )
 
