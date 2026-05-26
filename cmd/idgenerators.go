@@ -33,7 +33,7 @@ const recruitingMessage string = `<!--
              (__)\       )\/\
                  ||----w |
                  ||     ||
-https://www.hochfrequenz.de/karriere/stellenangebote/full-stack-entwickler/
+https://www.hochfrequenz.de/jobs/
 -->`
 
 // allowedMaLoCharacters contains those characters that are used to create new malo ids
