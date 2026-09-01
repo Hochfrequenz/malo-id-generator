@@ -65,6 +65,9 @@ jobs:
           chmod +x package/api
 
       - name: Log in to Azure
+        # OIDC is not optional here: with a publish profile the action falls back to Kudu zipdeploy,
+        # which Microsoft does not support for Linux Consumption apps whose project contains an
+        # executable - see https://github.com/Azure/functions-action#authentication-methods
         uses: azure/login@v3
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}

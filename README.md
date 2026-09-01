@@ -98,18 +98,29 @@ Start it manually from the [Actions tab](https://github.com/Hochfrequenz/malo-id
 ("Run workflow"), or publish a Github release.
 
 The workflow authenticates with a [federated credential](https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure-openid-connect)
-instead of a stored password, so these three repository secrets have to exist:
+instead of a stored password. This is not a preference: the Azure/functions-action documentation
+states that [publish profile authentication is unsupported](https://github.com/Azure/functions-action#authentication-methods)
+when the app runs on Linux in a Consumption plan and the project contains an executable file - which
+is exactly this repo, with its `api` custom handler. OIDC is the only supported option here.
+
+Three repository secrets have to exist:
 
 | Secret | What it is |
 |--------|------------|
-| `AZURE_CLIENT_ID` | application (client) ID of the app registration that is allowed to deploy |
+| `AZURE_CLIENT_ID` | client ID of the identity that is allowed to deploy |
 | `AZURE_TENANT_ID` | directory (tenant) ID |
 | `AZURE_SUBSCRIPTION_ID` | the subscription that holds the `malo-id-generator` resource group |
 
-The app registration needs a federated credential for this repository and the `Contributor` role
-(or something narrower) on the resource group. Deployments run in the `Production`
+The identity needs a federated credential whose subject matches this repository and the `Production`
+environment, plus a role that includes `Microsoft.Web/sites/config/list/action` - the action reads
+the app settings and the SCM credentials through ARM before it uploads. Microsoft's documented
+minimum is [`Website Contributor`](https://github.com/Azure/functions-action#use-oidc-recommended),
+which is narrower than `Contributor`.
+
+Deployments run in the `Production`
 [environment](https://github.com/Hochfrequenz/malo-id-generator/settings/environments), so required
-reviewers can be configured there.
+reviewers can be configured there. The exact `az` commands are written up in
+[#271](https://github.com/Hochfrequenz/malo-id-generator/issues/271).
 
 `lobue-id-generator` is not in the workflow's list of function apps yet, because the function app
 does not exist yet - see [#268](https://github.com/Hochfrequenz/malo-id-generator/issues/268).
