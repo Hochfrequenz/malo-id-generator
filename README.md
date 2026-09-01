@@ -30,6 +30,9 @@ Its purpose is to
 
 The business logic is written in Go using [Gin Gonic](https://gin-gonic.com/) and can be found in [cmd/api.go](cmd/api.go).
 
+Why each ID type gets its own Azure Function App, rather than all six sites being served by a single
+container: [docs/hosting-cost-analysis.md](docs/hosting-cost-analysis.md).
+
 It's a super basic website with three "pseudo files":
 
 1. [`/` (root)](https://malo-id-generator.azurewebsites.net/) that returns a basic HTML site which refers to (this is the main entry point for users)
@@ -62,8 +65,8 @@ func start
 
 ## CI/CD
 
-This function app is managed in two separate Azure Function Apps.
-Both Function apps are assigned to the [malo-id-generator resource group on Azure](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourceGroups/malo-id-generator/overview).
+This function app is managed in several separate Azure Function Apps.
+They are all assigned to the [malo-id-generator resource group on Azure](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourceGroups/malo-id-generator/overview).
 There is one function app instance per supported ID type.
 This is because to use the function app directly behind top level domain registered in Azure, its respective entry point must be a top level domain itself without any further, relative path (e.g. `foobarsomerandomstring.azurewebsites.net` and _not_ `foobarsomerandomstring.azurewebsites.net/malo`).
 
