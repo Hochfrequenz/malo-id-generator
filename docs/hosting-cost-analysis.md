@@ -20,7 +20,7 @@ most conclusions below flip only at 30x this traffic.
 
 | Option | Fixed €/month at zero traffic | Realistic total | Cold start |
 |---|---|---|---|
-| **Six Consumption (Y1) Function Apps** — status quo | €0 compute + storage | **€0.20–1** | 2–5 s, no mitigation available |
+| **Six Consumption (Y1) Function Apps** — status quo | €0 compute + storage | **€0.20–1** | 2–5 s, not mitigable without changing plan |
 | Six Flex Consumption apps | €0 | €0–1 | still present without always-ready instances |
 | Six Flex apps with 1 always-ready instance each | €4.46/app | €27 | none |
 | **One Container App**, min replicas 0, image from ghcr.io | €0 | **€0, worst case €2.60** | ~1–3 s for a small Go image |
@@ -90,10 +90,17 @@ managed certificates are still preview.
 
 ### Cold start is the honest UX cost
 
-The Azure Functions documentation lists cold-start mitigation for the Consumption plan as literally
-*"None — cold starts are expected in this plan."* For a custom handler the platform starts the
-Functions host *and* the Go process, so expect **2–5 s** on an idle site. Consumption scales to zero
-after "a few minutes" (no exact figure published; observed ~20 min).
+The Consumption plan's documented cold-start behaviour is that *"apps can scale to zero when idle,
+meaning some requests might have more latencies at startup"*, while noting that the plan *"does have
+some optimizations to help decrease cold start time, including pulling from prewarmed placeholder
+functions that already have the host and language processes running"*. Those placeholders do not help
+a **custom handler**, though: the placeholder has the host and a *language* process warm, and our Go
+binary is neither. So expect **2–5 s** on an idle site. Consumption scales to zero after "a few
+minutes" (no exact figure published; observed ~20 min).
+
+What Azure does document as flatly unavailable on Consumption is *dedicated compute* to mitigate cold
+starts — the "Dedicated compute (mitigate cold starts)" row of the plan comparison table is "None"
+for Consumption. Buying the cold start away means changing plan.
 
 Container Apps scales to zero after **exactly 300 seconds** (KEDA cool-down, documented). What
 matters there is therefore not the request count but **how many separate 5-minute windows requests
@@ -119,8 +126,10 @@ per day**. Office-hours human traffic clusters well inside that.
 - **F1 / D1 / Shared cannot host these sites.** Free F1 has no custom domains; Shared/D1 has no
   custom TLS bindings and is Windows-only. **B1 is the hard floor** for App Service with custom
   domains and TLS.
-- **Container Apps "express"** has subsecond scale-from-zero at the same price, but does not support
-  custom domains yet and is limited to two regions. Worth re-checking in 6–12 months.
+- **Container Apps "express"** has subsecond scale-from-zero at the same price and is in public
+  preview in ~41 regions including West Europe, so availability is not the obstacle — but it does not
+  support custom domains yet, which for these sites is disqualifying on its own. That single gap is
+  what to re-check.
 
 ## If a migration does happen
 
@@ -137,6 +146,22 @@ Also worth weighing: consolidating **flips the blast radius**. Today a bad deplo
 with one app it breaks all six. In exchange, the "somebody forgot to publish one of them" failure
 mode disappears — which is the one that actually occurred (see #268).
 
+## Verification
+
+Every numeric claim above was independently re-checked against primary sources on 2026-09-01 by a
+second pass that did not see the first one's work. Thirteen of fifteen load-bearing claims confirmed
+verbatim; two were corrected in the process:
+
+- the Consumption cold-start wording (an earlier draft quoted a "None - cold starts are expected in
+  this plan" line that does not exist in the current documentation), and
+- the Container Apps express region count (an earlier draft said two regions; it is ~41).
+
+The `Environment Management Hour` repricing was confirmed exactly: two records share one meter ID,
+the $0.01 one ending 2026-08-31 and the $0.143 one starting 2026-09-01, and the same 0.01 -> 0.143
+change also hit `Environment Private Endpoint Hour` and `Environment Planned Maintenance Hour`. So it
+is a broad environment-meter repricing rather than an anomaly - and still not documented as applying
+to a plain Consumption environment.
+
 ## Sources
 
 - [Azure Retail Prices API](https://prices.azure.com/api/retail/prices) (`armRegionName eq 'westeurope'`)
@@ -145,7 +170,8 @@ mode disappears — which is the one that actually occurred (see #268).
 - [Custom domains and free managed certificates in Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/custom-domains-managed-certificates)
 - [Log storage and monitoring options in Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/log-options)
 - [Estimating consumption-based costs in Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/functions-consumption-costs)
-- [Event-driven scaling in Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/event-driven-scaling)
+- [Azure Functions scale and hosting](https://learn.microsoft.com/en-us/azure/azure-functions/functions-scale) (cold-start behaviour, custom domain CNAME-only footnote)
+- [Azure Container Apps express overview](https://learn.microsoft.com/en-us/azure/container-apps/express-overview)
 - [Storage considerations for Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/storage-considerations)
 - [Azure Functions Flex Consumption plan](https://learn.microsoft.com/en-us/azure/azure-functions/flex-consumption-plan)
 - [Install a TLS/SSL certificate for your app](https://learn.microsoft.com/en-us/azure/app-service/configure-ssl-certificate)
