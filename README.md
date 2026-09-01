@@ -88,9 +88,35 @@ For your local tests you can modify the value in the `local.settings.json` file.
 
 ### How To Deploy
 
-There is _no_ automatic deployment yet (fixable with docker).
+Deployment runs in Github Actions: [`deploy.yml`](.github/workflows/deploy.yml) builds the custom
+handler for linux, assembles the same package that `func azure functionapp publish` would upload
+(the `api` binary, `host.json` and one directory per function) and pushes it to every function app
+in one go.
 
-To deploy:
+It is **not** triggered by pushes to `main` - a merge should not deploy to production on its own.
+Start it manually from the [Actions tab](https://github.com/Hochfrequenz/malo-id-generator/actions/workflows/deploy.yml)
+("Run workflow"), or publish a Github release.
+
+The workflow authenticates with a [federated credential](https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure-openid-connect)
+instead of a stored password, so these three repository secrets have to exist:
+
+| Secret | What it is |
+|--------|------------|
+| `AZURE_CLIENT_ID` | application (client) ID of the app registration that is allowed to deploy |
+| `AZURE_TENANT_ID` | directory (tenant) ID |
+| `AZURE_SUBSCRIPTION_ID` | the subscription that holds the `malo-id-generator` resource group |
+
+The app registration needs a federated credential for this repository and the `Contributor` role
+(or something narrower) on the resource group. Deployments run in the `Production`
+[environment](https://github.com/Hochfrequenz/malo-id-generator/settings/environments), so required
+reviewers can be configured there.
+
+`lobue-id-generator` is not in the workflow's list of function apps yet, because the function app
+does not exist yet - see [#268](https://github.com/Hochfrequenz/malo-id-generator/issues/268).
+
+#### Deploying by hand
+
+Should the workflow be unavailable, the manual route still works.
 
 First **build** locally for linux (note that the build is the same for all ID types, only the env var is different)
 

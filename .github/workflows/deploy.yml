@@ -1,0 +1,78 @@
+name: Deploy
+
+# Deployment used to be six manual `func azure functionapp publish <app>` calls from a
+# developer machine, which needed the Azure Function Core Tools, an `az login` and a
+# hand-set GOOS=linux. This workflow does the same thing, but reproducibly and for every
+# function app at once.
+#
+# It is deliberately NOT triggered by pushes to main: a merge should not deploy to
+# production without someone saying so. Trigger it from the Actions tab, or publish a
+# GitHub release.
+on:
+  workflow_dispatch:
+  release:
+    types:
+      - published
+
+permissions:
+  id-token: write # required for the federated credential (OIDC) login below
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy ${{ matrix.app }}
+    runs-on: ubuntu-latest
+    environment: Production
+    strategy:
+      # one broken function app should not stop the other five from being updated
+      fail-fast: false
+      matrix:
+        app:
+          # lobue-id-generator is missing on purpose: the function app does not exist yet.
+          # Add it here once it has been created, see issue #268.
+          - malo-id-generator
+          - melo-id-generator
+          - nelo-id-generator
+          - sr-id-generator
+          - tr-id-generator
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          submodules: 'true'
+
+      - name: Install Go
+        uses: actions/setup-go@v7
+        with:
+          go-version: 1.27.x
+
+      - name: Build the custom handler
+        # the binary has to be named like the defaultExecutablePath in host.json
+        run: GOOS=linux GOARCH=amd64 go build -o api ./cmd
+
+      - name: Assemble the deployment package
+        # this is what `func azure functionapp publish` uploads: the custom handler binary,
+        # host.json and one directory per function. local.settings.json is deliberately not
+        # included, it only configures the local `func start`.
+        run: |
+          mkdir -p package
+          cp api host.json package/
+          for function_json in */function.json; do
+            function_dir=$(dirname "$function_json")
+            mkdir -p "package/$function_dir"
+            cp "$function_json" "package/$function_dir/"
+          done
+          chmod +x package/api
+
+      - name: Log in to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy to ${{ matrix.app }}
+        uses: Azure/functions-action@v1
+        with:
+          app-name: ${{ matrix.app }}
+          package: package
