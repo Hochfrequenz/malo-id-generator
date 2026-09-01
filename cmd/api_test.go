@@ -199,3 +199,24 @@ func (s *Suite) Test_Favicon_Is_Returned() {
 	response := performGetRequest(router, "/favicon")
 	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
 }
+
+// the three Roboto font endpoints are the only static asset endpoints without a test;
+// they are asserted a little more strictly than the older tests above: the embedded
+// font has to actually arrive at the client, not just a 200 with an empty body
+func (s *Suite) Test_Roboto_Regular_Is_Returned() {
+	s.assertFontIsReturned("/roboto-regular")
+}
+func (s *Suite) Test_Roboto_Medium_Is_Returned() {
+	s.assertFontIsReturned("/roboto-medium")
+}
+func (s *Suite) Test_Roboto_Bold_Is_Returned() {
+	s.assertFontIsReturned("/roboto-bold")
+}
+
+func (s *Suite) assertFontIsReturned(path string) {
+	router := main.NewRouter()
+	response := performGetRequest(router, path)
+	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
+	then.AssertThat(s.T(), response.Header().Get("Content-Type"), is.EqualTo("font/ttf"))
+	then.AssertThat(s.T(), len(response.Body.Bytes()) > 0, is.True())
+}
