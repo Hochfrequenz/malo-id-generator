@@ -115,12 +115,13 @@ or
 ```bash
 func azure functionapp publish nelo-id-generator
 ```
-respectively (and similar for `melo-id-generator`, `sr-id-generator` and `tr-id-generator`).
+respectively (and similar for `lobue-id-generator`, `melo-id-generator`, `sr-id-generator` and `tr-id-generator`).
 
 You have to be logged in (`az login`) using the [Azure CLI Tools](https://docs.microsoft.com/de-de/cli/azure/install-azure-cli-windows?tabs=azure-cli).
 
 #### Deploy them all
 ```bash
+func azure functionapp publish lobue-id-generator
 func azure functionapp publish malo-id-generator
 func azure functionapp publish melo-id-generator
 func azure functionapp publish nelo-id-generator
