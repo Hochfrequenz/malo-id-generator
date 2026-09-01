@@ -10,6 +10,7 @@
 * [mess.lokations.id](https://mess.lokations.id), einem Generator für Messlokations-IDs ("MeLo-ID") zu Testzwecken
 * [technische.ressource.id](https://technische.ressource.id), einem Generator für Technische Ressourcen-IDs ("TR-ID") zu Testzwecken
 * [steuerbare.ressource.id](https://steuerbare.ressource.id), einem Generator für Steuerbare Ressourcen-IDs ("SR-ID") zu Testzwecken
+* [lokations.buendel.id](https://lokations.buendel.id), einem Generator für Lokationsbündel-IDs ("LoBü-ID") zu Testzwecken
 
 🇬🇧 This repository contains
 an [Azure Function with a Go Handler](https://docs.microsoft.com/en-us/azure/azure-functions/create-first-function-vs-code-other?tabs=go%2Cwindows) which is deployed to [netz.lokations.id](https://netz.lokations.id) and [markt.lokations.id](https://markt.lokations.id).
@@ -23,6 +24,7 @@ Its purpose is to
   3. Messlokations-IDs (MeLo-IDs)
   4. Technische Ressourcen-IDs (TR-IDs)
   5. Steuerbare Ressourcen-IDs (SR-IDs)
+  6. Lokationsbündel-IDs (LoBü-IDs)
 - with a valid checksum
 - on the fly
 
@@ -72,6 +74,7 @@ This is because to use the function app directly behind top level domain registe
 | Generate MeLo-IDs | `"MELO"`                            | [`melo-id-generator.azurewebsites.net/`](https://melo-id-generator.azurewebsites.net/) and [mess.lokations.id](https://mess.lokations.id)         | [melo-id-generator](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourceGroups/malo-id-generator/providers/Microsoft.Web/sites/melo-id-generator/appServices) |
 | Generate TR-IDs   | `"TRID"`                            | [`tr-id-generator.azurewebsites.net/`](https://tr-id-generator.azurewebsites.net/) and [technische.ressource.id](https://technische.ressource.id) | [tr-id-generator](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourcegroups/malo-id-generator/providers/Microsoft.Web/sites/tr-id-generator/appServices)     |
 | Generate SR-IDs   | `"SRID"`                            | [`sr-id-generator.azurewebsites.net/`](https://sr-id-generator.azurewebsites.net/) and [steuerbare.ressource.id](https://steuerbare.ressource.id) | [sr-id-generator](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourcegroups/malo-id-generator/providers/Microsoft.Web/sites/sr-id-generator/appServices)     |
+| Generate LoBü-IDs | `"LOBUE"`                           | [`lobue-id-generator.azurewebsites.net/`](https://lobue-id-generator.azurewebsites.net/) and [lokations.buendel.id](https://lokations.buendel.id) | [lobue-id-generator](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourcegroups/malo-id-generator/providers/Microsoft.Web/sites/lobue-id-generator/appServices) |
 
 The function apps are all
 
@@ -79,7 +82,7 @@ The function apps are all
 - linux based (instead of windows)
 
 There is an environment variable named `ID_TYPE_TO_GENERATE` which you can modify in the [function app settings](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourcegroups/malo-id-generator/providers/Microsoft.Web/sites/malo-id-generator/configuration).
-Its value can be `"MALO"` or `"NELO"` or `"MELO"` or `"TRID"` or `"SRID"`at the moment.
+Its value can be `"MALO"` or `"NELO"` or `"MELO"` or `"TRID"` or `"SRID"` or `"LOBUE"` at the moment.
 If its value is not set or set to an invalid value, the function app will return a HTTP 501 error.
 For your local tests you can modify the value in the `local.settings.json` file.
 

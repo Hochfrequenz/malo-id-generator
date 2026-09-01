@@ -162,6 +162,30 @@ func (s *Suite) Test_SRID_Endpoint_Returns_Something_Like_A_SRID() {
 	then.AssertThat(s.T(), sridPattern.MatchString(responseBody), is.True())
 }
 
+func (s *Suite) Test_LoBueId_Endpoint_Returns_Something_Like_A_LoBueId() {
+	err := os.Setenv("ID_TYPE_TO_GENERATE", "lobue")
+	then.AssertThat(s.T(), err, is.Nil())
+	loBueIdPattern := regexp.MustCompile(`<span class="lobue-id">G[A-Z\d]{9}</span><span class="checksum" [^>]+>\d</span>`)
+	router := main.NewRouter()
+	response := performGetRequest(router, "/")
+	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
+	responseBody := response.Body.String()
+	then.AssertThat(s.T(), loBueIdPattern.MatchString(responseBody), is.True())
+}
+
+func (s *Suite) Test_LoBue_Json_Endpoint() {
+	err := os.Setenv("ID_TYPE_TO_GENERATE", "lobue")
+	then.AssertThat(s.T(), err, is.Nil())
+	router := main.NewRouter()
+	response := performGetRequest(router, "/json")
+	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
+	var jsonResponse JsonResponse
+	err = json.NewDecoder(response.Body).Decode(&jsonResponse)
+	then.AssertThat(s.T(), err, is.Nil())
+	then.AssertThat(s.T(), len(jsonResponse.Id), is.EqualTo(11))
+	then.AssertThat(s.T(), jsonResponse.Id[0:1], is.EqualTo("G"))
+}
+
 func (s *Suite) Test_SR_Json_Endpoint() {
 	err := os.Setenv("ID_TYPE_TO_GENERATE", "srid")
 	then.AssertThat(s.T(), err, is.Nil())

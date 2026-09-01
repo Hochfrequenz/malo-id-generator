@@ -5,7 +5,7 @@ go 1.27.0
 require (
 	github.com/corbym/gocrest v1.2.1
 	github.com/gin-gonic/gin v1.12.0
-	github.com/hochfrequenz/go-bo4e v0.73.1
+	github.com/hochfrequenz/go-bo4e v0.74.0
 	github.com/stretchr/testify v1.12.1
 )
 
