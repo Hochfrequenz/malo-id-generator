@@ -1,0 +1,24 @@
+version: "2"
+
+# The linter selection used to live in the golangci-lint-action `args`, which
+# cannot express per-linter settings. Keeping it here also means a local
+# `golangci-lint run` / `golangci-lint fmt` behaves exactly like CI.
+linters:
+  enable:
+    - dupl
+    - goconst
+    - gocyclo
+  settings:
+    goconst:
+      # Since golangci-lint v2.12 goconst also inspects composite literals. In
+      # this repo that only ever fires on gin.H{...} response and template
+      # payloads, where the keys ("error", "checksum", "recruitingMessage")
+      # mirror the JSON keys and template variable names they populate and
+      # therefore read better as plain literals than as constants.
+      exclude-types:
+        - Call # the default
+        - CompositeLit
+
+formatters:
+  enable:
+    - gofmt

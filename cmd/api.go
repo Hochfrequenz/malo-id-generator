@@ -209,14 +209,14 @@ func faviconHandler(c *gin.Context) {
 // copied from here: https://github.com/gin-gonic/gin/issues/2795
 // I don't care about linter warnings below this line
 
-// nolint: goconst,gosimple
+//nolint:goconst,staticcheck
 func loadHTMLFromEmbedFS(engine *gin.Engine, embedFS embed.FS, pattern string) {
 	root := template.New("")
 	tmpl := template.Must(root, loadAndAddToRoot(engine.FuncMap, root, embedFS, pattern))
 	engine.SetHTMLTemplate(tmpl)
 }
 
-// nolint: goconst,gosimple
+//nolint:goconst,staticcheck
 func loadAndAddToRoot(funcMap template.FuncMap, rootTemplate *template.Template, embedFS embed.FS, pattern string) error {
 	pattern = strings.ReplaceAll(pattern, ".", "\\.")
 	pattern = strings.ReplaceAll(pattern, "*", ".*")
