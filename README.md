@@ -88,7 +88,7 @@ For your local tests you can modify the value in the `local.settings.json` file.
 
 ### How To Deploy
 
-Deployment runs in Github Actions: [`deploy.yml`](.github/workflows/deploy.yml) builds the custom
+Deployment runs in GitHub Actions: [`deploy.yml`](.github/workflows/deploy.yml) builds the custom
 handler for linux, assembles the same package that `func azure functionapp publish` would upload
 (the `api` binary, `host.json` and one directory per function) and pushes it to every function app
 that exists in one go.
@@ -100,7 +100,7 @@ redeployed within a year stops starting, and the reason is not obvious.
 
 It is **not** triggered by pushes to `main` - a merge should not deploy to production on its own.
 Start it manually from the [Actions tab](https://github.com/Hochfrequenz/malo-id-generator/actions/workflows/deploy.yml)
-("Run workflow"), or publish a Github release.
+("Run workflow"), or publish a GitHub release.
 
 The workflow authenticates with a [federated credential](https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure-openid-connect)
 instead of a stored password. This is not a preference: the Azure/functions-action documentation
