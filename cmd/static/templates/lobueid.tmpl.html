@@ -2,11 +2,11 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>MarktlokationsId-Generator (zufällige MaLo-IDs)</title>
+    <title>Lokationsbündel-Id-Generator (zufällige LoBü-IDs)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Hochfrequenz Unternehmensberatung GmbH">
-    <meta name="description" content="Zufällig generierte MaLo-IDs mit gültiger Prüfziffer">
-    <meta name="keywords" content="MaLo, MaLo-ID, Marktlokation, Test, Test-MaLo, Marktlokationsid">
+    <meta name="description" content="Zufällig generierte LoBü-IDs mit gültiger Prüfziffer">
+    <meta name="keywords" content="LoBü, LoBü-ID, LoBue, LoBue-ID, Lokationsbündel, Test, Test-LoBü, Lokationsbuendel-ID">
     <meta http-equiv="cache-control" content="no-cache"/>
     <!-- prevent safari from formatting numbers with good intentions: https://stackoverflow.com/a/30426346/10009545 -->
     <meta name="format-detection" content="telephone=no"/>
@@ -46,9 +46,8 @@
 <main>
     <div id="content-and-navbar">
         <div id="content">
-            <h1 class="{{ .issuer }}"
-                title="Eine zufällige MaLo-ID mit gültiger Prüfziffer (Vergabestelle {{ .issuer }})">
-                <span class="malo-id">{{ .maLoIdWithoutChecksum }}</span><span class="checksum" title="Prüfziffer {{ .checksum }}">{{ .checksum }}</span>
+            <h1 class="{{ .issuer }}" title="Eine zufällige LoBü-ID mit gültiger Prüfziffer">
+                <span class="lobue-id">{{ .loBueIdWithoutChecksum }}</span><span class="checksum" title="Prüfziffer {{ .checksum }}">{{ .checksum }}</span>
             </h1>
             <div class="button-container">
                 <button id="copyButton" onclick="copyToClipboard()">
@@ -60,8 +59,8 @@
             </div>
         </div>
         <nav id="others">
-            <a href="https://lokations.buendel.id/">LoB&uuml;</a>
-            <a class="selected" href="https://markt.lokations.id/">MaLo</a>
+            <a class="selected" href="https://lokations.buendel.id/">LoB&uuml;</a>
+            <a href="https://markt.lokations.id/">MaLo</a>
             <a href="https://mess.lokations.id/">MeLo</a>
             <a href="https://netz.lokations.id/">NeLo</a>
             <a href="https://steuerbare.ressource.id/">SR</a>

@@ -298,3 +298,48 @@ func (m SRIdGenerator) GenerateIdRaw(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, rawId)
 }
+
+// allowedLoBueIdCharacters contains those characters that are used to create new "Lokationsbündel-IDs"
+var allowedLoBueIdCharacters = []rune("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+// LoBueIdGenerator is an IdGenerator that generates LoBü-IDs (Lokationsbündel-IDs)
+type LoBueIdGenerator struct{}
+
+func (m LoBueIdGenerator) generateIdDictionary() (map[string]string, error) {
+	var loBueIdWithoutChecksum = "G" + generateRandomString(allowedLoBueIdCharacters, 9)
+	_checksum, err := bo.GetLoBueIdCheckSum(loBueIdWithoutChecksum)
+	if err != nil {
+		return nil, err
+	}
+	var loBueIdChecksum = fmt.Sprintf("%d", _checksum)
+	loBueId := loBueIdWithoutChecksum + loBueIdChecksum
+	result := make(map[string]string)
+	result["id"] = loBueId
+	result["loBueIdWithoutChecksum"] = loBueIdWithoutChecksum
+	result["checksum"] = loBueIdChecksum
+	result["type"] = "LoBue"
+	log.Printf("Successfully generated the LoBueID '%s'", loBueId)
+	return result, nil
+}
+
+// GenerateId of the LoBueIdGenerator returns a new random, 11 character lobue-id that has a valid check sum
+func (m LoBueIdGenerator) GenerateId(c *gin.Context) {
+	rawId, err := m.generateIdDictionary()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.HTML(http.StatusOK, "static/templates/lobueid.tmpl.html", gin.H{
+		"loBueIdWithoutChecksum": rawId["loBueIdWithoutChecksum"],
+		"checksum":               rawId["checksum"],
+		"recruitingMessage":      template.HTML(recruitingMessage),
+	})
+}
+func (m LoBueIdGenerator) GenerateIdRaw(c *gin.Context) {
+	rawId, err := m.generateIdDictionary()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, rawId)
+}
