@@ -322,7 +322,7 @@ func (m LoBueIdGenerator) generateIdDictionary() (map[string]string, error) {
 	return result, nil
 }
 
-// GenerateId of the LoBueIdGenerator returns a new random, 11 digit lobue-id that has a valid check sum
+// GenerateId of the LoBueIdGenerator returns a new random, 11 character lobue-id that has a valid check sum
 func (m LoBueIdGenerator) GenerateId(c *gin.Context) {
 	rawId, err := m.generateIdDictionary()
 	if err != nil {
