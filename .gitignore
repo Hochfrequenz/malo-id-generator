@@ -25,4 +25,4 @@
 api
 
 # assembled by the deploy workflow
-package/
+/package/

@@ -119,14 +119,14 @@ Three repository secrets have to exist:
 The identity needs a federated credential whose subject matches this repository and the `Production`
 environment, plus a role that includes `Microsoft.Web/sites/config/list/action` - the action reads
 the app settings and the SCM credentials through ARM before it uploads. Microsoft's documented
-minimum is [`Website Contributor`](https://github.com/Azure/functions-action#use-oidc-recommended),
-which is narrower than `Contributor`.
+recommendation is [`Website Contributor`](https://github.com/Azure/functions-action#use-oidc-recommended),
+which is narrower than `Contributor` and subsumes that permission.
 
 Deployments run in the `Production`
 [environment](https://github.com/Hochfrequenz/malo-id-generator/settings/environments), so required
-reviewers can be configured there. Note that the environment gate applies per function app, so a
-`Production` environment with required reviewers asks for one approval per app, not one per run.
-The exact `az` commands are written up in
+reviewers can be configured there. One approval releases the whole run: the required-reviewer gate
+is granted per environment per workflow run, so approving `Production` once lets all five function
+app jobs continue. The exact `az` commands are written up in
 [#271](https://github.com/Hochfrequenz/malo-id-generator/issues/271).
 
 `lobue-id-generator` is not in the workflow's list of function apps yet, because the function app

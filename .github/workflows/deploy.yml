@@ -29,6 +29,7 @@ jobs:
     name: Deploy ${{ matrix.app }}
     runs-on: ubuntu-latest
     environment: Production
+    timeout-minutes: 20 # a stuck functions-action upload should not hang for the 6 hour default
     strategy:
       # one broken function app should not stop the other four from being updated
       fail-fast: false
