@@ -10,7 +10,7 @@
 * [mess.lokations.id](https://mess.lokations.id), einem Generator für Messlokations-IDs ("MeLo-ID") zu Testzwecken
 * [technische.ressource.id](https://technische.ressource.id), einem Generator für Technische Ressourcen-IDs ("TR-ID") zu Testzwecken
 * [steuerbare.ressource.id](https://steuerbare.ressource.id), einem Generator für Steuerbare Ressourcen-IDs ("SR-ID") zu Testzwecken
-* [lokations.buendel.id](https://lokations.buendel.id), einem Generator für Lokationsbündel-IDs ("LoBü-ID") zu Testzwecken
+* lokations.buendel.id, einem Generator für Lokationsbündel-IDs ("LoBü-ID") zu Testzwecken (⚠️ noch nicht deployed, siehe unten)
 
 🇬🇧 This repository contains
 an [Azure Function with a Go Handler](https://docs.microsoft.com/en-us/azure/azure-functions/create-first-function-vs-code-other?tabs=go%2Cwindows) which is deployed to [netz.lokations.id](https://netz.lokations.id) and [markt.lokations.id](https://markt.lokations.id).
