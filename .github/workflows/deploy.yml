@@ -1,6 +1,6 @@
 name: Deploy
 
-# Deployment used to be six manual `func azure functionapp publish <app>` calls from a
+# Deployment used to be five manual `func azure functionapp publish <app>` calls from a
 # developer machine, which needed the Azure Function Core Tools, an `az login` and a
 # hand-set GOOS=linux. This workflow does the same thing, but reproducibly and for every
 # function app at once.
@@ -18,13 +18,19 @@ permissions:
   id-token: write # required for the federated credential (OIDC) login below
   contents: read
 
+# two runs (or a dispatch racing a release) must not patch WEBSITE_RUN_FROM_PACKAGE
+# on the same app out of order
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
 jobs:
   deploy:
     name: Deploy ${{ matrix.app }}
     runs-on: ubuntu-latest
     environment: Production
     strategy:
-      # one broken function app should not stop the other five from being updated
+      # one broken function app should not stop the other four from being updated
       fail-fast: false
       matrix:
         app:
@@ -79,3 +85,18 @@ jobs:
         with:
           app-name: ${{ matrix.app }}
           package: package
+
+      - name: Smoke test ${{ matrix.app }}
+        # a successful deployment does not mean the custom handler starts: a broken one only
+        # shows up as an HTTP 500 on the first real request. Retry, because the cold start on
+        # the consumption plan takes a few seconds.
+        run: |
+          for attempt in 1 2 3 4 5; do
+            if curl --fail --silent --show-error --max-time 30 "https://${{ matrix.app }}.azurewebsites.net/" > /dev/null; then
+              echo "${{ matrix.app }} is up"
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "::error::${{ matrix.app }} did not answer after the deployment"
+          exit 1

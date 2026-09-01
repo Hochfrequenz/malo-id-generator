@@ -23,3 +23,6 @@
 .vscode/extensions.json
 
 api
+
+# assembled by the deploy workflow
+package/

@@ -91,7 +91,12 @@ For your local tests you can modify the value in the `local.settings.json` file.
 Deployment runs in Github Actions: [`deploy.yml`](.github/workflows/deploy.yml) builds the custom
 handler for linux, assembles the same package that `func azure functionapp publish` would upload
 (the `api` binary, `host.json` and one directory per function) and pushes it to every function app
-in one go.
+that exists in one go.
+
+Under the hood the action uploads the zip to the function app's own storage account and points
+`WEBSITE_RUN_FROM_PACKAGE` at it with a SAS that is valid for one year - exactly what
+`func azure functionapp publish` does. So redeploy at least annually: an app that is not
+redeployed within a year stops starting, and the reason is not obvious.
 
 It is **not** triggered by pushes to `main` - a merge should not deploy to production on its own.
 Start it manually from the [Actions tab](https://github.com/Hochfrequenz/malo-id-generator/actions/workflows/deploy.yml)
@@ -119,7 +124,9 @@ which is narrower than `Contributor`.
 
 Deployments run in the `Production`
 [environment](https://github.com/Hochfrequenz/malo-id-generator/settings/environments), so required
-reviewers can be configured there. The exact `az` commands are written up in
+reviewers can be configured there. Note that the environment gate applies per function app, so a
+`Production` environment with required reviewers asks for one approval per app, not one per run.
+The exact `az` commands are written up in
 [#271](https://github.com/Hochfrequenz/malo-id-generator/issues/271).
 
 `lobue-id-generator` is not in the workflow's list of function apps yet, because the function app
@@ -158,6 +165,7 @@ You have to be logged in (`az login`) using the [Azure CLI Tools](https://docs.m
 
 #### Deploy them all
 ```bash
+# lobue-id-generator does not exist yet, see #268 - this line fails until it is created
 func azure functionapp publish lobue-id-generator
 func azure functionapp publish malo-id-generator
 func azure functionapp publish melo-id-generator
