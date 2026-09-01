@@ -65,8 +65,8 @@ func start
 
 ## CI/CD
 
-This function app is managed in two separate Azure Function Apps.
-Both Function apps are assigned to the [malo-id-generator resource group on Azure](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourceGroups/malo-id-generator/overview).
+This function app is managed in several separate Azure Function Apps.
+They are all assigned to the [malo-id-generator resource group on Azure](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourceGroups/malo-id-generator/overview).
 There is one function app instance per supported ID type.
 This is because to use the function app directly behind top level domain registered in Azure, its respective entry point must be a top level domain itself without any further, relative path (e.g. `foobarsomerandomstring.azurewebsites.net` and _not_ `foobarsomerandomstring.azurewebsites.net/malo`).
 

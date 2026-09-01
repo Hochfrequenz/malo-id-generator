@@ -1,13 +1,16 @@
 # Hosting: cost analysis and constraints
 
-**Status:** analysis, decided 2026-09-01 — *stay on Azure Functions for now, automate the deployment.*
+**Status:** analysis, decided 2026-09-01 by @hf-kklein — *stay on Azure Functions for now, automate
+the deployment.* See "What was decided instead", and "Open actions" plus "Revisit this decision when"
+at the bottom. **Re-verify before relying on any figure here after 2027-09-01.**
 
-This records why the "obviously over-engineered" architecture (six Azure Function Apps for six tiny
-websites) was **not** replaced, so that the next person to have the same idea does not have to redo
+This records why the "obviously over-engineered" architecture (one Azure Function App per ID type —
+five deployed today, six once #268 lands — for six tiny websites) was **not** replaced, so that the next person to have the same idea does not have to redo
 the research. All prices are West Europe list prices from the
 [Azure Retail Prices API](https://prices.azure.com/api/retail/prices), collected 2026-09-01. The
 public pricing pages render their numbers via JavaScript and cannot be scraped, which is why the API
-was used. EUR figures are Microsoft's own published EUR list prices, not an FX conversion.
+was used. EUR figures are Microsoft's own published EUR list prices, not an FX conversion. Some rate-card lines
+are published only in USD; those are marked with $ and are left unconverted.
 
 ## Traffic model
 
@@ -16,18 +19,28 @@ A page view is ~8 HTTP requests (HTML + CSS + 3 TTF fonts + 2 PNGs + favicon), s
 **30,000 requests and ~2 GB egress per month in total**. Rescale accordingly if that ever changes;
 most conclusions below flip only at 30x this traffic.
 
+Scope: Azure only, and only compute that can bind these six custom domains directly. Deliberately not
+evaluated — **Azure Static Web Apps** (the pages are nearly static, but `/json` has to generate a new
+ID with a valid checksum per request, which needs the Go code server-side), **one app behind Azure
+Front Door** (adds a component and a bill to solve a routing problem that host-based routing already
+solves), and **non-Azure hosting** (the domains, the subscription and the org's deployment tooling are
+all here). Reopening one of those is new research, not a repeat of this.
+
 ## The numbers
 
 | Option | Fixed €/month at zero traffic | Realistic total | Cold start |
 |---|---|---|---|
 | **Six Consumption (Y1) Function Apps** — status quo | €0.20–1 (storage only, no compute) | **€0.20–1** | 2–5 s, not mitigable without changing plan |
-| Six Flex Consumption apps | €0 | €0–1 | still present without always-ready instances |
+| Six Flex Consumption apps | €0.20–1 (storage only, same as status quo) | €0.20–1 | still present without always-ready instances |
 | Six Flex apps with 1 always-ready instance each | €4.46/app | €27 | none |
 | **One Container App**, min replicas 0, image from ghcr.io | €0 | **€0, worst case €2.60** | ~1–3 s for a small Go image |
 | **One App Service for Containers**, Linux B1 + Always On | €11.32 | **€11.32** | none |
 
 Zero in every option at this scale: egress (first 100 GB/month free), TLS certificates, and
 Application Insights / Log Analytics (5 GB/month free ingestion).
+
+The €/month figures are list prices from the Retail Prices API. The cold-start figures and the €2.60
+worst case are estimates.
 
 ## Is the status quo actually nearly free? Yes.
 
@@ -51,6 +64,20 @@ Storage if an exact number is ever needed.
 
 **Conclusion: cost cannot justify a migration.** Any argument for moving has to rest on something
 else.
+
+## What was decided instead
+
+Keep one Function App per ID type and remove the manual step, which is the part that has actually
+bitten: deploying means running `func azure functionapp publish` once per app from a developer
+machine, and a site that nobody performed those steps for is a site that is not live (#268).
+Concretely, a GitHub Actions workflow that builds once for `GOOS=linux` and publishes the same
+artefact to each app in a matrix, logging in with a federated credential the way
+`fristenkalender-functions` does. That costs nothing, touches neither domains nor certificates nor the
+runtime, and forecloses no later migration.
+
+Accepted knowingly in exchange: **the 2–5 s cold starts stay.** At roughly 20 page views per day per
+site of test-data traffic nobody is paying much for that latency, but it is a real cost of the "stay"
+decision, and it is the one thing a Container App would have fixed at the same price.
 
 ## The constraints that actually shape this
 
@@ -77,14 +104,16 @@ These, not cost, are the real reason a migration will eventually be necessary.
 ### Certificates on Consumption are on shaky ground
 
 Microsoft's prerequisites for a free App Service Managed Certificate list the Basic, Standard,
-Premium and Isolated tiers — **Consumption is not among them**. There is also a Microsoft Q&A report
-of ASMC issuance failing on Consumption and Flex Consumption plans since 2025-08-15. Function apps
+Premium and Isolated tiers — **Consumption is not among them**. There is also a
+[Microsoft Q&A report](https://learn.microsoft.com/en-us/answers/questions/5529074/deployment-ssl-certificate-for-custom-domain-stop)
+of ASMC issuance failing on Consumption and Flex Consumption plans since 2025-08-15 — a third-party
+report, not documentation. Function apps
 on Consumption additionally support **only CNAME** domain mapping, not A records, which rules out a
 true apex domain.
 
 Azure Container Apps, by contrast, documents free managed certificates for **multiple custom domains
 on one app**, apex (A + `asuid` TXT) and subdomain (CNAME + `asuid.` TXT) alike. Flex Consumption's
-managed certificates are still preview.
+managed certificates were still in preview as of 2026-09-01.
 
 **Before touching anything, establish how the existing certificates are issued and when they renew.**
 
@@ -96,7 +125,7 @@ some optimizations to help decrease cold start time, including pulling from prew
 functions that already have the host and language processes running"*. Those placeholders do not help
 a **custom handler**, though: the placeholder has the host and a *language* process warm, and our Go
 binary is neither. So expect **2–5 s** on an idle site. Consumption scales to zero after "a few
-minutes" (no exact figure published; observed ~20 min).
+minutes" (no exact figure published; ~20 min in ad-hoc observation, not a measurement campaign).
 
 What Azure does document as flatly unavailable on Consumption is *dedicated compute* to mitigate cold
 starts — the "Dedicated compute (mitigate cold starts)" row of the plan comparison table is "None"
@@ -105,7 +134,10 @@ for Consumption. Buying the cold start away means changing plan.
 Container Apps scales to zero after **exactly 300 seconds** (KEDA cool-down, documented). What
 matters there is therefore not the request count but **how many separate 5-minute windows requests
 fall into** — the free grant covers ~200 hours of warm replica time per month, i.e. **~80 wake-ups
-per day**. Office-hours human traffic clusters well inside that.
+per day**. At ~120 page views/day across the six sites the average gap between views is ~4 minutes,
+the same order as the 300 s window, so this rests entirely on clustering: an eight-hour office day
+holds at most 96 such windows against ~80 free. Bursty human traffic lands under it; evenly spread
+traffic would not. The €2.60 worst case in the table is that upper bound, and it is still negligible.
 
 ## Traps worth remembering
 
@@ -126,10 +158,11 @@ per day**. Office-hours human traffic clusters well inside that.
 - **F1 / D1 / Shared cannot host these sites.** Free F1 has no custom domains; Shared/D1 has no
   custom TLS bindings and is Windows-only. **B1 is the hard floor** for App Service with custom
   domains and TLS.
-- **Container Apps "express"** has subsecond scale-from-zero at the same price and is in public
-  preview in ~41 regions including West Europe, so availability is not the obstacle — but it does not
-  support custom domains yet, which for these sites is disqualifying on its own. That single gap is
-  what to re-check.
+- **Container Apps "express"** has subsecond scale-from-zero at the same price and was, as of
+  2026-09-01, in public preview in ~41 regions including West Europe — so availability is not the
+  obstacle. It does not support custom domains yet, which for these sites is disqualifying on its own.
+  That single gap is the most likely thing in this document to have changed since it was written, and
+  the first thing to re-check.
 
 ## If a migration does happen
 
@@ -142,9 +175,16 @@ Service for Containers, and is the one still deploying by hand.
 The delta for this repo would be the six custom domains on one app plus the host-based routing change
 described above.
 
+Three things that are easy to underestimate about such a cutover: certificates have to be issued on
+the new host *before* DNS moves (bind the domain and its `asuid` TXT record first, and lower TTLs a
+day ahead), the old Function Apps have to stay provisioned until the new certificates have renewed
+once so that there is a rollback, and the six `*.azurewebsites.net` hostnames that the README
+documents as entry points do not survive the move — they would have to be dropped or redirected.
+
 Also worth weighing: consolidating **flips the blast radius**. Today a bad deploy breaks one site;
-with one app it breaks all six. In exchange, the "somebody forgot to publish one of them" failure
-mode disappears — which is the one that actually occurred (see #268).
+with one app it breaks all six. In exchange, the whole class of "one of the six was missed" failures
+disappears — per-app setup steps that nobody performed is exactly why `lokations.buendel.id` is still
+not live (#268), and the six-way manual publish list in the README is the same hazard for deploys.
 
 ## Verification
 
@@ -176,3 +216,30 @@ to a plain Consumption environment.
 - [Azure Functions Flex Consumption plan](https://learn.microsoft.com/en-us/azure/azure-functions/flex-consumption-plan)
 - [Install a TLS/SSL certificate for your app](https://learn.microsoft.com/en-us/azure/app-service/configure-ssl-certificate)
 - [Azure App Service plans](https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans)
+
+## Open actions
+
+None of these were resolved while this document was written. Ordered by urgency.
+
+1. **Check `FUNCTIONS_EXTENSION_VERSION` on all five apps before 30 September 2026.** Any app still on
+   `~3` stops running. This is the only item here that can take a site offline.
+2. Establish how the existing custom-domain certificates were issued and when they renew, before
+   touching any domain binding.
+3. Get the exact storage figure from Cost Analysis on the `malo-id-generator` resource group, filtered
+   to Storage, if anyone ever wants a number instead of "cents".
+4. If a Container App is ever provisioned: check the first bill against the `Environment Management
+   Hour` meter.
+
+## Revisit this decision when
+
+- **Traffic grows ~30x** (roughly 600 page views/day/site). Consumption compute starts being billed
+  and the whole comparison has to be redone.
+- **A certificate renewal fails, or a domain has to be re-bound.** The ASMC prerequisites do not list
+  Consumption, so renewals are on borrowed time.
+- **The Linux Consumption retirement (30 September 2028) comes inside the planning horizon.** A
+  migration is mandatory by then regardless of anything else here.
+- **Container Apps "express" gains custom-domain support.** That is the single gap that would make
+  consolidation strictly better than the status quo on both cost and cold start.
+- **A seventh site is added, or the sites need to diverge** beyond the `ID_TYPE_TO_GENERATE` setting.
+
+Nothing else in this document should reopen the question on its own.
