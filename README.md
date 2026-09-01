@@ -30,7 +30,7 @@ Its purpose is to
 
 The business logic is written in Go using [Gin Gonic](https://gin-gonic.com/) and can be found in [cmd/api.go](cmd/api.go).
 
-Why six separate Azure Function Apps for six tiny websites, and why that was not replaced by a single
+Why each ID type gets its own Azure Function App, rather than all six sites being served by a single
 container: [docs/hosting-cost-analysis.md](docs/hosting-cost-analysis.md).
 
 It's a super basic website with three "pseudo files":

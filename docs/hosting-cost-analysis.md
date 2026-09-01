@@ -20,7 +20,7 @@ most conclusions below flip only at 30x this traffic.
 
 | Option | Fixed €/month at zero traffic | Realistic total | Cold start |
 |---|---|---|---|
-| **Six Consumption (Y1) Function Apps** — status quo | €0 compute + storage | **€0.20–1** | 2–5 s, not mitigable without changing plan |
+| **Six Consumption (Y1) Function Apps** — status quo | €0.20–1 (storage only, no compute) | **€0.20–1** | 2–5 s, not mitigable without changing plan |
 | Six Flex Consumption apps | €0 | €0–1 | still present without always-ready instances |
 | Six Flex apps with 1 always-ready instance each | €4.46/app | €27 | none |
 | **One Container App**, min replicas 0, image from ghcr.io | €0 | **€0, worst case €2.60** | ~1–3 s for a small Go image |
@@ -82,8 +82,8 @@ of ASMC issuance failing on Consumption and Flex Consumption plans since 2025-08
 on Consumption additionally support **only CNAME** domain mapping, not A records, which rules out a
 true apex domain.
 
-Container Apps, by contrast, documents free managed certificates for **multiple custom domains on
-one app**, apex (A + `asuid` TXT) and subdomain (CNAME + `asuid.` TXT) alike. Flex Consumption's
+Azure Container Apps, by contrast, documents free managed certificates for **multiple custom domains
+on one app**, apex (A + `asuid` TXT) and subdomain (CNAME + `asuid.` TXT) alike. Flex Consumption's
 managed certificates are still preview.
 
 **Before touching anything, establish how the existing certificates are issued and when they renew.**
