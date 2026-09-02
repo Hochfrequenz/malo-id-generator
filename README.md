@@ -88,11 +88,55 @@ For your local tests you can modify the value in the `local.settings.json` file.
 
 ### How To Deploy
 
-There is a [`deploy.yml` GitHub Actions workflow](https://github.com/Hochfrequenz/malo-id-generator/blob/chore/deploy-workflow/.github/workflows/deploy.yml) that builds and deploys all function apps at once.
-It is triggered manually from the Actions tab (`workflow_dispatch`) or by publishing a GitHub release, and authenticates to Azure via a federated OIDC credential (no publish profile, see the workflow file for why).
-As of writing, the workflow itself is not yet merged to `main` (tracked in [#269](https://github.com/Hochfrequenz/malo-id-generator/pull/269)) and its Azure-side setup is still being finished (tracked in [#271](https://github.com/Hochfrequenz/malo-id-generator/issues/271)).
+Deployment runs in GitHub Actions: [`deploy.yml`](.github/workflows/deploy.yml) builds the custom
+handler for linux, assembles the same package that `func azure functionapp publish` would upload
+(the `api` binary, `host.json` and one directory per function) and pushes it to every function app
+that exists in one go.
 
-Until then, or for a one-off manual deploy, you can still deploy locally:
+Under the hood the action uploads the zip to the function app's own storage account and points
+`WEBSITE_RUN_FROM_PACKAGE` at it with a SAS that is valid for one year - exactly what
+`func azure functionapp publish` does. So redeploy at least annually: an app that is not
+redeployed within a year stops starting, and the reason is not obvious.
+
+It is **not** triggered by pushes to `main` - a merge should not deploy to production on its own.
+Start it manually from the [Actions tab](https://github.com/Hochfrequenz/malo-id-generator/actions/workflows/deploy.yml)
+("Run workflow"), or publish a GitHub release.
+
+The workflow authenticates with a [federated credential](https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure-openid-connect)
+instead of a stored password. This is not a preference: the Azure/functions-action documentation
+states that [publish profile authentication is unsupported](https://github.com/Azure/functions-action#authentication-methods)
+when the app runs on Linux in a Consumption plan and the project contains an executable file - which
+is exactly this repo, with its `api` custom handler. OIDC is the only supported option here.
+
+Three repository secrets have to exist:
+
+| Secret | What it is |
+|--------|------------|
+| `AZURE_CLIENT_ID` | client ID of the identity that is allowed to deploy |
+| `AZURE_TENANT_ID` | directory (tenant) ID |
+| `AZURE_SUBSCRIPTION_ID` | the subscription that holds the `malo-id-generator` resource group |
+
+The identity needs a federated credential whose subject matches this repository and the `Production`
+environment, plus a role that includes `Microsoft.Web/sites/config/list/action` - the action reads
+the app settings and the SCM credentials through ARM before it uploads. Microsoft's documented
+recommendation is [`Website Contributor`](https://github.com/Azure/functions-action#use-oidc-recommended),
+which is narrower than `Contributor` and subsumes that permission.
+
+Deployments run in the `Production`
+[environment](https://github.com/Hochfrequenz/malo-id-generator/settings/environments), so required
+reviewers can be configured there. One approval releases the whole run: the required-reviewer gate
+is granted per environment per workflow run, so approving `Production` once lets all five function
+app jobs continue. The exact `az` commands are written up in
+[#271](https://github.com/Hochfrequenz/malo-id-generator/issues/271).
+
+`lobue-id-generator` is now in the workflow's list of function apps: the Azure Function App itself has
+been created, but no code has been deployed to it yet and its custom domain
+(`lokations.buendel.id`) is not bound yet - see [#268](https://github.com/Hochfrequenz/malo-id-generator/issues/268).
+The workflow's Azure-side OIDC setup is also still being finished, see [#274](https://github.com/Hochfrequenz/malo-id-generator/issues/274).
+
+#### Deploying by hand
+
+Should the workflow be unavailable, the manual route still works.
 
 First **build** locally for linux (note that the build is the same for all ID types, only the env var is different)
 
