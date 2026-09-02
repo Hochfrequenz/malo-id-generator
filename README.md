@@ -88,9 +88,11 @@ For your local tests you can modify the value in the `local.settings.json` file.
 
 ### How To Deploy
 
-There is _no_ automatic deployment yet (fixable with docker).
+There is a [`deploy.yml` GitHub Actions workflow](.github/workflows/deploy.yml) that builds and deploys all function apps at once.
+It is triggered manually from the Actions tab (`workflow_dispatch`) or by publishing a GitHub release, and authenticates to Azure via a federated OIDC credential (no publish profile, see the workflow file for why).
+As of writing, the workflow itself is not yet merged to `main` (tracked in [#269](https://github.com/Hochfrequenz/malo-id-generator/issues/269)) and its Azure-side setup is still being finished (tracked in [#271](https://github.com/Hochfrequenz/malo-id-generator/issues/271)).
 
-To deploy:
+Until then, or for a one-off manual deploy, you can still deploy locally:
 
 First **build** locally for linux (note that the build is the same for all ID types, only the env var is different)
 
