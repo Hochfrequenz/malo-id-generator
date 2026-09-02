@@ -1,0 +1,102 @@
+name: Deploy
+
+# Deployment used to be five manual `func azure functionapp publish <app>` calls from a
+# developer machine, which needed the Azure Function Core Tools, an `az login` and a
+# hand-set GOOS=linux. This workflow does the same thing, but reproducibly and for every
+# function app at once.
+#
+# It is deliberately NOT triggered by pushes to main: a merge should not deploy to
+# production without someone saying so. Trigger it from the Actions tab, or publish a
+# GitHub release.
+on:
+  workflow_dispatch:
+  release:
+    types:
+      - published
+
+permissions:
+  id-token: write # required for the federated credential (OIDC) login below
+  contents: read
+
+# two runs (or a dispatch racing a release) must not patch WEBSITE_RUN_FROM_PACKAGE
+# on the same app out of order
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy ${{ matrix.app }}
+    runs-on: ubuntu-latest
+    environment: Production
+    timeout-minutes: 20 # a stuck functions-action upload should not hang for the 6 hour default
+    strategy:
+      # one broken function app should not stop the other four from being updated
+      fail-fast: false
+      matrix:
+        app:
+          - lobue-id-generator
+          - malo-id-generator
+          - melo-id-generator
+          - nelo-id-generator
+          - sr-id-generator
+          - tr-id-generator
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          submodules: 'true'
+
+      - name: Install Go
+        uses: actions/setup-go@v7
+        with:
+          go-version: 1.27.x
+
+      - name: Build the custom handler
+        # the binary has to be named like the defaultExecutablePath in host.json
+        run: GOOS=linux GOARCH=amd64 go build -o api ./cmd
+
+      - name: Assemble the deployment package
+        # this is what `func azure functionapp publish` uploads: the custom handler binary,
+        # host.json and one directory per function. local.settings.json is deliberately not
+        # included, it only configures the local `func start`.
+        run: |
+          mkdir -p package
+          cp api host.json package/
+          for function_json in */function.json; do
+            function_dir=$(dirname "$function_json")
+            mkdir -p "package/$function_dir"
+            cp "$function_json" "package/$function_dir/"
+          done
+          chmod +x package/api
+
+      - name: Log in to Azure
+        # OIDC is not optional here: with a publish profile the action falls back to Kudu zipdeploy,
+        # which Microsoft does not support for Linux Consumption apps whose project contains an
+        # executable - see https://github.com/Azure/functions-action#authentication-methods
+        uses: azure/login@v3
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy to ${{ matrix.app }}
+        uses: Azure/functions-action@v1
+        with:
+          app-name: ${{ matrix.app }}
+          package: package
+
+      - name: Smoke test ${{ matrix.app }}
+        # a successful deployment does not mean the custom handler starts: a broken one only
+        # shows up as an HTTP 500 on the first real request. Retry, because the cold start on
+        # the consumption plan takes a few seconds.
+        run: |
+          for attempt in 1 2 3 4 5; do
+            if curl --fail --silent --show-error --max-time 30 "https://${{ matrix.app }}.azurewebsites.net/" > /dev/null; then
+              echo "${{ matrix.app }} is up"
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "::error::${{ matrix.app }} did not answer after the deployment"
+          exit 1
