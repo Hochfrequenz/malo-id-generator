@@ -35,8 +35,7 @@ jobs:
       fail-fast: false
       matrix:
         app:
-          # lobue-id-generator is missing on purpose: the function app does not exist yet.
-          # Add it here once it has been created, see issue #268.
+          - lobue-id-generator
           - malo-id-generator
           - melo-id-generator
           - nelo-id-generator
