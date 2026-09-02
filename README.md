@@ -125,7 +125,7 @@ which is narrower than `Contributor` and subsumes that permission.
 Deployments run in the `Production`
 [environment](https://github.com/Hochfrequenz/malo-id-generator/settings/environments), so required
 reviewers can be configured there. One approval releases the whole run: the required-reviewer gate
-is granted per environment per workflow run, so approving `Production` once lets all five function
+is granted per environment per workflow run, so approving `Production` once lets all six function
 app jobs continue. The exact `az` commands are written up in
 [#271](https://github.com/Hochfrequenz/malo-id-generator/issues/271).
 
