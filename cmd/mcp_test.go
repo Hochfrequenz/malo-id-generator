@@ -27,7 +27,11 @@ func TestMCPEndpointAcceptsPublicHostBehindLoopbackFrontEnd(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			t.Errorf("closing response body: %v", err)
+		}
+	}()
 	if resp.StatusCode == http.StatusForbidden {
 		t.Fatalf("MCP endpoint returned 403 for public host behind loopback front end; " +
 			"DisableLocalhostProtection is not effective")
