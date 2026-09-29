@@ -27,7 +27,7 @@ type mcpGeneratedID struct {
 
 func newMCPHandler() http.Handler {
 	server := mcp.NewServer(&mcp.Implementation{
-		Name:    "malo-id-generator",
+		Name:    "id-generator",
 		Version: "1.0.0",
 	}, nil)
 
