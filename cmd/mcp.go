@@ -33,27 +33,27 @@ func newMCPHandler() http.Handler {
 
 	addMCPTool(server, "generate_malo_id",
 		"Marktlokations-ID (MaLo)",
-		"Generiert eine zufällige, 11-stellige Marktlokations-ID (MaLo) mit gültiger Prüfziffer gemäß BDEW-Konvention, bestehend aus einer 10-stelligen Zufallszahl (ohne führende Null) und einer einstelligen Prüfziffer. Das Ergebnis enthält zusätzlich die Prüfziffer separat, die ID ohne Prüfziffer und die Vergabestelle (DVGW oder BDEW, abhängig von der ersten Ziffer). Nützlich für Testdaten und Demo-Systeme im Kontext der Marktkommunikation in der Energiewirtschaft.",
+		"Generiert eine zufällige Marktlokations-ID (MaLo) mit gültiger Prüfziffer als Beispielwert zum Testen.",
 		MaLoIdGenerator{})
 	addMCPTool(server, "generate_nelo_id",
 		"Netzlokations-ID (NeLo)",
-		"Generiert eine zufällige, 11-stellige Netzlokations-ID (NeLo) mit gültiger Prüfziffer, bestehend aus einem führenden 'E', neun zufälligen alphanumerischen Zeichen und einer einstelligen Prüfziffer. Das Ergebnis enthält zusätzlich die Prüfziffer separat und die ID ohne Prüfziffer. Nützlich für Testdaten und Demo-Systeme im Kontext der Marktkommunikation in der Energiewirtschaft.",
+		"Generiert eine zufällige Netzlokations-ID (NeLo) mit gültiger Prüfziffer als Beispielwert zum Testen.",
 		NeLoIdGenerator{})
 	addMCPTool(server, "generate_melo_id",
 		"Messlokations-ID (MeLo)",
-		"Generiert eine zufällige, 33-stellige Messlokations-ID (MeLo) gemäß VDE-AR-N 4400, aufgebaut aus der Länderkennung 'DE', einer 6-stelligen (zufälligen, im Allgemeinen ungültigen) Netzbetreibernummer, einer 5-stelligen (zufälligen, im Allgemeinen ungültigen) Postleitzahl und 20 zufälligen alphanumerischen Zeichen als laufende Nummer. MeLo-IDs haben keine Prüfziffer. Das Ergebnis enthält die Bestandteile zusätzlich einzeln. Nützlich für Testdaten und Demo-Systeme im Kontext der Marktkommunikation in der Energiewirtschaft.",
+		"Generiert eine zufällige Messlokations-ID (MeLo) als Beispielwert zum Testen.",
 		MeLoIdGenerator{})
 	addMCPTool(server, "generate_tr_id",
 		"Technische Ressourcen-ID (TR)",
-		"Generiert eine zufällige, 11-stellige Technische Ressourcen-ID (TR-ID) mit gültiger Prüfziffer, bestehend aus einem führenden 'D', neun zufälligen alphanumerischen Zeichen und einer einstelligen Prüfziffer. Das Ergebnis enthält zusätzlich die Prüfziffer separat und die ID ohne Prüfziffer. Nützlich für Testdaten und Demo-Systeme im Kontext der Marktkommunikation in der Energiewirtschaft.",
+		"Generiert eine zufällige Technische Ressourcen-ID (TR) mit gültiger Prüfziffer als Beispielwert zum Testen.",
 		TRIdGenerator{})
 	addMCPTool(server, "generate_sr_id",
 		"Steuerbare Ressourcen-ID (SR)",
-		"Generiert eine zufällige, 11-stellige Steuerbare Ressourcen-ID (SR-ID) mit gültiger Prüfziffer, bestehend aus einem führenden 'C', neun zufälligen alphanumerischen Zeichen und einer einstelligen Prüfziffer. Das Ergebnis enthält zusätzlich die Prüfziffer separat und die ID ohne Prüfziffer. Nützlich für Testdaten und Demo-Systeme im Kontext der Marktkommunikation in der Energiewirtschaft.",
+		"Generiert eine zufällige Steuerbare Ressourcen-ID (SR) mit gültiger Prüfziffer als Beispielwert zum Testen.",
 		SRIdGenerator{})
 	addMCPTool(server, "generate_lobue_id",
 		"Lokationsbündel-ID (LoBü)",
-		"Generiert eine zufällige, 11-stellige Lokationsbündel-ID (LoBü-ID) mit gültiger Prüfziffer, bestehend aus einem führenden 'G', neun zufälligen alphanumerischen Zeichen und einer einstelligen Prüfziffer. Das Ergebnis enthält zusätzlich die Prüfziffer separat und die ID ohne Prüfziffer. Nützlich für Testdaten und Demo-Systeme im Kontext der Marktkommunikation in der Energiewirtschaft.",
+		"Generiert eine zufällige Lokationsbündel-ID (LoBü) mit gültiger Prüfziffer als Beispielwert zum Testen.",
 		LoBueIdGenerator{})
 
 	return mcp.NewStreamableHTTPHandler(func(*http.Request) *mcp.Server {
