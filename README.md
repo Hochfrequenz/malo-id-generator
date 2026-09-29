@@ -10,7 +10,7 @@
 * [mess.lokations.id](https://mess.lokations.id), einem Generator für Messlokations-IDs ("MeLo-ID") zu Testzwecken
 * [technische.ressource.id](https://technische.ressource.id), einem Generator für Technische Ressourcen-IDs ("TR-ID") zu Testzwecken
 * [steuerbare.ressource.id](https://steuerbare.ressource.id), einem Generator für Steuerbare Ressourcen-IDs ("SR-ID") zu Testzwecken
-* lokations.buendel.id, einem Generator für Lokationsbündel-IDs ("LoBü-ID") zu Testzwecken (⚠️ noch nicht deployed, siehe unten)
+* lokations.buendel.id, einem Generator für Lokationsbündel-IDs ("LoBü-ID") zu Testzwecken (⚠️ Domain noch nicht gebunden, siehe unten)
 
 🇬🇧 This repository contains
 an [Azure Function with a Go Handler](https://docs.microsoft.com/en-us/azure/azure-functions/create-first-function-vs-code-other?tabs=go%2Cwindows) which is deployed to [netz.lokations.id](https://netz.lokations.id) and [markt.lokations.id](https://markt.lokations.id).
@@ -77,7 +77,7 @@ This is because to use the function app directly behind top level domain registe
 | Generate MeLo-IDs | `"MELO"`                            | [`melo-id-generator.azurewebsites.net/`](https://melo-id-generator.azurewebsites.net/) and [mess.lokations.id](https://mess.lokations.id)         | [melo-id-generator](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourceGroups/malo-id-generator/providers/Microsoft.Web/sites/melo-id-generator/appServices) |
 | Generate TR-IDs   | `"TRID"`                            | [`tr-id-generator.azurewebsites.net/`](https://tr-id-generator.azurewebsites.net/) and [technische.ressource.id](https://technische.ressource.id) | [tr-id-generator](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourcegroups/malo-id-generator/providers/Microsoft.Web/sites/tr-id-generator/appServices)     |
 | Generate SR-IDs   | `"SRID"`                            | [`sr-id-generator.azurewebsites.net/`](https://sr-id-generator.azurewebsites.net/) and [steuerbare.ressource.id](https://steuerbare.ressource.id) | [sr-id-generator](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourcegroups/malo-id-generator/providers/Microsoft.Web/sites/sr-id-generator/appServices)     |
-| Generate LoBü-IDs | `"LOBUE"`                           | ⚠️ **not created yet**; planned: `lobue-id-generator.azurewebsites.net` and [lokations.buendel.id](https://lokations.buendel.id) | the function app still has to be created |
+| Generate LoBü-IDs | `"LOBUE"`                           | [`lobue-id-generator.azurewebsites.net/`](https://lobue-id-generator.azurewebsites.net/) and lokations.buendel.id (⚠️ domain not bound yet, tracked in [#275](https://github.com/Hochfrequenz/malo-id-generator/issues/275)) | [lobue-id-generator](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourcegroups/malo-id-generator/providers/Microsoft.Web/sites/lobue-id-generator/appServices) |
 
 The function apps are all
 
@@ -91,9 +91,55 @@ For your local tests you can modify the value in the `local.settings.json` file.
 
 ### How To Deploy
 
-There is _no_ automatic deployment yet (fixable with docker).
+Deployment runs in GitHub Actions: [`deploy.yml`](.github/workflows/deploy.yml) builds the custom
+handler for linux, assembles the same package that `func azure functionapp publish` would upload
+(the `api` binary, `host.json` and one directory per function) and pushes it to every function app
+that exists in one go.
 
-To deploy:
+Under the hood the action uploads the zip to the function app's own storage account and points
+`WEBSITE_RUN_FROM_PACKAGE` at it with a SAS that is valid for one year - exactly what
+`func azure functionapp publish` does. So redeploy at least annually: an app that is not
+redeployed within a year stops starting, and the reason is not obvious.
+
+It is **not** triggered by pushes to `main` - a merge should not deploy to production on its own.
+Start it manually from the [Actions tab](https://github.com/Hochfrequenz/malo-id-generator/actions/workflows/deploy.yml)
+("Run workflow"), or publish a GitHub release.
+
+The workflow authenticates with a [federated credential](https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure-openid-connect)
+instead of a stored password. This is not a preference: the Azure/functions-action documentation
+states that [publish profile authentication is unsupported](https://github.com/Azure/functions-action#authentication-methods)
+when the app runs on Linux in a Consumption plan and the project contains an executable file - which
+is exactly this repo, with its `api` custom handler. OIDC is the only supported option here.
+
+Three repository secrets have to exist:
+
+| Secret | What it is |
+|--------|------------|
+| `AZURE_CLIENT_ID` | client ID of the identity that is allowed to deploy |
+| `AZURE_TENANT_ID` | directory (tenant) ID |
+| `AZURE_SUBSCRIPTION_ID` | the subscription that holds the `malo-id-generator` resource group |
+
+The identity needs a federated credential whose subject matches this repository and the `Production`
+environment, plus a role that includes `Microsoft.Web/sites/config/list/action` - the action reads
+the app settings and the SCM credentials through ARM before it uploads. Microsoft's documented
+recommendation is [`Website Contributor`](https://github.com/Azure/functions-action#use-oidc-recommended),
+which is narrower than `Contributor` and subsumes that permission.
+
+Deployments run in the `Production`
+[environment](https://github.com/Hochfrequenz/malo-id-generator/settings/environments), so required
+reviewers can be configured there. One approval releases the whole run: the required-reviewer gate
+is granted per environment per workflow run, so approving `Production` once lets all six function
+app jobs continue. The exact `az` commands are written up in
+[#271](https://github.com/Hochfrequenz/malo-id-generator/issues/271).
+
+`lobue-id-generator` is now in the workflow's list of function apps: the Azure Function App exists and
+has code deployed (verified at `https://lobue-id-generator.azurewebsites.net/json`), but its custom
+domain (`lokations.buendel.id`) is not bound yet - see [#275](https://github.com/Hochfrequenz/malo-id-generator/issues/275).
+The workflow's Azure-side OIDC setup is also still being finished, see [#274](https://github.com/Hochfrequenz/malo-id-generator/issues/274).
+
+#### Deploying by hand
+
+Should the workflow be unavailable, the manual route still works.
 
 First **build** locally for linux (note that the build is the same for all ID types, only the env var is different)
 
