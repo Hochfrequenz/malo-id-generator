@@ -31,6 +31,7 @@ func NewRouter() *gin.Engine {
 	// see this SO answer: https://stackoverflow.com/a/76419027/10009545
 	router.GET("/", generateRandomIdHtml)
 	router.GET("/json", generateRandomIdJson)
+	router.Any("/mcp", gin.WrapH(newMCPHandler()))
 	router.GET("/style", stylesheetHandler)
 	router.GET("/hfstyle", hochfrequenzStylesheetHandler)
 	router.GET("/roboto-regular", robotoRegularHandler)

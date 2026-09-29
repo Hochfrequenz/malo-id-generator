@@ -36,6 +36,12 @@ It's a super basic website with three "pseudo files":
 2. `/api/favicon` (returns a favicon) and refers to
 3. `/api/style` (returns a stylesheet)
 4. `/json` returns a JSON payload with the generated ID
+5. `/mcp` exposes the six ID generators as MCP tools over Streamable HTTP
+
+The MCP endpoint is stateless, anonymous, and HTTP-only. It provides one tool
+for each supported ID type: `generate_malo_id`, `generate_nelo_id`,
+`generate_melo_id`, `generate_tr_id`, `generate_sr_id`, and
+`generate_lobue_id`.
 
 The files are not really served as plain files as you would expect it from a usual web app setup, but they are all separate Azure Functions and hence have their own respective `function.json`.
 
