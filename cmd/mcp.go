@@ -31,12 +31,30 @@ func newMCPHandler() http.Handler {
 		Version: "1.0.0",
 	}, nil)
 
-	addMCPTool(server, "generate_malo_id", "Generate a random valid MaLo-ID with checksum", MaLoIdGenerator{})
-	addMCPTool(server, "generate_nelo_id", "Generate a random valid NeLo-ID with checksum", NeLoIdGenerator{})
-	addMCPTool(server, "generate_melo_id", "Generate a random MeLo-ID", MeLoIdGenerator{})
-	addMCPTool(server, "generate_tr_id", "Generate a random valid TR-ID with checksum", TRIdGenerator{})
-	addMCPTool(server, "generate_sr_id", "Generate a random valid SR-ID with checksum", SRIdGenerator{})
-	addMCPTool(server, "generate_lobue_id", "Generate a random valid LoBü-ID with checksum", LoBueIdGenerator{})
+	addMCPTool(server, "generate_malo_id",
+		"Marktlokations-ID (MaLo)",
+		"Generiert eine 11-stellige zufällige Marktlokations-ID (MaLo) mit gültiger Prüfziffer als Beispielwert zum Testen.",
+		MaLoIdGenerator{})
+	addMCPTool(server, "generate_nelo_id",
+		"Netzlokations-ID (NeLo)",
+		"Generiert eine 11-stellige zufällige Netzlokations-ID (NeLo) mit gültiger Prüfziffer als Beispielwert zum Testen.",
+		NeLoIdGenerator{})
+	addMCPTool(server, "generate_melo_id",
+		"Messlokations-ID (MeLo)",
+		"Generiert eine 33-stellige zufällige Messlokations-ID (MeLo) als Beispielwert zum Testen.",
+		MeLoIdGenerator{})
+	addMCPTool(server, "generate_tr_id",
+		"Technische Ressourcen-ID (TR)",
+		"Generiert eine 11-stellige zufällige Technische Ressourcen-ID (TR) mit gültiger Prüfziffer als Beispielwert zum Testen.",
+		TRIdGenerator{})
+	addMCPTool(server, "generate_sr_id",
+		"Steuerbare Ressourcen-ID (SR)",
+		"Generiert eine 11-stellige zufällige Steuerbare Ressourcen-ID (SR) mit gültiger Prüfziffer als Beispielwert zum Testen.",
+		SRIdGenerator{})
+	addMCPTool(server, "generate_lobue_id",
+		"Lokationsbündel-ID (LoBü)",
+		"Generiert eine 11-stellige zufällige Lokationsbündel-ID (LoBü) mit gültiger Prüfziffer als Beispielwert zum Testen.",
+		LoBueIdGenerator{})
 
 	return mcp.NewStreamableHTTPHandler(func(*http.Request) *mcp.Server {
 		return server
@@ -52,9 +70,10 @@ func newMCPHandler() http.Handler {
 	})
 }
 
-func addMCPTool(server *mcp.Server, name, description string, generator IdGenerator) {
+func addMCPTool(server *mcp.Server, name, title, description string, generator IdGenerator) {
 	mcp.AddTool(server, &mcp.Tool{
 		Name:        name,
+		Title:       title,
 		Description: description,
 		Annotations: &mcp.ToolAnnotations{ReadOnlyHint: true},
 	}, mcpToolHandler(generator))
