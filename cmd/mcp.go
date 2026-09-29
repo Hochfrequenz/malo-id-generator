@@ -19,6 +19,10 @@ type mcpGeneratedID struct {
 	TRIDWithoutChecksum    string `json:"trIdWithoutChecksum,omitempty"`
 	SRIDWithoutChecksum    string `json:"srIdWithoutChecksum,omitempty"`
 	LoBueIDWithoutChecksum string `json:"loBueIdWithoutChecksum,omitempty"`
+	Landesziffern          string `json:"landesziffern,omitempty"`
+	Netzbetreibernummer    string `json:"netzbetreibernummer,omitempty"`
+	Postleitzahl           string `json:"postleitzahl,omitempty"`
+	LaufendeNummer         string `json:"laufendeNummer,omitempty"`
 }
 
 func newMCPHandler() http.Handler {
@@ -66,6 +70,10 @@ func mcpToolHandler(generator IdGenerator) mcp.ToolHandlerFor[mcpToolInput, mcpG
 			TRIDWithoutChecksum:    generated["trIdWithoutChecksum"],
 			SRIDWithoutChecksum:    generated["srIdWithoutChecksum"],
 			LoBueIDWithoutChecksum: generated["loBueIdWithoutChecksum"],
+			Landesziffern:          generated["landesziffern"],
+			Netzbetreibernummer:    generated["netzbetreibernummer"],
+			Postleitzahl:           generated["postleitzahl"],
+			LaufendeNummer:         generated["laufendeNummer"],
 		}, nil
 	}
 }

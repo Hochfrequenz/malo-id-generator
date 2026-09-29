@@ -40,6 +40,7 @@ func performGetRequest(r http.Handler, path string) *httptest.ResponseRecorder {
 
 func performRequest(r http.Handler, method, path string, body io.Reader) *httptest.ResponseRecorder {
 	req, _ := http.NewRequest(method, path, body)
+	req.Host = "example.com" // browsers and MCP clients always send a Host header
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 	return w
@@ -199,10 +200,39 @@ func (s *Suite) Test_LoBue_Json_Endpoint() {
 }
 
 func (s *Suite) Test_MCP_Info_Page_Is_Returned() {
+	// other tests in this suite set ID_TYPE_TO_GENERATE and don't clean it up (test order dependent),
+	// so restore the "unset" state that this fallback assertion relies on
+	previousValue, hadPreviousValue := os.LookupEnv("ID_TYPE_TO_GENERATE")
+	err := os.Unsetenv("ID_TYPE_TO_GENERATE")
+	then.AssertThat(s.T(), err, is.Nil())
+	defer func() {
+		if hadPreviousValue {
+			err := os.Setenv("ID_TYPE_TO_GENERATE", previousValue)
+			then.AssertThat(s.T(), err, is.Nil())
+		}
+	}()
 	router := main.NewRouter()
 	response := performGetRequest(router, "/mcp-info")
 	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
-	then.AssertThat(s.T(), strings.Contains(response.Body.String(), "generate_malo_id"), is.True())
+	// the page must render the full MCP server URL that users can copy-paste into their KI tool;
+	// the test environment has no ID_TYPE_TO_GENERATE deployment mapping, so it falls back to the request host
+	then.AssertThat(s.T(), strings.Contains(response.Body.String(), "http://example.com/mcp"), is.True())
+}
+
+func (s *Suite) Test_MCP_Info_Page_Shows_Public_Origin_In_Production_Configuration() {
+	err := os.Setenv("ID_TYPE_TO_GENERATE", "MALO")
+	then.AssertThat(s.T(), err, is.Nil())
+	defer func() {
+		err := os.Unsetenv("ID_TYPE_TO_GENERATE")
+		then.AssertThat(s.T(), err, is.Nil())
+	}()
+	router := main.NewRouter()
+	response := performGetRequest(router, "/mcp-info")
+	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
+	// in production the request never carries the public domain (the Azure Functions host forwards
+	// it internally), so the page must show the mapped public origin, not the internal host
+	then.AssertThat(s.T(), strings.Contains(response.Body.String(), "https://markt.lokations.id/mcp"), is.True())
+	then.AssertThat(s.T(), strings.Contains(response.Body.String(), "http://example.com/mcp"), is.False())
 }
 
 func (s *Suite) Test_Stylesheet_Is_Returned() {

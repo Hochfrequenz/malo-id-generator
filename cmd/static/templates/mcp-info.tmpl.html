@@ -2,12 +2,31 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>MCP – ID-Generator</title>
+    <title>MCP-Integration – ID-Generator</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Hochfrequenz Unternehmensberatung GmbH">
-    <meta name="description" content="MCP-Schnittstelle für die ID-Generatoren">
+    <meta name="description" content="So bindest du die ID-Generatoren als MCP-Server in Claude, GitHub Copilot oder opencode ein">
     <link rel="stylesheet" href="/style">
     <link rel="icon" type="image/x-icon" href="/favicon">
+    <script>
+        function copyMcpUrl() {
+            var urlToCopy = document.getElementById('mcp-url').textContent.trim();
+            navigator.clipboard.writeText(urlToCopy)
+                .then(function () {
+                    var copyButton = document.getElementById('copyUrlButton');
+                    var originalText = copyButton.innerHTML;
+                    copyButton.innerHTML = 'Kopiert ✓';
+                    copyButton.disabled = true;
+                    setTimeout(function () {
+                        copyButton.innerHTML = originalText;
+                        copyButton.disabled = false;
+                    }, 2000);
+                })
+                .catch(function (err) {
+                    console.error('Fehler beim Kopieren in die Zwischenablage: ', err);
+                });
+        }
+    </script>
 </head>
 <body>
 <header>
@@ -16,19 +35,84 @@
 
 <main>
     <div id="content" class="mcp-info">
-        <h1>MCP</h1>
-        <p>Generiere Test-IDs direkt aus deinem MCP-Client.</p>
-        <p class="mcp-description">Der MCP-Server stellt für jeden ID-Typ ein eigenes Tool bereit. Die Verbindung läuft über HTTP und benötigt keine Authentifizierung.</p>
-        <div class="mcp-tools">
-            <span>generate_malo_id</span>
-            <span>generate_nelo_id</span>
-            <span>generate_melo_id</span>
-            <span>generate_tr_id</span>
-            <span>generate_sr_id</span>
-            <span>generate_lobue_id</span>
+        <h1>MCP-Integration</h1>
+        <h2 class="mcp-subtitle">ID-Generatoren in deinem KI-Assistenten</h2>
+
+        <p>
+            Die ID-Generatoren stehen zusätzlich als <strong>MCP-Server</strong> (Model Context
+            Protocol) bereit. Damit kannst du dir Test-IDs – etwa für Testdaten oder Demo-Systeme –
+            direkt in deinem KI-Assistenten (z.&nbsp;B. Claude, GitHub Copilot oder opencode)
+            generieren lassen, ohne diese Website zu öffnen. Beispiel: Du fragst im Chat: „Gib mir
+            eine MaLo-ID zum Testen“ – und bekommst eine ID mit gültiger Prüfziffer zurück.
+        </p>
+
+        <h3>Server-Adresse</h3>
+        <p>
+            Trage in deinem KI-Tool die folgende Adresse als Remote- bzw. HTTP-MCP-Server ein:
+        </p>
+        <div class="mcp-url-box">
+            <code id="mcp-url">{{ .mcpURL }}</code>
+            <button id="copyUrlButton" onclick="copyMcpUrl()">Kopieren</button>
         </div>
-        <p class="mcp-endpoint"><strong>Endpoint:</strong> <code>/mcp</code></p>
-        <a class="mcp-button" href="/">Zum ID-Generator</a>
+        <p class="mcp-note">
+            Der MCP-Server ist wie diese Website anonym und kostenfrei nutzbar – eine Anmeldung ist
+            nicht erforderlich.
+        </p>
+
+        <h3>Einrichtung in deinem KI-Tool</h3>
+        <p>
+            Die genauen Schritte unterscheiden sich je nach Tool. Folge der offiziellen Anleitung
+            deines KI-Assistenten und trage dort die oben genannte Server-Adresse ein:
+        </p>
+        <ul class="mcp-steps">
+            <li>
+                <a href="https://code.claude.com/docs/en/mcp" target="_blank" rel="noopener noreferrer">Claude Code (Terminal)&nbsp;↗</a>
+                <pre class="mcp-code"><code>claude mcp add --transport http malo-id-generator {{ .mcpURL }}</code></pre>
+                <p class="mcp-note">
+                    Danach im Claude-Code-Prompt <code>/mcp</code> öffnen, um zu prüfen, dass die
+                    Verbindung steht und die sechs Tools angezeigt werden.
+                </p>
+            </li>
+            <li>
+                <a href="https://modelcontextprotocol.io/docs/tutorials/use-remote-mcp-server" target="_blank" rel="noopener noreferrer">Claude Desktop &amp; claude.ai&nbsp;↗</a>
+                <p class="mcp-note">
+                    In den Einstellungen unter „Connectors“ einen benutzerdefinierten Connector
+                    hinzufügen und die Server-Adresse von oben einfügen.
+                </p>
+            </li>
+            <li>
+                <a href="https://code.visualstudio.com/docs/copilot/chat/mcp-servers" target="_blank" rel="noopener noreferrer">GitHub Copilot in VS Code&nbsp;↗</a>
+                <pre class="mcp-code"><code>{
+  "servers": {
+    "malo-id-generator": {
+      "type": "http",
+      "url": "{{ .mcpURL }}"
+    }
+  }
+}</code></pre>
+            </li>
+            <li>
+                <a href="https://opencode.ai/docs/mcp-servers/" target="_blank" rel="noopener noreferrer">opencode&nbsp;↗</a>
+                <p class="mcp-note">
+                    In deine <code>opencode.json</code> eintragen (Repo-Root oder global unter
+                    <code>~/.config/opencode/opencode.json</code>):
+                </p>
+                <pre class="mcp-code"><code>{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "malo-id-generator": {
+      "type": "remote",
+      "url": "{{ .mcpURL }}",
+      "enabled": true
+    }
+  }
+}</code></pre>
+            </li>
+        </ul>
+
+        <div class="mcp-backlink">
+            <a href="/">← Zurück zum ID-Generator</a>
+        </div>
     </div>
 </main>
 
@@ -38,7 +122,7 @@
             <a href="https://www.hochfrequenz.de/datenschutz/">Datenschutz</a> | <a
                     href="https://www.hochfrequenz.de/impressum/">Impressum</a> | <a
                     href="https://www.hochfrequenz.de/kontakt/">Kontakt</a> | <a
-                    href="https://github.com/Hochfrequenz/malo-id-generator">GitHub</a> | <a href="/json">JSON</a></p>
+                    href="https://github.com/Hochfrequenz/malo-id-generator">GitHub</a> | <a href="/json">JSON</a> | <a href="/mcp-info">MCP</a></p>
     </div>
 </footer>
 </body>
