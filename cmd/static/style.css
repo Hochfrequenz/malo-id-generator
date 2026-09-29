@@ -89,6 +89,47 @@ main {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+.mcp-info {
+    max-width: 42rem;
+}
+
+.mcp-info h1 {
+    color: var(--grell-gruen);
+}
+
+.mcp-description {
+    margin: 1rem auto;
+    line-height: 1.5;
+}
+
+.mcp-tools {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 1.5rem 0;
+}
+
+.mcp-tools span {
+    background-color: var(--off-white);
+    border-radius: 1rem;
+    padding: 0.5rem 0.75rem;
+    font-family: monospace;
+}
+
+.mcp-endpoint {
+    margin-bottom: 1.5rem;
+}
+
+.mcp-button {
+    display: inline-block;
+    background-color: var(--grell-gruen);
+    color: white;
+    border-radius: 20px;
+    padding: 0.65rem 1.25rem;
+    text-decoration: none;
+}
+
 h1 {
     font-size: 3rem;
     color: var(--weiches-schwarz);

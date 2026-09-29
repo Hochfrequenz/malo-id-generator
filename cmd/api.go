@@ -31,6 +31,7 @@ func NewRouter() *gin.Engine {
 	// see this SO answer: https://stackoverflow.com/a/76419027/10009545
 	router.GET("/", generateRandomIdHtml)
 	router.GET("/json", generateRandomIdJson)
+	router.GET("/mcp-info", mcpInfoHandler)
 	router.Any("/mcp", gin.WrapH(newMCPHandler()))
 	router.GET("/style", stylesheetHandler)
 	router.GET("/hfstyle", hochfrequenzStylesheetHandler)
@@ -89,6 +90,10 @@ func generateRandomIdJson(c *gin.Context) {
 		return
 	}
 	generator.GenerateIdRaw(c)
+}
+
+func mcpInfoHandler(c *gin.Context) {
+	c.HTML(http.StatusOK, "static/templates/mcp-info.tmpl.html", nil)
 }
 
 func getPort() string {

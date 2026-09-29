@@ -198,6 +198,13 @@ func (s *Suite) Test_LoBue_Json_Endpoint() {
 	then.AssertThat(s.T(), jsonResponse.Id[0:1], is.EqualTo("G"))
 }
 
+func (s *Suite) Test_MCP_Info_Page_Is_Returned() {
+	router := main.NewRouter()
+	response := performGetRequest(router, "/mcp-info")
+	then.AssertThat(s.T(), response.Code, is.EqualTo(http.StatusOK))
+	then.AssertThat(s.T(), strings.Contains(response.Body.String(), "generate_malo_id"), is.True())
+}
+
 func (s *Suite) Test_Stylesheet_Is_Returned() {
 	router := main.NewRouter()
 	response := performGetRequest(router, "/style")
