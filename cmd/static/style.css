@@ -89,6 +89,115 @@ main {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* ID selector needed to out-specify the `#content { text-align: center }` rule above */
+#content.mcp-info {
+    max-width: 42rem;
+    text-align: left;
+}
+
+#content.mcp-info h1 {
+    color: var(--weiches-schwarz);
+}
+
+.mcp-subtitle {
+    font-size: 1.1rem;
+    font-weight: 500; /* has to match the weight of Roboto Medium font-face */
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid var(--grell-gruen);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.25rem;
+    color: var(--weiches-schwarz);
+}
+
+.mcp-info h3 {
+    font-size: 1rem;
+    font-weight: 700; /* has to match the weight of Roboto Bold font-face */
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 1.5rem 0 0.5rem;
+    color: var(--weiches-schwarz);
+}
+
+.mcp-info p {
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+}
+
+.mcp-url-box {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background-color: var(--pastell-gruen);
+    border: 1px solid var(--grell-gruen);
+    border-radius: 0.75rem;
+    padding: 0.6rem 0.9rem;
+    margin: 0.5rem 0;
+}
+
+.mcp-url-box code {
+    flex: 1;
+    font-size: 0.9rem;
+    word-break: break-all;
+    text-align: left;
+}
+
+.mcp-url-box button {
+    background-color: var(--grell-gruen);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.85rem;
+    flex: none;
+}
+
+.mcp-note {
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+.mcp-steps {
+    list-style: none;
+    margin: 1rem 0;
+}
+
+.mcp-steps > li {
+    margin-bottom: 1.25rem;
+}
+
+.mcp-steps a {
+    font-weight: 700; /* has to match the weight of Roboto Bold font-face */
+    color: var(--grell-gruen);
+}
+
+.mcp-code {
+    background-color: var(--pastell-gruen);
+    border: 1px solid var(--grell-gruen);
+    border-radius: 0.5rem;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.8rem;
+    overflow-x: auto;
+    margin: 0.5rem 0;
+    text-align: left;
+}
+
+.mcp-code code {
+    font-family: monospace;
+}
+
+.mcp-backlink {
+    border-top: 2px dashed var(--grell-gruen);
+    padding-top: 1rem;
+    margin-top: 2rem;
+}
+
+.mcp-backlink a {
+    color: var(--weiches-schwarz);
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
 h1 {
     font-size: 3rem;
     color: var(--weiches-schwarz);

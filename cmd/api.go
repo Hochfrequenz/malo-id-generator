@@ -31,6 +31,8 @@ func NewRouter() *gin.Engine {
 	// see this SO answer: https://stackoverflow.com/a/76419027/10009545
 	router.GET("/", generateRandomIdHtml)
 	router.GET("/json", generateRandomIdJson)
+	router.GET("/mcp-info", mcpInfoHandler)
+	router.Any("/mcp", gin.WrapH(newMCPHandler()))
 	router.GET("/style", stylesheetHandler)
 	router.GET("/hfstyle", hochfrequenzStylesheetHandler)
 	router.GET("/roboto-regular", robotoRegularHandler)
@@ -88,6 +90,36 @@ func generateRandomIdJson(c *gin.Context) {
 		return
 	}
 	generator.GenerateIdRaw(c)
+}
+
+// mcpPublicOrigins maps the ID_TYPE_TO_GENERATE environment variable values to the public origins
+// of the deployed function apps. In production the Host header that reaches this custom handler is
+// not the public domain (the Azure Functions host forwards the request internally), so the public
+// origin must not be derived from the request. The values must match the nav links in the templates.
+var mcpPublicOrigins = map[string]string{
+	"MALO":  "https://markt.lokations.id",
+	"MELO":  "https://mess.lokations.id",
+	"NELO":  "https://netz.lokations.id",
+	"TRID":  "https://technische.ressource.id",
+	"SRID":  "https://steuerbare.ressource.id",
+	"LOBUE": "https://lokations.buendel.id",
+}
+
+// mcpServerURL returns the MCP endpoint URL that the info page shows for copy-pasting into a KI tool.
+func mcpServerURL(requestHost string) string {
+	if strings.HasPrefix(requestHost, "localhost") || strings.HasPrefix(requestHost, "127.0.0.1") {
+		return "http://" + requestHost + "/mcp" // local development
+	}
+	if origin, ok := mcpPublicOrigins[strings.ToUpper(os.Getenv("ID_TYPE_TO_GENERATE"))]; ok {
+		return origin + "/mcp"
+	}
+	return "http://" + requestHost + "/mcp" // fallback, e.g. in tests
+}
+
+func mcpInfoHandler(c *gin.Context) {
+	c.HTML(http.StatusOK, "static/templates/mcp-info.tmpl.html", gin.H{
+		"mcpURL": mcpServerURL(c.Request.Host),
+	})
 }
 
 func getPort() string {

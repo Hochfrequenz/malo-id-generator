@@ -33,12 +33,19 @@ The business logic is written in Go using [Gin Gonic](https://gin-gonic.com/) an
 Why each ID type gets its own Azure Function App, rather than all six sites being served by a single
 container: [docs/hosting-cost-analysis.md](docs/hosting-cost-analysis.md).
 
-It's a super basic website with three "pseudo files":
+The app exposes the following routes:
 
 1. [`/` (root)](https://malo-id-generator.azurewebsites.net/) that returns a basic HTML site which refers to (this is the main entry point for users)
 2. `/api/favicon` (returns a favicon) and refers to
 3. `/api/style` (returns a stylesheet)
 4. `/json` returns a JSON payload with the generated ID
+5. `/mcp` exposes the six ID generators as MCP tools over Streamable HTTP
+6. `/mcp-info` describes the MCP endpoint and its available tools
+
+The MCP endpoint is stateless, anonymous, and HTTP-only. It provides one tool
+for each supported ID type: `generate_malo_id`, `generate_nelo_id`,
+`generate_melo_id`, `generate_tr_id`, `generate_sr_id`, and
+`generate_lobue_id`.
 
 The files are not really served as plain files as you would expect it from a usual web app setup, but they are all separate Azure Functions and hence have their own respective `function.json`.
 
