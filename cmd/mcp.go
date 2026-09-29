@@ -9,6 +9,18 @@ import (
 
 type mcpToolInput struct{}
 
+type mcpGeneratedID struct {
+	ID                     string `json:"id"`
+	Type                   string `json:"type"`
+	Checksum               string `json:"checksum,omitempty"`
+	Issuer                 string `json:"issuer,omitempty"`
+	MaLoIDWithoutChecksum  string `json:"maLoIdWithoutChecksum,omitempty"`
+	NeLoIDWithoutChecksum  string `json:"neLoIdWithoutChecksum,omitempty"`
+	TRIDWithoutChecksum    string `json:"trIdWithoutChecksum,omitempty"`
+	SRIDWithoutChecksum    string `json:"srIdWithoutChecksum,omitempty"`
+	LoBueIDWithoutChecksum string `json:"loBueIdWithoutChecksum,omitempty"`
+}
+
 func newMCPHandler() http.Handler {
 	server := mcp.NewServer(&mcp.Implementation{
 		Name:    "malo-id-generator",
@@ -34,12 +46,26 @@ func addMCPTool(server *mcp.Server, name, description string, generator IdGenera
 	mcp.AddTool(server, &mcp.Tool{
 		Name:        name,
 		Description: description,
+		Annotations: &mcp.ToolAnnotations{ReadOnlyHint: true},
 	}, mcpToolHandler(generator))
 }
 
-func mcpToolHandler(generator IdGenerator) mcp.ToolHandlerFor[mcpToolInput, map[string]string] {
-	return func(_ context.Context, _ *mcp.CallToolRequest, _ mcpToolInput) (*mcp.CallToolResult, map[string]string, error) {
-		output, err := generator.generateIdDictionary()
-		return nil, output, err
+func mcpToolHandler(generator IdGenerator) mcp.ToolHandlerFor[mcpToolInput, mcpGeneratedID] {
+	return func(_ context.Context, _ *mcp.CallToolRequest, _ mcpToolInput) (*mcp.CallToolResult, mcpGeneratedID, error) {
+		generated, err := generator.generateIdDictionary()
+		if err != nil {
+			return nil, mcpGeneratedID{}, err
+		}
+		return nil, mcpGeneratedID{
+			ID:                     generated["id"],
+			Type:                   generated["type"],
+			Checksum:               generated["checksum"],
+			Issuer:                 generated["issuer"],
+			MaLoIDWithoutChecksum:  generated["maLoIdWithoutChecksum"],
+			NeLoIDWithoutChecksum:  generated["neLoIdWithoutChecksum"],
+			TRIDWithoutChecksum:    generated["trIdWithoutChecksum"],
+			SRIDWithoutChecksum:    generated["srIdWithoutChecksum"],
+			LoBueIDWithoutChecksum: generated["loBueIdWithoutChecksum"],
+		}, nil
 	}
 }
