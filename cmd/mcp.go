@@ -39,6 +39,7 @@ func addMCPTool(server *mcp.Server, name, description string, generator IdGenera
 
 func mcpToolHandler(generator IdGenerator) mcp.ToolHandlerFor[mcpToolInput, map[string]string] {
 	return func(_ context.Context, _ *mcp.CallToolRequest, _ mcpToolInput) (*mcp.CallToolResult, map[string]string, error) {
-		return nil, generator.generateIdDictionary()
+		output, err := generator.generateIdDictionary()
+		return nil, output, err
 	}
 }
