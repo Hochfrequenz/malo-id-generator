@@ -33,27 +33,27 @@ func newMCPHandler() http.Handler {
 
 	addMCPTool(server, "generate_malo_id",
 		"Marktlokations-ID (MaLo)",
-		"Generiert eine zufällige Marktlokations-ID (MaLo) mit gültiger Prüfziffer als Beispielwert zum Testen.",
+		"Generiert eine 11-stellige zufällige Marktlokations-ID (MaLo) mit gültiger Prüfziffer als Beispielwert zum Testen.",
 		MaLoIdGenerator{})
 	addMCPTool(server, "generate_nelo_id",
 		"Netzlokations-ID (NeLo)",
-		"Generiert eine zufällige Netzlokations-ID (NeLo) mit gültiger Prüfziffer als Beispielwert zum Testen.",
+		"Generiert eine 11-stellige zufällige Netzlokations-ID (NeLo) mit gültiger Prüfziffer als Beispielwert zum Testen.",
 		NeLoIdGenerator{})
 	addMCPTool(server, "generate_melo_id",
 		"Messlokations-ID (MeLo)",
-		"Generiert eine zufällige Messlokations-ID (MeLo) als Beispielwert zum Testen.",
+		"Generiert eine 33-stellige zufällige Messlokations-ID (MeLo) als Beispielwert zum Testen.",
 		MeLoIdGenerator{})
 	addMCPTool(server, "generate_tr_id",
 		"Technische Ressourcen-ID (TR)",
-		"Generiert eine zufällige Technische Ressourcen-ID (TR) mit gültiger Prüfziffer als Beispielwert zum Testen.",
+		"Generiert eine 11-stellige zufällige Technische Ressourcen-ID (TR) mit gültiger Prüfziffer als Beispielwert zum Testen.",
 		TRIdGenerator{})
 	addMCPTool(server, "generate_sr_id",
 		"Steuerbare Ressourcen-ID (SR)",
-		"Generiert eine zufällige Steuerbare Ressourcen-ID (SR) mit gültiger Prüfziffer als Beispielwert zum Testen.",
+		"Generiert eine 11-stellige zufällige Steuerbare Ressourcen-ID (SR) mit gültiger Prüfziffer als Beispielwert zum Testen.",
 		SRIdGenerator{})
 	addMCPTool(server, "generate_lobue_id",
 		"Lokationsbündel-ID (LoBü)",
-		"Generiert eine zufällige Lokationsbündel-ID (LoBü) mit gültiger Prüfziffer als Beispielwert zum Testen.",
+		"Generiert eine 11-stellige zufällige Lokationsbündel-ID (LoBü) mit gültiger Prüfziffer als Beispielwert zum Testen.",
 		LoBueIdGenerator{})
 
 	return mcp.NewStreamableHTTPHandler(func(*http.Request) *mcp.Server {
