@@ -31,12 +31,30 @@ func newMCPHandler() http.Handler {
 		Version: "1.0.0",
 	}, nil)
 
-	addMCPTool(server, "generate_malo_id", "Generate a random valid MaLo-ID with checksum", MaLoIdGenerator{})
-	addMCPTool(server, "generate_nelo_id", "Generate a random valid NeLo-ID with checksum", NeLoIdGenerator{})
-	addMCPTool(server, "generate_melo_id", "Generate a random MeLo-ID", MeLoIdGenerator{})
-	addMCPTool(server, "generate_tr_id", "Generate a random valid TR-ID with checksum", TRIdGenerator{})
-	addMCPTool(server, "generate_sr_id", "Generate a random valid SR-ID with checksum", SRIdGenerator{})
-	addMCPTool(server, "generate_lobue_id", "Generate a random valid LoBü-ID with checksum", LoBueIdGenerator{})
+	addMCPTool(server, "generate_malo_id",
+		"Marktlokations-ID (MaLo)",
+		"Generiert eine zufällige, 11-stellige Marktlokations-ID (MaLo) mit gültiger Prüfziffer gemäß BDEW-Konvention, bestehend aus einer 10-stelligen Zufallszahl (ohne führende Null) und einer einstelligen Prüfziffer. Das Ergebnis enthält zusätzlich die Prüfziffer separat, die ID ohne Prüfziffer und die Vergabestelle (DVGW oder BDEW, abhängig von der ersten Ziffer). Nützlich für Testdaten und Demo-Systeme im Kontext der Marktkommunikation in der Energiewirtschaft.",
+		MaLoIdGenerator{})
+	addMCPTool(server, "generate_nelo_id",
+		"Netzlokations-ID (NeLo)",
+		"Generiert eine zufällige, 11-stellige Netzlokations-ID (NeLo) mit gültiger Prüfziffer, bestehend aus einem führenden 'E', neun zufälligen alphanumerischen Zeichen und einer einstelligen Prüfziffer. Das Ergebnis enthält zusätzlich die Prüfziffer separat und die ID ohne Prüfziffer. Nützlich für Testdaten und Demo-Systeme im Kontext der Marktkommunikation in der Energiewirtschaft.",
+		NeLoIdGenerator{})
+	addMCPTool(server, "generate_melo_id",
+		"Messlokations-ID (MeLo)",
+		"Generiert eine zufällige, 33-stellige Messlokations-ID (MeLo) gemäß VDE-AR-N 4400, aufgebaut aus der Länderkennung 'DE', einer 6-stelligen (zufälligen, im Allgemeinen ungültigen) Netzbetreibernummer, einer 5-stelligen (zufälligen, im Allgemeinen ungültigen) Postleitzahl und 20 zufälligen alphanumerischen Zeichen als laufende Nummer. MeLo-IDs haben keine Prüfziffer. Das Ergebnis enthält die Bestandteile zusätzlich einzeln. Nützlich für Testdaten und Demo-Systeme im Kontext der Marktkommunikation in der Energiewirtschaft.",
+		MeLoIdGenerator{})
+	addMCPTool(server, "generate_tr_id",
+		"Technische Ressourcen-ID (TR)",
+		"Generiert eine zufällige, 11-stellige Technische Ressourcen-ID (TR-ID) mit gültiger Prüfziffer, bestehend aus einem führenden 'D', neun zufälligen alphanumerischen Zeichen und einer einstelligen Prüfziffer. Das Ergebnis enthält zusätzlich die Prüfziffer separat und die ID ohne Prüfziffer. Nützlich für Testdaten und Demo-Systeme im Kontext der Marktkommunikation in der Energiewirtschaft.",
+		TRIdGenerator{})
+	addMCPTool(server, "generate_sr_id",
+		"Steuerbare Ressourcen-ID (SR)",
+		"Generiert eine zufällige, 11-stellige Steuerbare Ressourcen-ID (SR-ID) mit gültiger Prüfziffer, bestehend aus einem führenden 'C', neun zufälligen alphanumerischen Zeichen und einer einstelligen Prüfziffer. Das Ergebnis enthält zusätzlich die Prüfziffer separat und die ID ohne Prüfziffer. Nützlich für Testdaten und Demo-Systeme im Kontext der Marktkommunikation in der Energiewirtschaft.",
+		SRIdGenerator{})
+	addMCPTool(server, "generate_lobue_id",
+		"Lokationsbündel-ID (LoBü)",
+		"Generiert eine zufällige, 11-stellige Lokationsbündel-ID (LoBü-ID) mit gültiger Prüfziffer, bestehend aus einem führenden 'G', neun zufälligen alphanumerischen Zeichen und einer einstelligen Prüfziffer. Das Ergebnis enthält zusätzlich die Prüfziffer separat und die ID ohne Prüfziffer. Nützlich für Testdaten und Demo-Systeme im Kontext der Marktkommunikation in der Energiewirtschaft.",
+		LoBueIdGenerator{})
 
 	return mcp.NewStreamableHTTPHandler(func(*http.Request) *mcp.Server {
 		return server
@@ -52,9 +70,10 @@ func newMCPHandler() http.Handler {
 	})
 }
 
-func addMCPTool(server *mcp.Server, name, description string, generator IdGenerator) {
+func addMCPTool(server *mcp.Server, name, title, description string, generator IdGenerator) {
 	mcp.AddTool(server, &mcp.Tool{
 		Name:        name,
+		Title:       title,
 		Description: description,
 		Annotations: &mcp.ToolAnnotations{ReadOnlyHint: true},
 	}, mcpToolHandler(generator))
