@@ -27,7 +27,7 @@ type mcpGeneratedID struct {
 
 func newMCPHandler() http.Handler {
 	server := mcp.NewServer(&mcp.Implementation{
-		Name:    "malo-id-generator",
+		Name:    "id-generator",
 		Version: "1.0.0",
 	}, nil)
 
@@ -43,6 +43,12 @@ func newMCPHandler() http.Handler {
 	}, &mcp.StreamableHTTPOptions{
 		Stateless:    true,
 		JSONResponse: true,
+		// behind the Azure Functions front end this custom handler process listens on a
+		// loopback address while the request's Host header carries the public domain, which
+		// the SDK's DNS rebinding protection (meant for localhost dev servers) would reject
+		// with a 403 on every request; the public endpoint is served by Azure, not this
+		// process, so the protection is meaningless here and must be disabled
+		DisableLocalhostProtection: true,
 	})
 }
 

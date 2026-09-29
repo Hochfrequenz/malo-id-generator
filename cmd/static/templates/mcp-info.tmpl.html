@@ -67,7 +67,7 @@
         <ul class="mcp-steps">
             <li>
                 <a href="https://code.claude.com/docs/en/mcp" target="_blank" rel="noopener noreferrer">Claude Code (Terminal)&nbsp;↗</a>
-                <pre class="mcp-code"><code>claude mcp add --transport http malo-id-generator {{ .mcpURL }}</code></pre>
+                <pre class="mcp-code"><code>claude mcp add --transport http id-generator {{ .mcpURL }}</code></pre>
                 <p class="mcp-note">
                     Danach im Claude-Code-Prompt <code>/mcp</code> öffnen, um zu prüfen, dass die
                     Verbindung steht und die sechs Tools angezeigt werden.
@@ -84,7 +84,7 @@
                 <a href="https://code.visualstudio.com/docs/copilot/chat/mcp-servers" target="_blank" rel="noopener noreferrer">GitHub Copilot in VS Code&nbsp;↗</a>
                 <pre class="mcp-code"><code>{
   "servers": {
-    "malo-id-generator": {
+    "id-generator": {
       "type": "http",
       "url": "{{ .mcpURL }}"
     }
@@ -100,7 +100,7 @@
                 <pre class="mcp-code"><code>{
   "$schema": "https://opencode.ai/config.json",
   "mcp": {
-    "malo-id-generator": {
+    "id-generator": {
       "type": "remote",
       "url": "{{ .mcpURL }}",
       "enabled": true
